@@ -1,0 +1,74 @@
+[
+  {
+    "rank": 1,
+    "title": "Reminder: You Can Stitch Together Lots of Little HTML Pages With Navigations For Interactions",
+    "score": 65,
+    "author": "LesleyLai",
+    "comments": 20,
+    "tags": "web",
+    "url": "https://lobste.rs/s/6cmh6h/reminder_you_can_stitch_together_lots"
+  },
+  {
+    "rank": 2,
+    "title": "Native macOS app to track YouTube channels, no Google login required",
+    "score": 19,
+    "author": "agentcooper",
+    "comments": 11,
+    "tags": "mac",
+    "url": "https://lobste.rs/s/pjuxhr/native_macos_app_track_youtube_channels"
+  },
+  {
+    "rank": 3,
+    "title": "Broadcasting GPS on the local network",
+    "score": 38,
+    "author": "evert",
+    "comments": 17,
+    "tags": "linux",
+    "url": "https://lobste.rs/s/4n38xw/broadcasting_gps_on_local_network"
+  },
+  {
+    "rank": 4,
+    "title": "What are you doing this week?",
+    "score": 18,
+    "author": "caius",
+    "comments": 26,
+    "tags": "ask, programming",
+    "url": "https://lobste.rs/s/abg2mj/what_are_you_doing_this_week"
+  },
+  {
+    "rank": 5,
+    "title": "I accidentally made law enforcement shut down their stresser honeypot",
+    "score": 39,
+    "author": "kwas",
+    "comments": 1,
+    "tags": "security",
+    "url": "https://lobste.rs/s/rks8da/i_accidentally_made_law_enforcement_shut"
+  },
+  {
+    "rank": 6,
+    "title": "Async Rust never left the MVP state",
+    "score": 12,
+    "author": "radim",
+    "comments": 2,
+    "tags": "rust",
+    "url": "https://lobste.rs/s/flowcy/async_rust_never_left_mvp_state"
+  },
+  {
+    "rank": 7,
+    "title": "Agentic Coding is a Trap",
+    "score": 52,
+    "author": "ayo",
+    "comments": 6,
+    "tags": "vibecoding",
+    "url": "https://lobste.rs/s/dyq1jw/agentic_coding_is_trap"
+  },
+  {
+    "rank": 8,
+    "title": "Fake Notepad++ for Mac",
+    "score": 62,
+    "author": "wonk",
+    "comments": 8,
+    "tags": "editors, mac, web",
+    "url": "https://lobste.rs/s/xvtq0l/fake_notepad_for_mac"
+  }
+]

@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Focus — 今日热读</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Source+Sans+3:wght@300;400;500;600&family=Noto+Serif+SC:wght@400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0d0d0f;
+      --surface: #171620;
+      --surface-hover: #1e1e2a;
+      --surface-active: #232333;
+      --border: #2a2a38;
+      --text: #e8e6e3;
+      --text-muted: #7a7875;
+      --text-faint: #3e3c39;
+      --accent: #c9a84c;
+      --accent-dim: rgba(201, 168, 76, 0.10);
+      --accent-glow: rgba(201, 168, 76, 0.06);
+      --tag-bg: #1a1a24;
+      --scrollbar: #2a2a38;
+      --selection: rgba(201, 168, 76, 0.25);
+    }
+
+    ::selection { background: var(--selection); color: var(--text); }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--scrollbar); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3a3a48; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Source Sans 3', 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Reading Progress Bar ── */
+    .progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), #e8c46c);
+      width: 0%;
+      z-index: 200;
+      transition: width 0.08s linear;
+      box-shadow: 0 0 8px rgba(201, 168, 76, 0.5);
+    }
+
+    /* ── Header ── */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13, 13, 15, 0.92);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .masthead { display: flex; align-items: baseline; gap: 14px; flex-shrink: 0; }
+
+    .masthead-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    .masthead-date {
+      font-size: 11px;
+      color: var(--text-faint);
+      font-weight: 300;
+      letter-spacing: 0.3px;
+    }
+
+    .search-wrap {
+      flex: 1;
+      max-width: 260px;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 32px 8px 32px;
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .search-input::placeholder { color: var(--text-faint); }
+
+    .search-input:focus {
+      border-color: rgba(201, 168, 76, 0.35);
+      background: var(--surface-hover);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 13px;
+      color: var(--text-faint);
+      pointer-events: none;
+      line-height: 1;
+    }
+
+    .search-clear {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-faint);
+      cursor: pointer;
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: none;
+      line-height: 1.4;
+    }
+
+    .search-clear.visible { display: block; }
+    .search-clear:hover { color: var(--text-muted); }
+
+    .kbd-hint {
+      font-size: 10px;
+      color: var(--text-faint);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .kbd {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 1px 5px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    /* ── Page ── */
+    .page-body {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 36px 32px 100px;
+    }
+
+    /* ── Source Nav ── */
+    .source-nav {
+      display: flex;
+      gap: 3px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+      align-items: center;
+    }
+
+    .source-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 11px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-muted);
+      transition: background 0.13s, color 0.13s, border-color 0.13s;
+      line-height: 1.4;
+    }
+
+    .source-pill:hover { background: var(--surface); color: var(--text); }
+
+    .source-pill.active {
+      background: var(--accent-dim);
+      border-color: rgba(201, 168, 76, 0.22);
+      color: var(--accent);
+    }
+
+    .source-pill .emoji { font-size: 12px; }
+
+    .source-pill .count {
+      font-size: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      opacity: 0.6;
+    }
+
+    .nav-divider {
+      width: 1px; height: 16px;
+      background: var(--border);
+      margin: 0 6px;
+      flex-shrink: 0;
+    }
+
+    /* ── Feed ── */
+    .feed { display: flex; flex-direction: column; gap: 3px; }
+
+    /* ── Compact view ── */
+    .feed.compact .article {
+      padding: 13px 20px;
+    }
+
+    .feed.compact .article-title {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .feed.compact .article-body { gap: 8px; }
+
+    /* ── Article Card ── */
+    .article {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 22px;
+      cursor: pointer;
+      transition: background 0.13s, border-color 0.13s, box-shadow 0.13s;
+      outline: none;
+      position: relative;
+    }
+
+    .article::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--accent);
+      border-radius: 10px 0 0 10px;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    .article:hover {
+      background: var(--surface-hover);
+      border-color: rgba(201, 168, 76, 0.14);
+    }
+
+    .article:hover::before { opacity: 1; }
+
+    .article.focused {
+      border-color: rgba(201, 168, 76, 0.3);
+      background: var(--surface-hover);
+      box-shadow: 0 0 0 3px var(--accent-glow), inset 0 0 0 1px rgba(201, 168, 76, 0.08);
+    }
+
+    .article.focused::before { opacity: 1; }
+
+    .article-inner {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .article-rank {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-faint);
+      min-width: 22px;
+      padding-top: 3px;
+      opacity: 0.55;
+      user-select: none;
+    }
+
+    .article-body { flex: 1; min-width: 0; }
+
+    .article-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .source-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 7px;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .article-meta {
+      font-size: 11px;
+      color: var(--text-faint);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .article-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.6;
+      color: var(--text);
+      margin-bottom: 8px;
+      letter-spacing: -0.1px;
+      transition: color 0.13s;
+    }
+
+    .article:hover .article-title { color: #f0ece5; }
+
+    .article-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      opacity: 0;
+      transition: opacity 0.13s;
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+
+    .article:hover .article-actions,
+    .article.focused .article-actions { opacity: 1; }
+
+    .action-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 10px;
+      color: var(--text-faint);
+      cursor: pointer;
+      transition: background 0.12s, color 0.12s, border-color 0.12s;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      white-space: nowrap;
+      font-family: inherit;
+      line-height: 1.4;
+    }
+
+    .action-btn:hover {
+      background: var(--surface-active);
+      color: var(--text-muted);
+      border-color: #3a3a48;
+    }
+
+    .action-btn.saved {
+      color: var(--accent);
+      border-color: rgba(201, 168, 76, 0.28);
+    }
+
+    /* ── Skeleton Loading ── */
+    .skeleton-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 22px;
+    }
+
+    .skeleton {
+      background: linear-gradient(90deg, var(--border) 25%, var(--surface-hover) 50%, var(--border) 75%);
+      background-size: 200% 100%;
+      border-radius: 4px;
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer { to { background-position: -200% center; } }
+
+    .sk-badge { height: 16px; width: 64px; margin-bottom: 10px; }
+    .sk-title-1 { height: 15px; width: 85%; margin-bottom: 6px; }
+    .sk-title-2 { height: 15px; width: 60%; margin-bottom: 10px; }
+    .sk-meta { height: 11px; width: 40%; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Empty State ── */
+    .empty-state {
+      text-align: center;
+      padding: 80px 40px;
+      color: var(--text-faint);
+    }
+
+    .empty-icon { font-size: 34px; margin-bottom: 14px; opacity: 0.45; }
+    .empty-title { font-size: 15px; font-weight: 500; color: var(--text-muted); margin-bottom: 7px; }
+    .empty-sub { font-size: 12px; }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(64px);
+      background: var(--surface-hover);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 18px;
+      font-size: 13px;
+      color: var(--text);
+      opacity: 0;
+      transition: opacity 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+      z-index: 300;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── Footer ── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 32px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-faint);
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 680px) {
+      .page-body { padding: 24px 16px 80px; }
+      .header-inner { padding: 0 16px; gap: 12px; }
+      .masthead-date, .kbd-hint { display: none; }
+      .search-wrap { max-width: none; }
+      .nav-divider { display: none; }
+      .article { padding: 15px 18px; }
+      .article-title { font-size: 15px; }
+      .article-actions { display: none !important; }
+      .source-pill .count { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar" id="progressBar"></div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="masthead">
+        <span class="masthead-name">Focus</span>
+        <span class="masthead-date" id="headerDate"></span>
+      </div>
+
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input class="search-input" id="searchInput" type="text" placeholder="搜索资讯..." autocomplete="off" spellcheck="false">
+        <button class="search-clear" id="searchClear">✕</button>
+      </div>
+
+      <div class="kbd-hint">
+        <span class="kbd">j</span><span class="kbd">k</span> 导航
+      </div>
+    </div>
+  </header>
+
+  <div class="page-body">
+    <nav class="source-nav" id="sourceNav"></nav>
+    <div class="feed" id="feed"></div>
+  </div>
+
+  <footer class="site-footer">
+    <p>数据来源：OpenCLI · 36氪 · V2EX · Stack Overflow · 贴吧 · Lobsters</p>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ── Constants ──
+    const SOURCES = [
+      { key: 'all',           name: '全部',    emoji: '🌐' },
+      { key: '36kr',          name: '36氪',    emoji: '📰' },
+      { key: 'v2ex',          name: 'V2EX',    emoji: '💬' },
+      { key: 'stackoverflow', name: 'S.O.',     emoji: '⌨️' },
+      { key: 'tieba',         name: '贴吧',     emoji: '🎮' },
+      { key: 'lobsters',      name: 'Lobsters',emoji: '🦞' },
+    ];
+
+    const SOURCE_FILES = {
+      '36kr':          '36kr.json',
+      'v2ex':          'v2ex.json',
+      'stackoverflow': 'stackoverflow.json',
+      'tieba':         'tieba.json',
+      'lobsters':      'lobsters.json',
+    };
+
+    const SOURCE_COLORS = {
+      '36kr':          '#f5a623',
+      'v2ex':          '#7a78c8',
+      'stackoverflow': '#f48024',
+      'tieba':         '#4a9cf5',
+      'lobsters':      '#4caf50',
+    };
+
+    const BOOKMARKS_KEY = 'focus_bookmarks';
+    const $ = id => document.getElementById(id);
+
+    // ── State ──
+    let allData     = {};
+    let activeSource = 'all';
+    let focusedIndex = -1;
+    let searchQuery  = '';
+    let compactView  = false;
+    let bookmarks    = JSON.parse(localStorage.getItem(BOOKMARKS_KEY) || '[]');
+
+    // ── Helpers ──
+    function escHtml(str) {
+      const d = document.createElement('div');
+      d.textContent = str;
+      return d.innerHTML;
+    }
+
+    // ── Date ──
+    function initDate() {
+      const now = new Date();
+      const opts = { month: 'long', day: 'numeric', weekday: 'short' };
+      $('headerDate').textContent = now.toLocaleDateString('zh-CN', opts);
+    }
+
+    // ── Reading Progress ──
+    function updateProgress() {
+      const scrollTop  = window.scrollY;
+      const docHeight  = document.documentElement.scrollHeight - window.innerHeight;
+      const pct         = docHeight > 0 ? Math.round((scrollTop / docHeight) * 100) : 0;
+      $('progressBar').style.width = pct + '%';
+    }
+
+    // ── Parse raw item ──
+    function parseItem(raw, source) {
+      switch (source) {
+        case '36kr':          return { title: raw.title, url: raw.url };
+        case 'v2ex':          return { title: raw.title, url: raw.url, meta: raw.node ? `▶ ${raw.node}` : null };
+        case 'stackoverflow':  return { title: raw.title, url: raw.url, meta: raw.score !== undefined ? `▲ ${raw.score}` : null };
+        case 'tieba':         return { title: raw.title, url: raw.url, meta: raw.discussions || null };
+        case 'lobsters':      return { title: raw.title, url: raw.url, meta: raw.score ? `▲ ${raw.score}` : null };
+        default:              return { title: raw.title || raw.name, url: raw.url };
+      }
+    }
+
+    // ── Load a single source JSON ──
+    async function loadSource(key) {
+      if (allData[key]) return;
+      try {
+        const r = await fetch(`${SOURCE_FILES[key]}?t=${Date.now()}`);
+        if (!r.ok) throw new Error();
+        const raw = await r.json();
+        const src = SOURCES.find(s => s.key === key);
+        allData[key] = {
+          name:  src.name,
+          emoji: src.emoji,
+          items: (Array.isArray(raw) ? raw : []).map(item => parseItem(item, key)),
+        };
+      } catch {
+        allData[key] = { name: key, emoji: '❓', items: [], error: true };
+      }
+    }
+
+    // ── Build flat article list ──
+    function getArticles() {
+      const keys = activeSource === 'all'
+        ? Object.keys(SOURCE_FILES)
+        : [activeSource];
+
+      const flat = [];
+      for (const key of keys) {
+        const panel = allData[key];
+        if (!panel || panel.error || !panel.items.length) continue;
+        for (const item of panel.items) {
+          flat.push({ ...item, _key: key, _name: panel.name, _emoji: panel.emoji });
+        }
+      }
+
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        return flat.filter(a => a.title.toLowerCase().includes(q));
+      }
+      return flat;
+    }
+
+    // ── Count of articles for a source key ──
+    function sourceCount(key) {
+      const d = allData[key];
+      if (!d || d.error) return 0;
+      if (!searchQuery) return d.items.length;
+      const q = searchQuery.toLowerCase();
+      return d.items.filter(i => i.title.toLowerCase().includes(q)).length;
+    }
+
+    // ── Render skeleton ──
+    function renderSkeletons(n = 5) {
+      return Array.from({ length: n }, () => `
+        <div class="skeleton-card">
+          <div class="skeleton sk-badge"></div>
+          <div class="skeleton sk-title-1"></div>
+          <div class="skeleton sk-title-2"></div>
+          <div class="skeleton sk-meta"></div>
+        </div>
+      `).join('');
+    }
+
+    // ── Render nav pills ──
+    function renderNav() {
+      $('sourceNav').innerHTML = SOURCES.map(s => {
+        const cnt = s.key === 'all'
+          ? (searchQuery
+              ? getArticles().length
+              : Object.values(allData).reduce((sum, d) => sum + (d && !d.error ? d.items.length : 0), 0))
+          : sourceCount(s.key);
+        return `
+          <button class="source-pill${s.key === activeSource ? ' active' : ''}" data-key="${s.key}">
+            <span class="emoji">${s.emoji}</span>${s.name}
+            <span class="count">${cnt || ''}</span>
+          </button>`;
+      }).join('');
+
+      $('sourceNav').querySelectorAll('.source-pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+          activeSource = btn.dataset.key;
+          focusedIndex  = -1;
+          renderNav();
+          renderFeed();
+        });
+      });
+    }
+
+    // ── Render feed ──
+    function renderFeed() {
+      const articles = getArticles();
+      const feed     = $('feed');
+
+      feed.className = 'feed' + (compactView ? ' compact' : '');
+
+      if (!articles.length && Object.keys(allData).length === 0) {
+        feed.innerHTML = renderSkeletons(5);
+        return;
+      }
+
+      if (!articles.length) {
+        feed.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">${searchQuery ? '🔍' : '📭'}</div>
+            <div class="empty-title">${searchQuery ? '没有找到相关内容' : '暂无数据'}</div>
+            <div class="empty-sub">${searchQuery ? '尝试其他关键词' : '请检查网络后刷新'}</div>
+          </div>`;
+        return;
+      }
+
+      feed.innerHTML = articles.map((art, i) => {
+        const color   = SOURCE_COLORS[art._key] || '#888';
+        const isSaved = bookmarks.some(b => b.url === art.url);
+        return `
+          <article class="article" data-index="${i}" tabindex="-1">
+            <div class="article-inner">
+              <span class="article-rank">${String(i + 1).padStart(2, '0')}</span>
+              <div class="article-body">
+                <div class="article-top">
+                  <span class="source-badge" style="color:${color}">
+                    <span>${art._emoji}</span>${art._name}
+                  </span>
+                  ${art.meta ? `<span class="article-meta">${escHtml(art.meta)}</span>` : ''}
+                </div>
+                <h2 class="article-title">${escHtml(art.title)}</h2>
+                <div class="article-meta"><span>阅读原文 →</span></div>
+              </div>
+              <div class="article-actions">
+                <button class="action-btn${isSaved ? ' saved' : ''}" data-idx="${i}">
+                  ${isSaved ? '★ 已收藏' : '☆ 收藏'}
+                </button>
+                <button class="action-btn" data-open="${i}">↗ 打开</button>
+              </div>
+            </div>
+          </article>`;
+      }).join('');
+
+      // Event delegation
+      feed.querySelectorAll('.article').forEach(el => {
+        el.addEventListener('click', e => {
+          const idx = parseInt(el.dataset.index, 10);
+          openArticle(idx);
+        });
+      });
+
+      feed.querySelectorAll('.action-btn[data-idx]').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          toggleBookmark(parseInt(btn.dataset.idx, 10));
+        });
+      });
+
+      feed.querySelectorAll('.action-btn[data-open]').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          openArticle(parseInt(btn.dataset.open, 10));
+        });
+      });
+
+      updateFocus();
+    }
+
+    // ── Focus (keyboard navigation) ──
+    function updateFocus() {
+      const cards = $('feed').querySelectorAll('.article');
+      const max   = cards.length - 1;
+
+      if (focusedIndex > max) focusedIndex = max;
+      if (focusedIndex < -1)  focusedIndex = -1;
+
+      cards.forEach((c, i) => c.classList.toggle('focused', i === focusedIndex));
+
+      if (focusedIndex >= 0 && cards[focusedIndex]) {
+        cards[focusedIndex].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+    }
+
+    // ── Actions ──
+    function openArticle(idx) {
+      const articles = getArticles();
+      if (articles[idx]) window.open(articles[idx].url, '_blank', 'noopener');
+    }
+
+    function toggleBookmark(idx) {
+      const articles = getArticles();
+      const art      = articles[idx];
+      if (!art) return;
+
+      const pos = bookmarks.findIndex(b => b.url === art.url);
+      if (pos >= 0) {
+        bookmarks.splice(pos, 1);
+        showToast('已取消收藏');
+      } else {
+        bookmarks.push({ title: art.title, url: art.url, source: art._name, time: Date.now() });
+        showToast('已收藏 ☆');
+      }
+      localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(bookmarks));
+      renderFeed();
+    }
+
+    function showToast(msg) {
+      const t = $('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => t.classList.remove('show'), 1800);
+    }
+
+    // ── Search ──
+    function onSearchInput(e) {
+      searchQuery = e.target.value.trim();
+      $('searchClear').classList.toggle('visible', searchQuery.length > 0);
+      focusedIndex = -1;
+      renderNav();
+      renderFeed();
+    }
+
+    function clearSearch() {
+      $('searchInput').value = '';
+      searchQuery = '';
+      $('searchClear').classList.remove('visible');
+      focusedIndex = -1;
+      renderNav();
+      renderFeed();
+      $('searchInput').focus();
+    }
+
+    // ── Keyboard Navigation ──
+    document.addEventListener('keydown', e => {
+      // Don't hijack when typing in inputs
+      const inInput = ['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName);
+      if (inInput && !['Escape'].includes(e.key)) return;
+
+      const articles = getArticles();
+      const max      = articles.length - 1;
+
+      switch (e.key) {
+        case 'j':
+        case 'ArrowDown':
+          e.preventDefault();
+          focusedIndex = focusedIndex < max ? focusedIndex + 1 : max;
+          updateFocus();
+          break;
+        case 'k':
+        case 'ArrowUp':
+          e.preventDefault();
+          focusedIndex = focusedIndex > 0 ? focusedIndex - 1 : 0;
+          updateFocus();
+          break;
+        case 'Enter':
+          if (focusedIndex >= 0) openArticle(focusedIndex);
+          break;
+        case '/':
+          if (!inInput) { e.preventDefault(); $('searchInput').focus(); }
+          break;
+        case 'Escape':
+          if (inInput) { $('searchInput').blur(); }
+          if (searchQuery) clearSearch();
+          break;
+      }
+    });
+
+    // ── Scroll ──
+    window.addEventListener('scroll', updateProgress, { passive: true });
+
+    // ── Init ──
+    async function init() {
+      initDate();
+      renderNav();
+      $('searchInput').addEventListener('input', onSearchInput);
+      $('searchClear').addEventListener('click', clearSearch);
+
+      await Promise.all(Object.keys(SOURCE_FILES).map(k => loadSource(k)));
+
+      renderNav();
+      renderFeed();
+    }
+
+    init();
+  </script>
+</body>
+</html>
