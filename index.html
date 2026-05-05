@@ -1,856 +1,923 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Focus — 今日热读</title>
+  <title>Focus — Editorial News Reader</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Source+Sans+3:wght@300;400;500;600&family=Noto+Serif+SC:wght@400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0d0d0f;
-      --surface: #171620;
-      --surface-hover: #1e1e2a;
-      --surface-active: #232333;
-      --border: #2a2a38;
-      --text: #e8e6e3;
-      --text-muted: #7a7875;
-      --text-faint: #3e3c39;
-      --accent: #c9a84c;
-      --accent-dim: rgba(201, 168, 76, 0.10);
-      --accent-glow: rgba(201, 168, 76, 0.06);
-      --tag-bg: #1a1a24;
-      --scrollbar: #2a2a38;
-      --selection: rgba(201, 168, 76, 0.25);
+      --bg-primary: #0f1117;
+      --bg-secondary: #161922;
+      --bg-tertiary: #1c1f2a;
+      --bg-hover: #242836;
+      --accent: #00d4aa;
+      --accent-dim: rgba(0, 212, 170, 0.15);
+      --accent-glow: rgba(0, 212, 170, 0.4);
+      --text-primary: #f0f0f0;
+      --text-secondary: #a0a0a0;
+      --text-tertiary: #666;
+      --border: #2a2d3a;
+      --border-light: #363a4a;
+      --source-36kr: #ff6b6b;
+      --source-v2ex: #0078d4;
+      --source-stackoverflow: #f48024;
+      --source-tieba: #ffd700;
+      --source-lobsters: #ac130d;
+      --shadow: 0 4px 24px rgba(0,0,0,0.4);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,0.6);
     }
 
-    ::selection { background: var(--selection); color: var(--text); }
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--scrollbar); border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #3a3a48; }
-
-    html { scroll-behavior: smooth; }
-
+    html { font-size: 16px; }
     body {
-      font-family: 'Source Sans 3', 'Helvetica Neue', sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      font-family: 'Source Sans 3', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
       min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
-    /* ── Reading Progress Bar ── */
-    .progress-bar {
-      position: fixed;
-      top: 0; left: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), #e8c46c);
-      width: 0%;
-      z-index: 200;
-      transition: width 0.08s linear;
-      box-shadow: 0 0 8px rgba(201, 168, 76, 0.5);
-    }
-
-    /* ── Header ── */
-    .site-header {
+    /* Header */
+    .header {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(13, 13, 15, 0.92);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+      background: rgba(15, 17, 23, 0.95);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
     }
-
     .header-inner {
-      max-width: 820px;
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 0 32px;
-      height: 64px;
       display: flex;
       align-items: center;
-      gap: 20px;
+      justify-content: space-between;
+      height: 64px;
     }
-
-    .masthead { display: flex; align-items: baseline; gap: 14px; flex-shrink: 0; }
-
-    .masthead-name {
+    .logo {
       font-family: 'Playfair Display', serif;
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--text);
-      letter-spacing: -0.3px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
-
-    .masthead-date {
-      font-size: 11px;
-      color: var(--text-faint);
-      font-weight: 300;
-      letter-spacing: 0.3px;
+    .logo svg { width: 28px; height: 28px; }
+    .header-stats {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
     }
-
-    .search-wrap {
-      flex: 1;
-      max-width: 260px;
-      position: relative;
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
     }
-
-    .search-input {
-      width: 100%;
-      background: var(--surface);
+    .stat-value { color: var(--text-primary); font-weight: 500; }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .btn {
+      background: var(--bg-tertiary);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 8px 32px 8px 32px;
-      font-family: inherit;
-      font-size: 13px;
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.15s, background 0.15s;
+      color: var(--text-primary);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+    }
+    .btn:hover { background: var(--bg-hover); border-color: var(--border-light); }
+    .btn-accent { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+    .btn-accent:hover { background: var(--accent); color: var(--bg-primary); }
+    .kbd {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-family: monospace;
     }
 
-    .search-input::placeholder { color: var(--text-faint); }
-
-    .search-input:focus {
-      border-color: rgba(201, 168, 76, 0.35);
-      background: var(--surface-hover);
+    /* Command Palette */
+    .cmd-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 15vh;
     }
-
-    .search-icon {
-      position: absolute;
-      left: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 13px;
-      color: var(--text-faint);
-      pointer-events: none;
-      line-height: 1;
+    .cmd-overlay.active { display: flex; }
+    .cmd-palette {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 560px;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
     }
-
-    .search-clear {
-      position: absolute;
-      right: 8px;
-      top: 50%;
-      transform: translateY(-50%);
+    .cmd-input-wrap {
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      gap: 0.75rem;
+    }
+    .cmd-input-wrap svg { color: var(--text-tertiary); flex-shrink: 0; }
+    .cmd-input {
+      flex: 1;
       background: none;
       border: none;
-      color: var(--text-faint);
-      cursor: pointer;
-      font-size: 11px;
-      padding: 2px 6px;
-      border-radius: 4px;
-      display: none;
-      line-height: 1.4;
+      color: var(--text-primary);
+      font-size: 1rem;
+      outline: none;
+      font-family: inherit;
     }
-
-    .search-clear.visible { display: block; }
-    .search-clear:hover { color: var(--text-muted); }
-
-    .kbd-hint {
-      font-size: 10px;
-      color: var(--text-faint);
-      flex-shrink: 0;
+    .cmd-input::placeholder { color: var(--text-tertiary); }
+    .cmd-results { max-height: 360px; overflow-y: auto; padding: 0.5rem; }
+    .cmd-item {
       display: flex;
       align-items: center;
-      gap: 3px;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
     }
-
-    .kbd {
-      display: inline-flex;
+    .cmd-item:hover, .cmd-item.selected { background: var(--bg-hover); }
+    .cmd-item-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 3px;
-      padding: 1px 5px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: var(--text-muted);
-    }
-
-    /* ── Page ── */
-    .page-body {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 36px 32px 100px;
-    }
-
-    /* ── Source Nav ── */
-    .source-nav {
-      display: flex;
-      gap: 3px;
-      flex-wrap: wrap;
-      margin-bottom: 28px;
-      align-items: center;
-    }
-
-    .source-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 5px 11px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 500;
-      cursor: pointer;
-      border: 1px solid transparent;
-      background: transparent;
-      color: var(--text-muted);
-      transition: background 0.13s, color 0.13s, border-color 0.13s;
-      line-height: 1.4;
-    }
-
-    .source-pill:hover { background: var(--surface); color: var(--text); }
-
-    .source-pill.active {
-      background: var(--accent-dim);
-      border-color: rgba(201, 168, 76, 0.22);
-      color: var(--accent);
-    }
-
-    .source-pill .emoji { font-size: 12px; }
-
-    .source-pill .count {
-      font-size: 10px;
-      font-family: 'JetBrains Mono', monospace;
-      opacity: 0.6;
-    }
-
-    .nav-divider {
-      width: 1px; height: 16px;
-      background: var(--border);
-      margin: 0 6px;
       flex-shrink: 0;
     }
-
-    /* ── Feed ── */
-    .feed { display: flex; flex-direction: column; gap: 3px; }
-
-    /* ── Compact view ── */
-    .feed.compact .article {
-      padding: 13px 20px;
+    .cmd-item-text { flex: 1; min-width: 0; }
+    .cmd-item-title {
+      font-size: 0.9rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .cmd-item-meta { font-size: 0.75rem; color: var(--text-tertiary); }
+    .cmd-section { padding: 0.5rem 1rem 0.25rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); }
+    .cmd-footer {
+      border-top: 1px solid var(--border);
+      padding: 0.6rem 1rem;
+      display: flex;
+      gap: 1rem;
+      font-size: 0.7rem;
+      color: var(--text-tertiary);
     }
 
-    .feed.compact .article-title {
-      font-size: 14px;
-      margin-bottom: 4px;
+    /* Main Layout */
+    .main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
     }
+    .layout { display: grid; grid-template-columns: 1fr 380px; gap: 2rem; }
+    .layout.focus-mode { grid-template-columns: 1fr; }
 
-    .feed.compact .article-body { gap: 8px; }
-
-    /* ── Article Card ── */
-    .article {
-      background: var(--surface);
+    /* Featured Article */
+    .featured {
+      background: var(--bg-secondary);
+      border-radius: 16px;
+      overflow: hidden;
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 18px 22px;
+      margin-bottom: 2rem;
       cursor: pointer;
-      transition: background 0.13s, border-color 0.13s, box-shadow 0.13s;
-      outline: none;
-      position: relative;
+      transition: all 0.3s;
     }
-
-    .article::before {
+    .featured:hover { border-color: var(--border-light); box-shadow: var(--shadow); }
+    .featured.selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), var(--shadow-lg); }
+    .featured-image {
+      height: 320px;
+      background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-hover) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .featured-image::before {
       content: '';
       position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 3px;
-      background: var(--accent);
-      border-radius: 10px 0 0 10px;
-      opacity: 0;
-      transition: opacity 0.15s;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(15,17,23,0.8) 100%);
     }
-
-    .article:hover {
-      background: var(--surface-hover);
-      border-color: rgba(201, 168, 76, 0.14);
-    }
-
-    .article:hover::before { opacity: 1; }
-
-    .article.focused {
-      border-color: rgba(201, 168, 76, 0.3);
-      background: var(--surface-hover);
-      box-shadow: 0 0 0 3px var(--accent-glow), inset 0 0 0 1px rgba(201, 168, 76, 0.08);
-    }
-
-    .article.focused::before { opacity: 1; }
-
-    .article-inner {
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
-    }
-
-    .article-rank {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: var(--text-faint);
-      min-width: 22px;
-      padding-top: 3px;
-      opacity: 0.55;
-      user-select: none;
-    }
-
-    .article-body { flex: 1; min-width: 0; }
-
-    .article-top {
+    .featured-badge {
+      position: absolute;
+      top: 1.25rem;
+      left: 1.25rem;
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
-      flex-wrap: wrap;
+      gap: 0.4rem;
+      background: var(--accent);
+      color: var(--bg-primary);
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
-
-    .source-badge {
+    .featured-content { padding: 1.5rem; }
+    .featured-source {
       display: inline-flex;
       align-items: center;
-      gap: 3px;
-      padding: 2px 7px;
-      background: var(--tag-bg);
-      border: 1px solid var(--border);
+      gap: 0.35rem;
+      padding: 0.25rem 0.6rem;
       border-radius: 4px;
-      font-size: 10px;
+      font-size: 0.7rem;
       font-weight: 600;
-      letter-spacing: 0.3px;
-      color: var(--text-muted);
-      flex-shrink: 0;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
     }
-
-    .article-meta {
-      font-size: 11px;
-      color: var(--text-faint);
+    .featured-source.v2ex { background: rgba(0,120,212,0.15); color: var(--source-v2ex); }
+    .featured-source.stackoverflow { background: rgba(244,128,36,0.15); color: var(--source-stackoverflow); }
+    .featured-source.kr { background: rgba(255,107,107,0.15); color: var(--source-36kr); }
+    .featured-source.tieba { background: rgba(255,215,0,0.15); color: var(--source-tieba); }
+    .featured-source.lobsters { background: rgba(172,19,13,0.15); color: var(--source-lobsters); }
+    .featured-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.01em;
+    }
+    .featured-meta {
       display: flex;
       align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
     }
+    .featured-meta span { display: flex; align-items: center; gap: 0.3rem; }
 
+    /* Article List */
+    .article-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .article-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      gap: 1rem;
+    }
+    .article-card:hover { background: var(--bg-tertiary); border-color: var(--border-light); }
+    .article-card.selected { border-color: var(--accent); background: var(--accent-dim); }
+    .article-rank {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      min-width: 36px;
+    }
+    .article-card.selected .article-rank { color: var(--accent); }
+    .article-body { flex: 1; min-width: 0; }
+    .article-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; }
     .article-title {
-      font-family: 'Noto Serif SC', serif;
-      font-size: 16px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 500;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .article-footer {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 0.6rem;
+      font-size: 0.8rem;
+      color: var(--text-tertiary);
+    }
+    .article-stat { display: flex; align-items: center; gap: 0.3rem; }
+    .article-stat.score { color: var(--accent); }
+    .article-bookmark {
+      margin-left: auto;
+      background: none;
+      border: none;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      padding: 0.25rem;
+      transition: color 0.2s;
+    }
+    .article-bookmark:hover { color: var(--accent); }
+    .article-bookmark.active { color: var(--accent); }
+
+    /* Sidebar */
+    .sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
+    .sidebar-section {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .sidebar-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
       font-weight: 600;
-      line-height: 1.6;
-      color: var(--text);
-      margin-bottom: 8px;
-      letter-spacing: -0.1px;
-      transition: color 0.13s;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .sidebar-content { padding: 0.75rem; }
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .sidebar-item:hover { background: var(--bg-hover); }
+    .sidebar-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .sidebar-item-text { flex: 1; font-size: 0.9rem; }
+    .sidebar-item-count { font-size: 0.8rem; color: var(--text-tertiary); }
+
+    /* Bookmarks */
+    .bookmark-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .bookmark-item:hover { background: var(--bg-hover); }
+    .bookmark-item svg { color: var(--accent); flex-shrink: 0; }
+    .bookmark-item-text { flex: 1; font-size: 0.85rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .bookmark-remove {
+      background: none;
+      border: none;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      padding: 0.25rem;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .bookmark-item:hover .bookmark-remove { opacity: 1; }
+    .bookmark-remove:hover { color: #ff6b6b; }
+
+    /* Updated Time */
+    .updated-time {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.8rem;
+      color: var(--text-tertiary);
     }
 
-    .article:hover .article-title { color: #f0ece5; }
-
-    .article-actions {
+    /* Toast */
+    .toast-container {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1001;
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      opacity: 0;
-      transition: opacity 0.13s;
-      flex-shrink: 0;
-      padding-top: 2px;
+      gap: 0.5rem;
+      pointer-events: none;
     }
-
-    .article:hover .article-actions,
-    .article.focused .article-actions { opacity: 1; }
-
-    .action-btn {
-      background: none;
+    .toast {
+      background: var(--bg-tertiary);
       border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 4px 8px;
-      font-size: 10px;
-      color: var(--text-faint);
-      cursor: pointer;
-      transition: background 0.12s, color 0.12s, border-color 0.12s;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      box-shadow: var(--shadow);
+      animation: toastIn 0.3s ease;
       display: flex;
       align-items: center;
-      gap: 3px;
-      white-space: nowrap;
-      font-family: inherit;
-      line-height: 1.4;
+      gap: 0.5rem;
+    }
+    .toast.success { border-color: var(--accent); }
+    .toast.success svg { color: var(--accent); }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .action-btn:hover {
-      background: var(--surface-active);
-      color: var(--text-muted);
-      border-color: #3a3a48;
-    }
-
-    .action-btn.saved {
-      color: var(--accent);
-      border-color: rgba(201, 168, 76, 0.28);
-    }
-
-    /* ── Skeleton Loading ── */
-    .skeleton-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 18px 22px;
-    }
-
+    /* Skeleton */
     .skeleton {
-      background: linear-gradient(90deg, var(--border) 25%, var(--surface-hover) 50%, var(--border) 75%);
+      background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--bg-hover) 50%, var(--bg-tertiary) 75%);
       background-size: 200% 100%;
-      border-radius: 4px;
       animation: shimmer 1.5s infinite;
+      border-radius: 6px;
     }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .skeleton-featured { height: 420px; border-radius: 16px; margin-bottom: 2rem; }
+    .skeleton-card { height: 100px; border-radius: 12px; margin-bottom: 0.75rem; }
+    .skeleton-sidebar { height: 200px; border-radius: 12px; }
 
-    @keyframes shimmer { to { background-position: -200% center; } }
-
-    .sk-badge { height: 16px; width: 64px; margin-bottom: 10px; }
-    .sk-title-1 { height: 15px; width: 85%; margin-bottom: 6px; }
-    .sk-title-2 { height: 15px; width: 60%; margin-bottom: 10px; }
-    .sk-meta { height: 11px; width: 40%; }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* ── Empty State ── */
-    .empty-state {
-      text-align: center;
-      padding: 80px 40px;
-      color: var(--text-faint);
-    }
-
-    .empty-icon { font-size: 34px; margin-bottom: 14px; opacity: 0.45; }
-    .empty-title { font-size: 15px; font-weight: 500; color: var(--text-muted); margin-bottom: 7px; }
-    .empty-sub { font-size: 12px; }
-
-    /* ── Toast ── */
-    .toast {
+    /* Focus Mode */
+    .layout.focus-mode .sidebar { display: none; }
+    .layout.focus-mode .featured { display: none; }
+    .layout.focus-mode .article-card { background: var(--bg-primary); }
+    .focus-indicator {
+      display: none;
       position: fixed;
-      bottom: 28px;
+      top: 80px;
       left: 50%;
-      transform: translateX(-50%) translateY(64px);
-      background: var(--surface-hover);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 18px;
-      font-size: 13px;
-      color: var(--text);
-      opacity: 0;
-      transition: opacity 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
-                  transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
-      pointer-events: none;
-      z-index: 300;
-      white-space: nowrap;
+      transform: translateX(-50%);
+      background: var(--accent-dim);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      z-index: 99;
+    }
+    .focus-indicator.active { display: flex; align-items: center; gap: 0.5rem; }
+
+    /* Keyboard hints */
+    .keyboard-nav-hint {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      font-size: 0.7rem;
+      color: var(--text-tertiary);
+      z-index: 50;
+    }
+    .keyboard-nav-hint span { display: flex; align-items: center; gap: 0.25rem; }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+    }
+    @media (max-width: 640px) {
+      .header { padding: 0 1rem; }
+      .header-stats { display: none; }
+      .main { padding: 1rem; }
+      .featured-title { font-size: 1.35rem; }
+      .featured-image { height: 220px; }
+      .keyboard-nav-hint { display: none; }
+      .btn span { display: none; }
     }
 
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    /* ── Footer ── */
-    .site-footer {
-      border-top: 1px solid var(--border);
-      padding: 24px 32px;
-      text-align: center;
-      font-size: 11px;
-      color: var(--text-faint);
-      max-width: 820px;
-      margin: 0 auto;
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 680px) {
-      .page-body { padding: 24px 16px 80px; }
-      .header-inner { padding: 0 16px; gap: 12px; }
-      .masthead-date, .kbd-hint { display: none; }
-      .search-wrap { max-width: none; }
-      .nav-divider { display: none; }
-      .article { padding: 15px 18px; }
-      .article-title { font-size: 15px; }
-      .article-actions { display: none !important; }
-      .source-pill .count { display: none; }
-    }
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-primary); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--border-light); }
   </style>
 </head>
 <body>
-
-  <div class="progress-bar" id="progressBar"></div>
-
-  <header class="site-header">
+  <header class="header">
     <div class="header-inner">
-      <div class="masthead">
-        <span class="masthead-name">Focus</span>
-        <span class="masthead-date" id="headerDate"></span>
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <circle cx="12" cy="12" r="6"/>
+          <circle cx="12" cy="12" r="2"/>
+        </svg>
+        Focus
       </div>
-
-      <div class="search-wrap">
-        <span class="search-icon">⌕</span>
-        <input class="search-input" id="searchInput" type="text" placeholder="搜索资讯..." autocomplete="off" spellcheck="false">
-        <button class="search-clear" id="searchClear">✕</button>
+      <div class="header-stats">
+        <div class="stat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          <span>Reading:</span>
+          <span class="stat-value" id="readCount">0</span>
+        </div>
+        <div class="stat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          <span>Saved:</span>
+          <span class="stat-value" id="savedCount">0</span>
+        </div>
+        <div class="stat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span id="lastUpdated">Loading...</span>
+        </div>
       </div>
-
-      <div class="kbd-hint">
-        <span class="kbd">j</span><span class="kbd">k</span> 导航
+      <div class="header-actions">
+        <button class="btn" onclick="openCommandPalette()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span>Search</span>
+          <kbd>⌘K</kbd>
+        </button>
+        <button class="btn btn-accent" onclick="toggleFocusMode()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+          <span>Focus</span>
+          <kbd>F</kbd>
+        </button>
       </div>
     </div>
   </header>
 
-  <div class="page-body">
-    <nav class="source-nav" id="sourceNav"></nav>
-    <div class="feed" id="feed"></div>
+  <div class="focus-indicator" id="focusIndicator">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+    Focus Mode
   </div>
 
-  <footer class="site-footer">
-    <p>数据来源：OpenCLI · 36氪 · V2EX · Stack Overflow · 贴吧 · Lobsters</p>
-  </footer>
+  <main class="main">
+    <div class="layout" id="mainLayout">
+      <div class="content">
+        <div id="skeletonLoader">
+          <div class="skeleton skeleton-featured"></div>
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+        </div>
+        <div id="featuredArticle"></div>
+        <div class="article-list" id="articleList"></div>
+      </div>
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-title">
+            Sources
+            <span id="sourceCount" style="font-size:0.8rem;color:var(--text-tertiary)">0 items</span>
+          </div>
+          <div class="sidebar-content" id="sourceStats"></div>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            Bookmarks
+          </div>
+          <div class="sidebar-content" id="bookmarkList"></div>
+        </div>
+      </aside>
+    </div>
+  </main>
 
-  <div class="toast" id="toast"></div>
+  <div class="keyboard-nav-hint">
+    <span><kbd>J</kbd>/<kbd>K</kbd> Navigate</span>
+    <span><kbd>Enter</kbd> Open</span>
+    <span><kbd>B</kbd> Bookmark</span>
+    <span><kbd>C</kbd> Copy Link</span>
+    <span><kbd>F</kbd> Focus</span>
+    <span><kbd>Esc</kbd> Close</span>
+  </div>
+
+  <div class="cmd-overlay" id="cmdOverlay" onclick="if(event.target===this)closeCommandPalette()">
+    <div class="cmd-palette">
+      <div class="cmd-input-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="cmd-input" id="cmdInput" placeholder="Search articles, sources, bookmarks..." oninput="filterCommands()">
+      </div>
+      <div class="cmd-results" id="cmdResults"></div>
+      <div class="cmd-footer">
+        <span><kbd>↑↓</kbd> Navigate</span>
+        <span><kbd>Enter</kbd> Select</span>
+        <span><kbd>Esc</kbd> Close</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
 
   <script>
-    // ── Constants ──
-    const SOURCES = [
-      { key: 'all',           name: '全部',    emoji: '🌐' },
-      { key: '36kr',          name: '36氪',    emoji: '📰' },
-      { key: 'v2ex',          name: 'V2EX',    emoji: '💬' },
-      { key: 'stackoverflow', name: 'S.O.',     emoji: '⌨️' },
-      { key: 'tieba',         name: '贴吧',     emoji: '🎮' },
-      { key: 'lobsters',      name: 'Lobsters',emoji: '🦞' },
-    ];
-
-    const SOURCE_FILES = {
-      '36kr':          '36kr.json',
-      'v2ex':          'v2ex.json',
-      'stackoverflow': 'stackoverflow.json',
-      'tieba':         'tieba.json',
-      'lobsters':      'lobsters.json',
+    const SOURCES = {
+      '36kr': { name: '36Kr', class: 'kr', color: '#ff6b6b' },
+      'v2ex': { name: 'V2EX', class: 'v2ex', color: '#0078d4' },
+      'stackoverflow': { name: 'Stack Overflow', class: 'stackoverflow', color: '#f48024' },
+      'tieba': { name: 'Tieba', class: 'tieba', color: '#ffd700' },
+      'lobsters': { name: 'Lobsters', class: 'lobsters', color: '#ac130d' }
     };
 
-    const SOURCE_COLORS = {
-      '36kr':          '#f5a623',
-      'v2ex':          '#7a78c8',
-      'stackoverflow': '#f48024',
-      'tieba':         '#4a9cf5',
-      'lobsters':      '#4caf50',
-    };
+    let articles = [];
+    let filteredArticles = [];
+    let selectedIndex = 0;
+    let bookmarks = JSON.parse(localStorage.getItem('focusBookmarks') || '[]');
+    let readArticles = JSON.parse(localStorage.getItem('focusRead') || '[]');
+    let isFocusMode = false;
+    let cmdSelectedIndex = 0;
+    let cmdItems = [];
 
-    const BOOKMARKS_KEY = 'focus_bookmarks';
-    const $ = id => document.getElementById(id);
+    async function loadData() {
+      const files = ['36kr.json', 'v2ex.json', 'stackoverflow.json', 'tieba.json', 'lobsters.json'];
+      const sourceMap = { '36kr.json': '36kr', 'v2ex.json': 'v2ex', 'stackoverflow.json': 'stackoverflow', 'tieba.json': 'tieba', 'lobsters.json': 'lobsters' };
 
-    // ── State ──
-    let allData     = {};
-    let activeSource = 'all';
-    let focusedIndex = -1;
-    let searchQuery  = '';
-    let compactView  = false;
-    let bookmarks    = JSON.parse(localStorage.getItem(BOOKMARKS_KEY) || '[]');
-
-    // ── Helpers ──
-    function escHtml(str) {
-      const d = document.createElement('div');
-      d.textContent = str;
-      return d.innerHTML;
-    }
-
-    // ── Date ──
-    function initDate() {
-      const now = new Date();
-      const opts = { month: 'long', day: 'numeric', weekday: 'short' };
-      $('headerDate').textContent = now.toLocaleDateString('zh-CN', opts);
-    }
-
-    // ── Reading Progress ──
-    function updateProgress() {
-      const scrollTop  = window.scrollY;
-      const docHeight  = document.documentElement.scrollHeight - window.innerHeight;
-      const pct         = docHeight > 0 ? Math.round((scrollTop / docHeight) * 100) : 0;
-      $('progressBar').style.width = pct + '%';
-    }
-
-    // ── Parse raw item ──
-    function parseItem(raw, source) {
-      switch (source) {
-        case '36kr':          return { title: raw.title, url: raw.url };
-        case 'v2ex':          return { title: raw.title, url: raw.url, meta: raw.node ? `▶ ${raw.node}` : null };
-        case 'stackoverflow':  return { title: raw.title, url: raw.url, meta: raw.score !== undefined ? `▲ ${raw.score}` : null };
-        case 'tieba':         return { title: raw.title, url: raw.url, meta: raw.discussions || null };
-        case 'lobsters':      return { title: raw.title, url: raw.url, meta: raw.score ? `▲ ${raw.score}` : null };
-        default:              return { title: raw.title || raw.name, url: raw.url };
-      }
-    }
-
-    // ── Load a single source JSON ──
-    async function loadSource(key) {
-      if (allData[key]) return;
       try {
-        const r = await fetch(`${SOURCE_FILES[key]}?t=${Date.now()}`);
-        if (!r.ok) throw new Error();
-        const raw = await r.json();
-        const src = SOURCES.find(s => s.key === key);
-        allData[key] = {
-          name:  src.name,
-          emoji: src.emoji,
-          items: (Array.isArray(raw) ? raw : []).map(item => parseItem(item, key)),
-        };
-      } catch {
-        allData[key] = { name: key, emoji: '❓', items: [], error: true };
+        const results = await Promise.all(files.map(f => fetch(f).then(r => r.json()).catch(() => [])));
+        results.forEach((data, i) => {
+          const source = sourceMap[files[i]];
+          data.forEach(item => articles.push({ ...item, source, id: item.url || `${source}-${item.rank || item.id}` }));
+        });
+        articles.sort((a, b) => (a.rank || 99) - (b.rank || 99));
+        filteredArticles = [...articles];
+        document.getElementById('lastUpdated').textContent = `Updated: ${new Date().toLocaleTimeString()}`;
+      } catch (e) {
+        showToast('Failed to load data', 'error');
       }
+      renderUI();
     }
 
-    // ── Build flat article list ──
-    function getArticles() {
-      const keys = activeSource === 'all'
-        ? Object.keys(SOURCE_FILES)
-        : [activeSource];
-
-      const flat = [];
-      for (const key of keys) {
-        const panel = allData[key];
-        if (!panel || panel.error || !panel.items.length) continue;
-        for (const item of panel.items) {
-          flat.push({ ...item, _key: key, _name: panel.name, _emoji: panel.emoji });
-        }
-      }
-
-      if (searchQuery) {
-        const q = searchQuery.toLowerCase();
-        return flat.filter(a => a.title.toLowerCase().includes(q));
-      }
-      return flat;
+    function renderUI() {
+      document.getElementById('skeletonLoader').style.display = 'none';
+      renderFeatured();
+      renderArticleList();
+      renderSidebar();
+      renderBookmarks();
+      updateStats();
     }
 
-    // ── Count of articles for a source key ──
-    function sourceCount(key) {
-      const d = allData[key];
-      if (!d || d.error) return 0;
-      if (!searchQuery) return d.items.length;
-      const q = searchQuery.toLowerCase();
-      return d.items.filter(i => i.title.toLowerCase().includes(q)).length;
+    function renderFeatured() {
+      const featured = filteredArticles[0];
+      if (!featured) return;
+      const el = document.getElementById('featuredArticle');
+      el.innerHTML = `
+        <div class="featured ${selectedIndex === 0 ? 'selected' : ''}" onclick="openArticle(0)">
+          <div class="featured-image">
+            <div class="featured-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              Featured
+            </div>
+            <div style="font-family:'Playfair Display',serif;font-size:4rem;color:var(--text-tertiary);opacity:0.3">${SOURCES[featured.source]?.name || featured.source}</div>
+          </div>
+          <div class="featured-content">
+            <span class="featured-source ${SOURCES[featured.source]?.class}">${SOURCES[featured.source]?.name || featured.source}</span>
+            <h2 class="featured-title">${featured.title}</h2>
+            <div class="featured-meta">
+              ${featured.score !== undefined ? `<span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>${featured.score}</span>` : ''}
+              ${featured.answers !== undefined ? `<span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${featured.answers}</span>` : ''}
+              ${featured.replies !== undefined ? `<span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${featured.replies}</span>` : ''}
+              ${featured.discussions !== undefined ? `<span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${featured.discussions}</span>` : ''}
+              <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Open article</span>
+            </div>
+          </div>
+        </div>
+      `;
     }
 
-    // ── Render skeleton ──
-    function renderSkeletons(n = 5) {
-      return Array.from({ length: n }, () => `
-        <div class="skeleton-card">
-          <div class="skeleton sk-badge"></div>
-          <div class="skeleton sk-title-1"></div>
-          <div class="skeleton sk-title-2"></div>
-          <div class="skeleton sk-meta"></div>
+    function renderArticleList() {
+      const list = document.getElementById('articleList');
+      const items = filteredArticles.slice(1).map((article, i) => {
+        const idx = i + 1;
+        const isBookmarked = bookmarks.some(b => b.id === article.id);
+        return `
+          <div class="article-card ${selectedIndex === idx ? 'selected' : ''}" data-index="${idx}" onclick="openArticle(${idx})">
+            <div class="article-rank">${article.rank || idx}</div>
+            <div class="article-body">
+              <div class="article-header">
+                <span class="featured-source ${SOURCES[article.source]?.class}">${SOURCES[article.source]?.name || article.source}</span>
+              </div>
+              <h3 class="article-title">${article.title}</h3>
+              <div class="article-footer">
+                ${article.score !== undefined ? `<span class="article-stat score"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>${article.score}</span>` : ''}
+                ${article.answers !== undefined ? `<span class="article-stat"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${article.answers} answers</span>` : ''}
+                ${article.replies !== undefined ? `<span class="article-stat"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${article.replies} replies</span>` : ''}
+                ${article.discussions !== undefined ? `<span class="article-stat"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${article.discussions}</span>` : ''}
+                ${article.node ? `<span class="article-stat"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.21 18.71l-7.04-7.04a3 3 0 1 0-4.24 4.24l7.04 7.04a3 3 0 0 0 4.24-4.24z"/><circle cx="16.5" cy="6.5" r="2"/></svg>${article.node}</span>` : ''}
+                <button class="article-bookmark ${isBookmarked ? 'active' : ''}" onclick="event.stopPropagation();toggleBookmark(${idx})">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="${isBookmarked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      list.innerHTML = items;
+    }
+
+    function renderSidebar() {
+      const counts = {};
+      filteredArticles.forEach(a => counts[a.source] = (counts[a.source] || 0) + 1);
+      const stats = document.getElementById('sourceStats');
+      stats.innerHTML = Object.entries(counts).map(([source, count]) => `
+        <div class="sidebar-item" onclick="filterBySource('${source}')">
+          <span class="sidebar-dot" style="background:${SOURCES[source]?.color}"></span>
+          <span class="sidebar-item-text">${SOURCES[source]?.name || source}</span>
+          <span class="sidebar-item-count">${count}</span>
+        </div>
+      `).join('');
+      document.getElementById('sourceCount').textContent = `${filteredArticles.length} items`;
+    }
+
+    function renderBookmarks() {
+      const el = document.getElementById('bookmarkList');
+      if (bookmarks.length === 0) {
+        el.innerHTML = '<div style="padding:1rem;text-align:center;color:var(--text-tertiary);font-size:0.85rem">No bookmarks yet. Press B to save.</div>';
+        return;
+      }
+      el.innerHTML = bookmarks.map(b => `
+        <div class="bookmark-item" onclick="openBookmark('${b.id}')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          <span class="bookmark-item-text">${b.title}</span>
+          <button class="bookmark-remove" onclick="event.stopPropagation();removeBookmark('${b.id}')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
         </div>
       `).join('');
     }
 
-    // ── Render nav pills ──
-    function renderNav() {
-      $('sourceNav').innerHTML = SOURCES.map(s => {
-        const cnt = s.key === 'all'
-          ? (searchQuery
-              ? getArticles().length
-              : Object.values(allData).reduce((sum, d) => sum + (d && !d.error ? d.items.length : 0), 0))
-          : sourceCount(s.key);
-        return `
-          <button class="source-pill${s.key === activeSource ? ' active' : ''}" data-key="${s.key}">
-            <span class="emoji">${s.emoji}</span>${s.name}
-            <span class="count">${cnt || ''}</span>
-          </button>`;
-      }).join('');
-
-      $('sourceNav').querySelectorAll('.source-pill').forEach(btn => {
-        btn.addEventListener('click', () => {
-          activeSource = btn.dataset.key;
-          focusedIndex  = -1;
-          renderNav();
-          renderFeed();
-        });
-      });
+    function updateStats() {
+      document.getElementById('readCount').textContent = readArticles.length;
+      document.getElementById('savedCount').textContent = bookmarks.length;
     }
 
-    // ── Render feed ──
-    function renderFeed() {
-      const articles = getArticles();
-      const feed     = $('feed');
-
-      feed.className = 'feed' + (compactView ? ' compact' : '');
-
-      if (!articles.length && Object.keys(allData).length === 0) {
-        feed.innerHTML = renderSkeletons(5);
-        return;
-      }
-
-      if (!articles.length) {
-        feed.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-icon">${searchQuery ? '🔍' : '📭'}</div>
-            <div class="empty-title">${searchQuery ? '没有找到相关内容' : '暂无数据'}</div>
-            <div class="empty-sub">${searchQuery ? '尝试其他关键词' : '请检查网络后刷新'}</div>
-          </div>`;
-        return;
-      }
-
-      feed.innerHTML = articles.map((art, i) => {
-        const color   = SOURCE_COLORS[art._key] || '#888';
-        const isSaved = bookmarks.some(b => b.url === art.url);
-        return `
-          <article class="article" data-index="${i}" tabindex="-1">
-            <div class="article-inner">
-              <span class="article-rank">${String(i + 1).padStart(2, '0')}</span>
-              <div class="article-body">
-                <div class="article-top">
-                  <span class="source-badge" style="color:${color}">
-                    <span>${art._emoji}</span>${art._name}
-                  </span>
-                  ${art.meta ? `<span class="article-meta">${escHtml(art.meta)}</span>` : ''}
-                </div>
-                <h2 class="article-title">${escHtml(art.title)}</h2>
-                <div class="article-meta"><span>阅读原文 →</span></div>
-              </div>
-              <div class="article-actions">
-                <button class="action-btn${isSaved ? ' saved' : ''}" data-idx="${i}">
-                  ${isSaved ? '★ 已收藏' : '☆ 收藏'}
-                </button>
-                <button class="action-btn" data-open="${i}">↗ 打开</button>
-              </div>
-            </div>
-          </article>`;
-      }).join('');
-
-      // Event delegation
-      feed.querySelectorAll('.article').forEach(el => {
-        el.addEventListener('click', e => {
-          const idx = parseInt(el.dataset.index, 10);
-          openArticle(idx);
-        });
-      });
-
-      feed.querySelectorAll('.action-btn[data-idx]').forEach(btn => {
-        btn.addEventListener('click', e => {
-          e.stopPropagation();
-          toggleBookmark(parseInt(btn.dataset.idx, 10));
-        });
-      });
-
-      feed.querySelectorAll('.action-btn[data-open]').forEach(btn => {
-        btn.addEventListener('click', e => {
-          e.stopPropagation();
-          openArticle(parseInt(btn.dataset.open, 10));
-        });
-      });
-
-      updateFocus();
+    function openArticle(index) {
+      selectedIndex = index;
+      const article = filteredArticles[index];
+      if (!article) return;
+      markAsRead(article.id);
+      window.open(article.url, '_blank');
+      renderFeatured();
+      renderArticleList();
     }
 
-    // ── Focus (keyboard navigation) ──
-    function updateFocus() {
-      const cards = $('feed').querySelectorAll('.article');
-      const max   = cards.length - 1;
-
-      if (focusedIndex > max) focusedIndex = max;
-      if (focusedIndex < -1)  focusedIndex = -1;
-
-      cards.forEach((c, i) => c.classList.toggle('focused', i === focusedIndex));
-
-      if (focusedIndex >= 0 && cards[focusedIndex]) {
-        cards[focusedIndex].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    function markAsRead(id) {
+      if (!readArticles.includes(id)) {
+        readArticles.push(id);
+        localStorage.setItem('focusRead', JSON.stringify(readArticles));
+        updateStats();
       }
     }
 
-    // ── Actions ──
-    function openArticle(idx) {
-      const articles = getArticles();
-      if (articles[idx]) window.open(articles[idx].url, '_blank', 'noopener');
-    }
-
-    function toggleBookmark(idx) {
-      const articles = getArticles();
-      const art      = articles[idx];
-      if (!art) return;
-
-      const pos = bookmarks.findIndex(b => b.url === art.url);
-      if (pos >= 0) {
-        bookmarks.splice(pos, 1);
-        showToast('已取消收藏');
+    function toggleBookmark(index) {
+      const article = filteredArticles[index];
+      if (!article) return;
+      const existing = bookmarks.findIndex(b => b.id === article.id);
+      if (existing >= 0) {
+        bookmarks.splice(existing, 1);
+        showToast('Removed from bookmarks');
       } else {
-        bookmarks.push({ title: art.title, url: art.url, source: art._name, time: Date.now() });
-        showToast('已收藏 ☆');
+        bookmarks.push({ id: article.id, title: article.title, url: article.url, source: article.source });
+        showToast('Added to bookmarks', 'success');
       }
-      localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(bookmarks));
-      renderFeed();
+      localStorage.setItem('focusBookmarks', JSON.stringify(bookmarks));
+      renderBookmarks();
+      renderArticleList();
+      updateStats();
     }
 
-    function showToast(msg) {
-      const t = $('toast');
-      t.textContent = msg;
-      t.classList.add('show');
-      clearTimeout(t._timer);
-      t._timer = setTimeout(() => t.classList.remove('show'), 1800);
+    function removeBookmark(id) {
+      bookmarks = bookmarks.filter(b => b.id !== id);
+      localStorage.setItem('focusBookmarks', JSON.stringify(bookmarks));
+      renderBookmarks();
+      renderArticleList();
+      updateStats();
+      showToast('Removed from bookmarks');
     }
 
-    // ── Search ──
-    function onSearchInput(e) {
-      searchQuery = e.target.value.trim();
-      $('searchClear').classList.toggle('visible', searchQuery.length > 0);
-      focusedIndex = -1;
-      renderNav();
-      renderFeed();
+    function openBookmark(id) {
+      const article = filteredArticles.find(a => a.id === id);
+      if (article) {
+        selectedIndex = filteredArticles.indexOf(article);
+        window.open(article.url, '_blank');
+        markAsRead(id);
+        renderFeatured();
+        renderArticleList();
+      }
     }
 
-    function clearSearch() {
-      $('searchInput').value = '';
-      searchQuery = '';
-      $('searchClear').classList.remove('visible');
-      focusedIndex = -1;
-      renderNav();
-      renderFeed();
-      $('searchInput').focus();
+    function filterBySource(source) {
+      filteredArticles = source === 'all' ? [...articles] : articles.filter(a => a.source === source);
+      selectedIndex = 0;
+      renderFeatured();
+      renderArticleList();
+      renderSidebar();
     }
 
-    // ── Keyboard Navigation ──
+    function toggleFocusMode() {
+      isFocusMode = !isFocusMode;
+      document.getElementById('mainLayout').classList.toggle('focus-mode', isFocusMode);
+      document.getElementById('focusIndicator').classList.toggle('active', isFocusMode);
+      showToast(isFocusMode ? 'Focus mode enabled' : 'Focus mode disabled');
+    }
+
+    function copyShareUrl() {
+      const article = filteredArticles[selectedIndex];
+      if (article) {
+        navigator.clipboard.writeText(article.url);
+        showToast('Link copied to clipboard', 'success');
+      }
+    }
+
+    function openCommandPalette() {
+      document.getElementById('cmdOverlay').classList.add('active');
+      document.getElementById('cmdInput').focus();
+      buildCommandList();
+    }
+
+    function closeCommandPalette() {
+      document.getElementById('cmdOverlay').classList.remove('active');
+      document.getElementById('cmdInput').value = '';
+    }
+
+    function buildCommandList(filter = '') {
+      const items = [];
+      const lf = filter.toLowerCase();
+      items.push({ type: 'action', title: 'Toggle Focus Mode', subtitle: 'Enable/disable focus mode', action: toggleFocusMode, icon: 'focus' });
+      items.push({ type: 'action', title: 'Copy Share URL', subtitle: 'Copy current article link', action: copyShareUrl, icon: 'share' });
+      items.push({ type: 'action', title: 'Show All Sources', subtitle: 'Clear source filter', action: () => filterBySource('all'), icon: 'all' });
+      filteredArticles.forEach((a, i) => {
+        if (!lf || a.title.toLowerCase().includes(lf) || SOURCES[a.source]?.name.toLowerCase().includes(lf)) {
+          items.push({ type: 'article', title: a.title, subtitle: SOURCES[a.source]?.name || a.source, action: () => openArticle(i), icon: 'article' });
+        }
+      });
+      if (lf && bookmarks.some(b => b.title.toLowerCase().includes(lf))) {
+        bookmarks.filter(b => b.title.toLowerCase().includes(lf)).forEach(b => {
+          items.push({ type: 'bookmark', title: b.title, subtitle: 'Bookmark', action: () => openBookmark(b.id), icon: 'bookmark' });
+        });
+      }
+      cmdItems = items;
+      cmdSelectedIndex = 0;
+      renderCommandList();
+    }
+
+    function filterCommands() {
+      buildCommandList(document.getElementById('cmdInput').value);
+    }
+
+    function renderCommandList() {
+      const results = document.getElementById('cmdResults');
+      const icons = {
+        focus: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>',
+        share: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>',
+        all: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>',
+        article: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+        bookmark: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>'
+      };
+      results.innerHTML = cmdItems.map((item, i) => `
+        <div class="cmd-item ${i === cmdSelectedIndex ? 'selected' : ''}" onclick="${item.action && `(${item.action})()`}">
+          <div class="cmd-item-icon" style="background:var(--bg-tertiary);color:var(--text-secondary)">${icons[item.icon]}</div>
+          <div class="cmd-item-text">
+            <div class="cmd-item-title">${item.title}</div>
+            <div class="cmd-item-meta">${item.subtitle}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function showToast(message, type = 'default') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = type === 'success' ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${message}` : message;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+
+    function navigate(direction) {
+      const max = filteredArticles.length - 1;
+      selectedIndex = Math.max(0, Math.min(max, selectedIndex + direction));
+      const el = document.querySelector(`[data-index="${selectedIndex}"]`) || document.querySelector('.featured');
+      el?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      renderFeatured();
+      renderArticleList();
+    }
+
     document.addEventListener('keydown', e => {
-      // Don't hijack when typing in inputs
-      const inInput = ['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName);
-      if (inInput && !['Escape'].includes(e.key)) return;
-
-      const articles = getArticles();
-      const max      = articles.length - 1;
-
-      switch (e.key) {
-        case 'j':
-        case 'ArrowDown':
-          e.preventDefault();
-          focusedIndex = focusedIndex < max ? focusedIndex + 1 : max;
-          updateFocus();
-          break;
-        case 'k':
-        case 'ArrowUp':
-          e.preventDefault();
-          focusedIndex = focusedIndex > 0 ? focusedIndex - 1 : 0;
-          updateFocus();
-          break;
-        case 'Enter':
-          if (focusedIndex >= 0) openArticle(focusedIndex);
-          break;
-        case '/':
-          if (!inInput) { e.preventDefault(); $('searchInput').focus(); }
-          break;
-        case 'Escape':
-          if (inInput) { $('searchInput').blur(); }
-          if (searchQuery) clearSearch();
-          break;
+      if (document.getElementById('cmdOverlay').classList.contains('active')) {
+        if (e.key === 'Escape') closeCommandPalette();
+        else if (e.key === 'ArrowDown') { e.preventDefault(); cmdSelectedIndex = Math.min(cmdItems.length - 1, cmdSelectedIndex + 1); renderCommandList(); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); cmdSelectedIndex = Math.max(0, cmdSelectedIndex - 1); renderCommandList(); }
+        else if (e.key === 'Enter' && cmdItems[cmdSelectedIndex]) { cmdItems[cmdSelectedIndex].action?.(); closeCommandPalette(); }
+        return;
       }
+      if (e.key === 'j' || e.key === 'ArrowDown') navigate(1);
+      else if (e.key === 'k' || e.key === 'ArrowUp') navigate(-1);
+      else if (e.key === 'Enter') openArticle(selectedIndex);
+      else if (e.key === 'b' || e.key === 'B') toggleBookmark(selectedIndex);
+      else if (e.key === 'c' || e.key === 'C') copyShareUrl();
+      else if (e.key === 'f' || e.key === 'F') toggleFocusMode();
+      else if (e.key === '/') { e.preventDefault(); openCommandPalette(); }
+      else if (e.key === 'Escape') { closeCommandPalette(); if (isFocusMode) toggleFocusMode(); }
+      else if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openCommandPalette(); }
     });
 
-    // ── Scroll ──
-    window.addEventListener('scroll', updateProgress, { passive: true });
-
-    // ── Init ──
-    async function init() {
-      initDate();
-      renderNav();
-      $('searchInput').addEventListener('input', onSearchInput);
-      $('searchClear').addEventListener('click', clearSearch);
-
-      await Promise.all(Object.keys(SOURCE_FILES).map(k => loadSource(k)));
-
-      renderNav();
-      renderFeed();
-    }
-
-    init();
+    loadData();
   </script>
 </body>
 </html>
