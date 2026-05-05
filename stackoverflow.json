@@ -1,50 +1,50 @@
 [
   {
-    "title": "My app in Production don&#39;t appear in some phone model",
-    "score": 0,
+    "title": "syntax error- missing operator or semicolon near 100",
+    "score": -3,
     "answers": 0,
-    "url": "https://stackoverflow.com/questions/79936561/my-app-in-production-dont-appear-in-some-phone-model"
+    "url": "https://stackoverflow.com/questions/79936597/syntax-error-missing-operator-or-semicolon-near-100"
   },
   {
-    "title": "Write multi-columns to CSV with for loop",
-    "score": 1,
-    "answers": 3,
-    "url": "https://stackoverflow.com/questions/79936578/write-multi-columns-to-csv-with-for-loop"
-  },
-  {
-    "title": "Best practice to create IllegalArgumentException exception handler in java spring boot",
-    "score": 0,
-    "answers": 2,
-    "url": "https://stackoverflow.com/questions/79936568/best-practice-to-create-illegalargumentexception-exception-handler-in-java-sprin"
-  },
-  {
-    "title": "Aligning text in an HTML math table",
-    "score": 1,
+    "title": "How to zip a discord.File for compression",
+    "score": -4,
     "answers": 0,
-    "url": "https://stackoverflow.com/questions/79936576/aligning-text-in-an-html-math-table"
+    "url": "https://stackoverflow.com/questions/79936589/how-to-zip-a-discord-file-for-compression"
   },
   {
-    "title": "Does &quot;nonisolated(sending) by Default&quot; setting conflict with &quot;Default actor isolation&quot; setting in Xcode 26?",
-    "score": 0,
-    "answers": 0,
-    "url": "https://stackoverflow.com/questions/79936579/does-nonisolatedsending-by-default-setting-conflict-with-default-actor-isol"
-  },
-  {
-    "title": "Create a React API JS that is responsible for the Axios fetches",
-    "score": 0,
-    "answers": 1,
-    "url": "https://stackoverflow.com/questions/79936572/create-a-react-api-js-that-is-responsible-for-the-axios-fetches"
-  },
-  {
-    "title": "How do I de-serialize a WordPress File Manager Data Serialisation string in MySql?",
-    "score": 0,
-    "answers": 3,
-    "url": "https://stackoverflow.com/questions/79936509/how-do-i-de-serialize-a-wordpress-file-manager-data-serialisation-string-in-mysq"
-  },
-  {
-    "title": "Why does my code work in console but not when it runs on the web page?",
+    "title": "How to center CSS",
     "score": -2,
     "answers": 0,
-    "url": "https://stackoverflow.com/questions/79936551/why-does-my-code-work-in-console-but-not-when-it-runs-on-the-web-page"
+    "url": "https://stackoverflow.com/questions/79936601/how-to-center-css"
+  },
+  {
+    "title": "Token Usage in Conductor",
+    "score": -3,
+    "answers": 0,
+    "url": "https://stackoverflow.com/questions/79936587/token-usage-in-conductor"
+  },
+  {
+    "title": "What Windows API should I use to create a blurred window?",
+    "score": 0,
+    "answers": 0,
+    "url": "https://stackoverflow.com/questions/79936602/what-windows-api-should-i-use-to-create-a-blurred-window"
+  },
+  {
+    "title": "Best practices for scaling LangChain agent architecture in FastAPI",
+    "score": 0,
+    "answers": 1,
+    "url": "https://stackoverflow.com/questions/79936596/best-practices-for-scaling-langchain-agent-architecture-in-fastapi"
+  },
+  {
+    "title": "angular website crashes after navigation on safari",
+    "score": 0,
+    "answers": 0,
+    "url": "https://stackoverflow.com/questions/79936606/angular-website-crashes-after-navigation-on-safari"
+  },
+  {
+    "title": "How can I structure different types of websites in 2026 using modern web development frameworks?",
+    "score": 0,
+    "answers": 0,
+    "url": "https://stackoverflow.com/questions/79936608/how-can-i-structure-different-types-of-websites-in-2026-using-modern-web-develop"
   }
 ]
