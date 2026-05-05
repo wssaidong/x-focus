@@ -1,50 +1,47 @@
-[
-  {
-    "title": "Ajv | can&#39;t resolve reference",
-    "score": -1,
-    "answers": 0,
-    "url": "https://stackoverflow.com/questions/79935944/ajv-cant-resolve-reference"
-  },
-  {
-    "title": "Python enum.Flag : best practice for creating &quot;empty&quot; and &quot;full&quot; flags",
-    "score": 0,
-    "answers": 3,
-    "url": "https://stackoverflow.com/questions/79935914/python-enum-flag-best-practice-for-creating-empty-and-full-flags"
-  },
-  {
-    "title": "CGAL - OpenVDB meshing noise",
-    "score": 1,
-    "answers": 0,
-    "url": "https://stackoverflow.com/questions/79935933/cgal-openvdb-meshing-noise"
-  },
-  {
-    "title": "Different mark Type for measures in tableau",
-    "score": 0,
-    "answers": 1,
-    "url": "https://stackoverflow.com/questions/79935934/different-mark-type-for-measures-in-tableau"
-  },
-  {
-    "title": "What is the best way to write e2e tests for the NestJS backend?",
-    "score": 1,
-    "answers": 0,
-    "url": "https://stackoverflow.com/questions/79935925/what-is-the-best-way-to-write-e2e-tests-for-the-nestjs-backend"
-  },
-  {
-    "title": "How to convert ACF2 access rules to RACF profiles in z/OS?",
-    "score": 0,
-    "answers": 1,
-    "url": "https://stackoverflow.com/questions/79935931/how-to-convert-acf2-access-rules-to-racf-profiles-in-z-os"
-  },
-  {
-    "title": "Browser flickers for simple slide show implementation",
-    "score": 0,
-    "answers": 0,
-    "url": "https://stackoverflow.com/questions/79935900/browser-flickers-for-simple-slide-show-implementation"
-  },
-  {
-    "title": "How do I display an image using Tkinter Canvas?",
-    "score": -1,
-    "answers": 1,
-    "url": "https://stackoverflow.com/questions/79935886/how-do-i-display-an-image-using-tkinter-canvas"
-  }
-]
+- title: How to track assumptions and display the turnstile (⊢) in a Python Hilbert-style proof assistant?
+  score: 0
+  answers: 0
+  url: >-
+    https://stackoverflow.com/questions/79936176/how-to-track-assumptions-and-display-the-turnstile-%e2%8a%a2-in-a-python-hilbert-style
+- title: Are lookup tables for case-converting, ASCII only characters [0,127] faster than arithmetic operation?
+  score: 0
+  answers: 4
+  url: >-
+    https://stackoverflow.com/questions/79936144/are-lookup-tables-for-case-converting-ascii-only-characters-0-127-faster-than
+- title: Codex session still cannot access the local Word renderer
+  score: 0
+  answers: 0
+  url: https://stackoverflow.com/questions/79936163/codex-session-still-cannot-access-the-local-word-renderer
+- title: 6.2 DecisionTreeRegressor
+  score: 0
+  answers: 1
+  url: https://stackoverflow.com/questions/79936137/6-2-decisiontreeregressor
+- title: >-
+    How should I follow up on a pending YouTube Data API quota/compliance review after submitting the requested
+    screencast?
+  score: 0
+  answers: 1
+  url: >-
+    https://stackoverflow.com/questions/79936153/how-should-i-follow-up-on-a-pending-youtube-data-api-quota-compliance-review-aft
+- title: Aghju una dumanda
+  score: 0
+  answers: 4
+  url: https://stackoverflow.com/questions/79936106/aghju-una-dumanda
+- title: 7.1 A dense layer with sigmoid activation
+  score: 0
+  answers: 2
+  url: https://stackoverflow.com/questions/79936147/7-1-a-dense-layer-with-sigmoid-activation
+- title: Inconsistent result with tokenization
+  score: 0
+  answers: 1
+  url: https://stackoverflow.com/questions/79936102/inconsistent-result-with-tokenization
+- title: 2 Develop a function that receives a data set (df) and that
+  score: 0
+  answers: 5
+  url: https://stackoverflow.com/questions/79936118/2-develop-a-function-that-receives-a-data-set-df-and-that
+- title: 3 Train an estimator `RandomForestClassifier` with parameters `n_estimators=100` and `random_state=21`
+  score: 0
+  answers: 2
+  url: >-
+    https://stackoverflow.com/questions/79936127/3-train-an-estimator-randomforestclassifier-with-parameters-n-estimators-100
+
