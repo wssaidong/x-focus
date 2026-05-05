@@ -1,47 +1,50 @@
-- title: How to track assumptions and display the turnstile (⊢) in a Python Hilbert-style proof assistant?
-  score: 0
-  answers: 0
-  url: >-
-    https://stackoverflow.com/questions/79936176/how-to-track-assumptions-and-display-the-turnstile-%e2%8a%a2-in-a-python-hilbert-style
-- title: Are lookup tables for case-converting, ASCII only characters [0,127] faster than arithmetic operation?
-  score: 0
-  answers: 4
-  url: >-
-    https://stackoverflow.com/questions/79936144/are-lookup-tables-for-case-converting-ascii-only-characters-0-127-faster-than
-- title: Codex session still cannot access the local Word renderer
-  score: 0
-  answers: 0
-  url: https://stackoverflow.com/questions/79936163/codex-session-still-cannot-access-the-local-word-renderer
-- title: 6.2 DecisionTreeRegressor
-  score: 0
-  answers: 1
-  url: https://stackoverflow.com/questions/79936137/6-2-decisiontreeregressor
-- title: >-
-    How should I follow up on a pending YouTube Data API quota/compliance review after submitting the requested
-    screencast?
-  score: 0
-  answers: 1
-  url: >-
-    https://stackoverflow.com/questions/79936153/how-should-i-follow-up-on-a-pending-youtube-data-api-quota-compliance-review-aft
-- title: Aghju una dumanda
-  score: 0
-  answers: 4
-  url: https://stackoverflow.com/questions/79936106/aghju-una-dumanda
-- title: 7.1 A dense layer with sigmoid activation
-  score: 0
-  answers: 2
-  url: https://stackoverflow.com/questions/79936147/7-1-a-dense-layer-with-sigmoid-activation
-- title: Inconsistent result with tokenization
-  score: 0
-  answers: 1
-  url: https://stackoverflow.com/questions/79936102/inconsistent-result-with-tokenization
-- title: 2 Develop a function that receives a data set (df) and that
-  score: 0
-  answers: 5
-  url: https://stackoverflow.com/questions/79936118/2-develop-a-function-that-receives-a-data-set-df-and-that
-- title: 3 Train an estimator `RandomForestClassifier` with parameters `n_estimators=100` and `random_state=21`
-  score: 0
-  answers: 2
-  url: >-
-    https://stackoverflow.com/questions/79936127/3-train-an-estimator-randomforestclassifier-with-parameters-n-estimators-100
-
+[
+  {
+    "title": "Browser is not sending preflight OPTIONS request on a POST request",
+    "score": -1,
+    "answers": 0,
+    "url": "https://stackoverflow.com/questions/79936242/browser-is-not-sending-preflight-options-request-on-a-post-request"
+  },
+  {
+    "title": "Practical production use cases of decentralized AI systems (with examples or architectures)?",
+    "score": 0,
+    "answers": 0,
+    "url": "https://stackoverflow.com/questions/79936245/practical-production-use-cases-of-decentralized-ai-systems-with-examples-or-arc"
+  },
+  {
+    "title": "Alternative to Pivot Table in Dashboard for better UI Experience",
+    "score": 0,
+    "answers": 0,
+    "url": "https://stackoverflow.com/questions/79936243/alternative-to-pivot-table-in-dashboard-for-better-ui-experience"
+  },
+  {
+    "title": "How to preserve image filename in Quill JS when using base64 inline images?",
+    "score": -1,
+    "answers": 0,
+    "url": "https://stackoverflow.com/questions/79936247/how-to-preserve-image-filename-in-quill-js-when-using-base64-inline-images"
+  },
+  {
+    "title": "How to decouple microservices and choose the best inter-service communication method in Node.js (Express)?",
+    "score": -1,
+    "answers": 0,
+    "url": "https://stackoverflow.com/questions/79936241/how-to-decouple-microservices-and-choose-the-best-inter-service-communication-me"
+  },
+  {
+    "title": "VS Code extension: how to stream stdout from a child_process",
+    "score": -5,
+    "answers": 1,
+    "url": "https://stackoverflow.com/questions/79936259/vs-code-extension-how-to-stream-stdout-from-a-child-process"
+  },
+  {
+    "title": "How to safely handle a long-lived Git branch with conflicts and delete it without losing important changes?",
+    "score": 0,
+    "answers": 1,
+    "url": "https://stackoverflow.com/questions/79936219/how-to-safely-handle-a-long-lived-git-branch-with-conflicts-and-delete-it-withou"
+  },
+  {
+    "title": "Win32 API Window has blank space where title should be",
+    "score": 0,
+    "answers": 0,
+    "url": "https://stackoverflow.com/questions/79936212/win32-api-window-has-blank-space-where-title-should-be"
+  }
+]
