@@ -71,6 +71,17 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  // Static JSON files
+  const jsonMatch = url.pathname.match(/^\/([\w]+)\.json$/);
+  if (jsonMatch) {
+    const filePath = path.join(__dirname, url.pathname);
+    if (fs.existsSync(filePath)) {
+      res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+      res.end(fs.readFileSync(filePath, 'utf8'));
+      return;
+    }
+  }
+
   if (url.pathname === '/') {
     const htmlPath = path.join(__dirname, 'index.html');
     const html = fs.readFileSync(htmlPath, 'utf8');

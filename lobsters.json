@@ -1,141 +1,74 @@
-- rank: 1
-  title: Async Rust never left the MVP state
-  score: 66
-  author: radim
-  comments: 8
-  tags: rust
-  url: https://lobste.rs/s/flowcy/async_rust_never_left_mvp_state
-- rank: 2
-  title: 'Security Advisory: Local privilege escalation in Lix and Nix'
-  score: 29
-  author: raito
-  comments: 0
-  tags: nix, security
-  url: https://lobste.rs/s/g0crsm/security_advisory_local_privilege
-- rank: 3
-  title: 'Reminder: You Can Stitch Together Lots of Little HTML Pages With Navigations For Interactions'
-  score: 96
-  author: LesleyLai
-  comments: 36
-  tags: web
-  url: https://lobste.rs/s/6cmh6h/reminder_you_can_stitch_together_lots
-- rank: 4
-  title: Release v0.9.0 · Foxboron/ssh-tpm-agent
-  score: 20
-  author: Foxboron
-  comments: 0
-  tags: release, security
-  url: https://lobste.rs/s/jh9f2r/release_v0_9_0_foxboron_ssh_tpm_agent
-- rank: 5
-  title: How LLMs Distort Our Written Language
-  score: 39
-  author: vesto
-  comments: 12
-  tags: vibecoding
-  url: https://lobste.rs/s/pidcaz/how_llms_distort_our_written_language
-- rank: 6
-  title: Oasis Linux
-  score: 24
-  author: kneeawn
-  comments: 4
-  tags: c, linux, osdev
-  url: https://lobste.rs/s/tzewx3/oasis_linux
-- rank: 7
-  title: Native macOS app to track YouTube channels, no Google login required
-  score: 26
-  author: agentcooper
-  comments: 19
-  tags: mac
-  url: https://lobste.rs/s/pjuxhr/native_macos_app_track_youtube_channels
-- rank: 8
-  title: Podman rootless containers and the Copy Fail exploit
-  score: 8
-  author: ggpsv
-  comments: 2
-  tags: linux, security
-  url: https://lobste.rs/s/pdckk8/podman_rootless_containers_copy_fail
-- rank: 9
-  title: Losing Skills
-  score: 18
-  author: isuffix
-  comments: 2
-  tags: vibecoding
-  url: https://lobste.rs/s/mfizts/losing_skills
-- rank: 10
-  title: oops, cubic macro
-  score: 28
-  author: polywolf
-  comments: 3
-  tags: rust
-  url: https://lobste.rs/s/4t1gps/oops_cubic_macro
-- rank: 11
-  title: I accidentally made law enforcement shut down their stresser honeypot
-  score: 59
-  author: kwas
-  comments: 3
-  tags: security
-  url: https://lobste.rs/s/rks8da/i_accidentally_made_law_enforcement_shut
-- rank: 12
-  title: Broadcasting GPS on the local network
-  score: 47
-  author: evert
-  comments: 19
-  tags: linux
-  url: https://lobste.rs/s/4n38xw/broadcasting_gps_on_local_network
-- rank: 13
-  title: What are you doing this week?
-  score: 21
-  author: caius
-  comments: 49
-  tags: ask, programming
-  url: https://lobste.rs/s/abg2mj/what_are_you_doing_this_week
-- rank: 14
-  title: Nondeterminism's not the problem
-  score: 8
-  author: nickmonad
-  comments: 3
-  tags: vibecoding
-  url: https://lobste.rs/s/nmnmnq/nondeterminism_s_not_problem
-- rank: 15
-  title: THEC64 Handheld
-  score: 12
-  author: abnercoimbre
-  comments: 3
-  tags: retrocomputing
-  url: https://lobste.rs/s/2iabwb/thec64_handheld
-- rank: 16
-  title: A little comparison between R and Kap
-  score: 4
-  author: Internet_Janitor
-  comments: 1
-  tags: apl, plt
-  url: https://lobste.rs/s/pxb7yu/little_comparison_between_r_kap
-- rank: 17
-  title: Agentic Coding is a Trap
-  score: 60
-  author: ayo
-  comments: 6
-  tags: vibecoding
-  url: https://lobste.rs/s/dyq1jw/agentic_coding_is_trap
-- rank: 18
-  title: Designing microkernel IPC
-  score: 26
-  author: Shorden
-  comments: 9
-  tags: osdev
-  url: https://lobste.rs/s/60qq1o/designing_microkernel_ipc
-- rank: 19
-  title: uutils coreutils CVEs
-  score: 7
-  author: lim
-  comments: 1
-  tags: rust, security
-  url: https://lobste.rs/s/juyhsy/uutils_coreutils_cves
-- rank: 20
-  title: Fake Notepad++ for Mac
-  score: 68
-  author: wonk
-  comments: 14
-  tags: editors, mac, web
-  url: https://lobste.rs/s/xvtq0l/fake_notepad_for_mac
-
+[
+  {
+    "rank": 1,
+    "title": "A bidirectional typechecking puzzle",
+    "score": 25,
+    "author": "Gabriella439",
+    "comments": 5,
+    "tags": "plt",
+    "url": "https://lobste.rs/s/rsj8sx/bidirectional_typechecking_puzzle"
+  },
+  {
+    "rank": 2,
+    "title": "RSS Feeds Send Me More Traffic Than Google",
+    "score": 31,
+    "author": "repl",
+    "comments": 0,
+    "tags": "web",
+    "url": "https://lobste.rs/s/z0nkyf/rss_feeds_send_me_more_traffic_than_google"
+  },
+  {
+    "rank": 3,
+    "title": "A Caddy Cert Expired Because systemd-resolved Was Selectively Broken",
+    "score": 18,
+    "author": "robalex",
+    "comments": 4,
+    "tags": "devops, networking",
+    "url": "https://lobste.rs/s/z0ozbb/caddy_cert_expired_because_systemd"
+  },
+  {
+    "rank": 4,
+    "title": "Bun (the js runtime) is being vibe-ported from zig to rust",
+    "score": 44,
+    "author": "pscanf",
+    "comments": 44,
+    "tags": "javascript, vibecoding",
+    "url": "https://lobste.rs/s/otxkjw/bun_js_runtime_is_being_vibe_ported_from"
+  },
+  {
+    "rank": 5,
+    "title": "Why didn’t IPv6 work in my home network?",
+    "score": 7,
+    "author": "gowthamgts",
+    "comments": 5,
+    "tags": "debugging, networking",
+    "url": "https://lobste.rs/s/yhk0mq/why_didn_t_ipv6_work_my_home_network"
+  },
+  {
+    "rank": 6,
+    "title": "Podman rootless containers and the Copy Fail exploit",
+    "score": 33,
+    "author": "ggpsv",
+    "comments": 11,
+    "tags": "linux, security",
+    "url": "https://lobste.rs/s/pdckk8/podman_rootless_containers_copy_fail"
+  },
+  {
+    "rank": 7,
+    "title": "Security Advisory: Local privilege escalation in Lix and Nix",
+    "score": 65,
+    "author": "raito",
+    "comments": 4,
+    "tags": "nix, security",
+    "url": "https://lobste.rs/s/g0crsm/security_advisory_local_privilege"
+  },
+  {
+    "rank": 8,
+    "title": "Async Rust never left the MVP state",
+    "score": 109,
+    "author": "radim",
+    "comments": 10,
+    "tags": "rust",
+    "url": "https://lobste.rs/s/flowcy/async_rust_never_left_mvp_state"
+  }
+]

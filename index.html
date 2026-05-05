@@ -1,543 +1,626 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Focus — Editorial News Reader</title>
+  <title>Focus — 每日文摘</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg-primary: #0f1117;
-      --bg-secondary: #161922;
-      --bg-tertiary: #1c1f2a;
-      --bg-hover: #242836;
-      --accent: #00d4aa;
-      --accent-dim: rgba(0, 212, 170, 0.15);
-      --accent-glow: rgba(0, 212, 170, 0.4);
-      --text-primary: #f0f0f0;
-      --text-secondary: #a0a0a0;
-      --text-tertiary: #666;
-      --border: #2a2d3a;
-      --border-light: #363a4a;
-      --source-36kr: #ff6b6b;
-      --source-v2ex: #0078d4;
-      --source-stackoverflow: #f48024;
-      --source-tieba: #ffd700;
-      --source-lobsters: #ac130d;
-      --shadow: 0 4px 24px rgba(0,0,0,0.4);
-      --shadow-lg: 0 8px 40px rgba(0,0,0,0.6);
+      --bg-page: #F7F5F0;
+      --bg-card: #FFFFFF;
+      --bg-card-hover: #FAFAFA;
+      --bg-header: rgba(247, 245, 240, 0.92);
+      --accent: #1B4F8A;
+      --accent-mid: #2E6DB5;
+      --accent-light: rgba(27, 79, 138, 0.08);
+      --accent-glow: rgba(46, 109, 181, 0.2);
+      --text-primary: #1C1C1E;
+      --text-secondary: #6B6B6B;
+      --text-tertiary: #AEAEB2;
+      --border: #E2DFD8;
+      --border-mid: #D1CDC4;
+      --shadow: 0 1px 4px rgba(0,0,0,0.06), 0 2px 12px rgba(0,0,0,0.04);
+      --shadow-hover: 0 4px 16px rgba(0,0,0,0.10), 0 1px 6px rgba(0,0,0,0.06);
+      --source-36kr: #D94F3A;
+      --source-v2ex: #1B4F8A;
+      --source-stackoverflow: #D2682C;
+      --source-tieba: #C89219;
+      --source-lobsters: #8C2E1A;
     }
 
     html { font-size: 16px; }
     body {
-      font-family: 'Source Sans 3', -apple-system, sans-serif;
-      background: var(--bg-primary);
+      font-family: 'Noto Sans SC', -apple-system, 'PingFang SC', sans-serif;
+      background: var(--bg-page);
       color: var(--text-primary);
       line-height: 1.6;
       min-height: 100vh;
       overflow-x: hidden;
     }
 
-    /* Header */
+    /* ── Header ── */
     .header {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(15, 17, 23, 0.95);
-      backdrop-filter: blur(12px);
+      background: var(--bg-header);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
-      padding: 0 2rem;
+      padding: 0 2.5rem;
     }
     .header-inner {
-      max-width: 1400px;
+      max-width: 1200px;
       margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 64px;
+      height: 60px;
+      gap: 2rem;
     }
     .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--accent);
+      font-family: 'Playfair Display', 'Noto Serif SC', Georgia, serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--text-primary);
       letter-spacing: -0.02em;
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      flex-shrink: 0;
     }
-    .logo svg { width: 28px; height: 28px; }
+    .logo-mark {
+      width: 26px;
+      height: 26px;
+      background: var(--accent);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo-mark svg { width: 14px; height: 14px; color: white; }
+    .logo .edition {
+      font-size: 0.65rem;
+      font-weight: 400;
+      color: var(--text-tertiary);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-family: 'Noto Sans SC', sans-serif;
+      border-left: 1px solid var(--border-mid);
+      padding-left: 0.6rem;
+      margin-left: 0.1rem;
+    }
+
+    .header-center {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .date-stamp {
+      font-size: 0.78rem;
+      color: var(--text-tertiary);
+      white-space: nowrap;
+    }
+
     .header-stats {
       display: flex;
       align-items: center;
-      gap: 1.5rem;
-      font-size: 0.85rem;
+      gap: 1.25rem;
+      font-size: 0.78rem;
       color: var(--text-secondary);
     }
-    .stat {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
+    .stat { display: flex; align-items: center; gap: 0.35rem; }
     .stat-value { color: var(--text-primary); font-weight: 500; }
+
     .header-actions {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.5rem;
     }
     .btn {
-      background: var(--bg-tertiary);
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-      padding: 0.5rem 1rem;
+      background: transparent;
+      border: 1px solid var(--border-mid);
+      color: var(--text-secondary);
+      padding: 0.38rem 0.85rem;
       border-radius: 6px;
-      font-size: 0.85rem;
+      font-size: 0.78rem;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 0.4rem;
-      transition: all 0.2s;
-    }
-    .btn:hover { background: var(--bg-hover); border-color: var(--border-light); }
-    .btn-accent { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
-    .btn-accent:hover { background: var(--accent); color: var(--bg-primary); }
-    .kbd {
-      background: var(--bg-primary);
-      border: 1px solid var(--border);
-      padding: 0.15rem 0.4rem;
-      border-radius: 4px;
-      font-size: 0.7rem;
-      font-family: monospace;
-    }
-
-    /* Command Palette */
-    .cmd-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
-      z-index: 1000;
-      display: none;
-      align-items: flex-start;
-      justify-content: center;
-      padding-top: 15vh;
-    }
-    .cmd-overlay.active { display: flex; }
-    .cmd-palette {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      width: 100%;
-      max-width: 560px;
-      box-shadow: var(--shadow-lg);
-      overflow: hidden;
-    }
-    .cmd-input-wrap {
-      display: flex;
-      align-items: center;
-      padding: 1rem 1.25rem;
-      border-bottom: 1px solid var(--border);
-      gap: 0.75rem;
-    }
-    .cmd-input-wrap svg { color: var(--text-tertiary); flex-shrink: 0; }
-    .cmd-input {
-      flex: 1;
-      background: none;
-      border: none;
-      color: var(--text-primary);
-      font-size: 1rem;
-      outline: none;
-      font-family: inherit;
-    }
-    .cmd-input::placeholder { color: var(--text-tertiary); }
-    .cmd-results { max-height: 360px; overflow-y: auto; padding: 0.5rem; }
-    .cmd-item {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-    .cmd-item:hover, .cmd-item.selected { background: var(--bg-hover); }
-    .cmd-item-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .cmd-item-text { flex: 1; min-width: 0; }
-    .cmd-item-title {
-      font-size: 0.9rem;
+      gap: 0.35rem;
+      transition: all 0.18s;
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
-    .cmd-item-meta { font-size: 0.75rem; color: var(--text-tertiary); }
-    .cmd-section { padding: 0.5rem 1rem 0.25rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); }
-    .cmd-footer {
-      border-top: 1px solid var(--border);
-      padding: 0.6rem 1rem;
-      display: flex;
-      gap: 1rem;
-      font-size: 0.7rem;
+    .btn:hover { background: var(--bg-card); border-color: var(--accent); color: var(--accent); }
+    .btn-primary { background: var(--accent); border-color: var(--accent); color: white; }
+    .btn-primary:hover { background: var(--accent-mid); border-color: var(--accent-mid); color: white; }
+    .kbd {
+      background: var(--bg-page);
+      border: 1px solid var(--border);
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+      font-size: 0.65rem;
+      font-family: monospace;
       color: var(--text-tertiary);
     }
 
-    /* Main Layout */
+    /* ── Main ── */
     .main {
-      max-width: 1400px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 2rem;
+      padding: 2rem 2.5rem 4rem;
     }
-    .layout { display: grid; grid-template-columns: 1fr 380px; gap: 2rem; }
-    .layout.focus-mode { grid-template-columns: 1fr; }
 
-    /* Featured Article */
-    .featured {
-      background: var(--bg-secondary);
-      border-radius: 16px;
-      overflow: hidden;
+    /* ── Hero Featured ── */
+    .hero {
+      background: var(--bg-card);
       border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
       margin-bottom: 2rem;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.25s;
+      box-shadow: var(--shadow);
     }
-    .featured:hover { border-color: var(--border-light); box-shadow: var(--shadow); }
-    .featured.selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), var(--shadow-lg); }
-    .featured-image {
-      height: 320px;
-      background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-hover) 100%);
+    .hero:hover { box-shadow: var(--shadow-hover); border-color: var(--border-mid); }
+    .hero.selected { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-glow), var(--shadow-hover); }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      min-height: 240px;
+    }
+    .hero-content { padding: 2rem 2rem 2rem 2.25rem; display: flex; flex-direction: column; justify-content: space-between; }
+    .hero-eyebrow {
       display: flex;
       align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
+      gap: 0.6rem;
+      margin-bottom: 0.85rem;
     }
-    .featured-image::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 40%, rgba(15,17,23,0.8) 100%);
-    }
-    .featured-badge {
-      position: absolute;
-      top: 1.25rem;
-      left: 1.25rem;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      background: var(--accent);
-      color: var(--bg-primary);
-      padding: 0.35rem 0.75rem;
-      border-radius: 20px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .featured-content { padding: 1.5rem; }
-    .featured-source {
+    .hero-badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.35rem;
-      padding: 0.25rem 0.6rem;
+      gap: 0.3rem;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 0.25rem 0.65rem;
       border-radius: 4px;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .hero-source {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      font-size: 0.65rem;
       font-weight: 600;
       text-transform: uppercase;
-      margin-bottom: 0.75rem;
+      letter-spacing: 0.06em;
     }
-    .featured-source.v2ex { background: rgba(0,120,212,0.15); color: var(--source-v2ex); }
-    .featured-source.stackoverflow { background: rgba(244,128,36,0.15); color: var(--source-stackoverflow); }
-    .featured-source.kr { background: rgba(255,107,107,0.15); color: var(--source-36kr); }
-    .featured-source.tieba { background: rgba(255,215,0,0.15); color: var(--source-tieba); }
-    .featured-source.lobsters { background: rgba(172,19,13,0.15); color: var(--source-lobsters); }
-    .featured-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.75rem;
+    .hero-source.v2ex { background: rgba(27,79,138,0.08); color: var(--source-v2ex); }
+    .hero-source.kr { background: rgba(217,79,58,0.08); color: var(--source-36kr); }
+    .hero-source.stackoverflow { background: rgba(210,104,44,0.08); color: var(--source-stackoverflow); }
+    .hero-source.tieba { background: rgba(200,146,25,0.08); color: var(--source-tieba); }
+    .hero-source.lobsters { background: rgba(140,46,26,0.08); color: var(--source-lobsters); }
+
+    .hero-title {
+      font-family: 'Playfair Display', 'Noto Serif SC', Georgia, serif;
+      font-size: 1.65rem;
       font-weight: 600;
       line-height: 1.3;
-      margin-bottom: 0.75rem;
       letter-spacing: -0.01em;
+      color: var(--text-primary);
+      margin-bottom: 0.85rem;
     }
-    .featured-meta {
+    .hero-meta {
       display: flex;
       align-items: center;
-      gap: 1rem;
-      font-size: 0.85rem;
+      gap: 1.1rem;
+      font-size: 0.78rem;
       color: var(--text-secondary);
     }
-    .featured-meta span { display: flex; align-items: center; gap: 0.3rem; }
+    .hero-meta span { display: flex; align-items: center; gap: 0.3rem; }
 
-    /* Article List */
-    .article-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .hero-image {
+      background: linear-gradient(145deg, #EDE9E1 0%, #E2DDD5 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .hero-image-icon { font-size: 3rem; opacity: 0.35; font-family: 'Playfair Display', serif; font-style: italic; color: var(--text-secondary); }
+    .hero-image-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-tertiary); }
+
+    /* ── Section Divider ── */
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+    .section-meta { font-size: 0.72rem; color: var(--text-tertiary); }
+
+    /* ── Article Grid ── */
+    .article-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
     .article-card {
-      background: var(--bg-secondary);
+      background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 10px;
       padding: 1.25rem;
       cursor: pointer;
       transition: all 0.2s;
       display: flex;
-      gap: 1rem;
+      flex-direction: column;
+      gap: 0.6rem;
+      box-shadow: var(--shadow);
     }
-    .article-card:hover { background: var(--bg-tertiary); border-color: var(--border-light); }
-    .article-card.selected { border-color: var(--accent); background: var(--accent-dim); }
+    .article-card:hover { box-shadow: var(--shadow-hover); border-color: var(--border-mid); transform: translateY(-1px); }
+    .article-card.selected { border-color: var(--accent); background: var(--accent-light); }
+    .article-card-top { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
     .article-rank {
       font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-weight: 500;
+      font-size: 1.1rem;
+      font-weight: 400;
       color: var(--text-tertiary);
-      min-width: 36px;
+      min-width: 24px;
     }
     .article-card.selected .article-rank { color: var(--accent); }
-    .article-body { flex: 1; min-width: 0; }
-    .article-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; }
+
+    .article-source-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.18rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.6rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .article-source-tag.v2ex { background: rgba(27,79,138,0.08); color: var(--source-v2ex); }
+    .article-source-tag.kr { background: rgba(217,79,58,0.08); color: var(--source-36kr); }
+    .article-source-tag.stackoverflow { background: rgba(210,104,44,0.08); color: var(--source-stackoverflow); }
+    .article-source-tag.tieba { background: rgba(200,146,25,0.08); color: var(--source-tieba); }
+    .article-source-tag.lobsters { background: rgba(140,46,26,0.08); color: var(--source-lobsters); }
+
     .article-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.05rem;
+      font-family: 'Playfair Display', 'Noto Serif SC', serif;
+      font-size: 0.95rem;
       font-weight: 500;
-      line-height: 1.4;
+      line-height: 1.45;
+      color: var(--text-primary);
       display: -webkit-box;
-      -webkit-line-clamp: 2;
+      -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      flex: 1;
     }
-    .article-footer {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-top: 0.6rem;
-      font-size: 0.8rem;
-      color: var(--text-tertiary);
-    }
-    .article-stat { display: flex; align-items: center; gap: 0.3rem; }
+    .article-footer { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+    .article-stats { display: flex; align-items: center; gap: 0.75rem; font-size: 0.7rem; color: var(--text-tertiary); }
+    .article-stat { display: flex; align-items: center; gap: 0.25rem; }
     .article-stat.score { color: var(--accent); }
     .article-bookmark {
-      margin-left: auto;
       background: none;
       border: none;
       color: var(--text-tertiary);
       cursor: pointer;
-      padding: 0.25rem;
-      transition: color 0.2s;
+      padding: 0.2rem;
+      border-radius: 4px;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
     }
-    .article-bookmark:hover { color: var(--accent); }
+    .article-bookmark:hover { color: var(--accent); background: var(--accent-light); }
     .article-bookmark.active { color: var(--accent); }
 
-    /* Sidebar */
-    .sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
-    .sidebar-section {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
+    /* ── Bottom Row: Sidebar + List ── */
+    .bottom-row {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 2rem;
     }
-    .sidebar-title {
+
+    /* ── Source Filter Bar ── */
+    .source-filter {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.75rem 0;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .source-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      font-size: 0.72rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      color: var(--text-secondary);
+    }
+    .source-chip:hover { border-color: var(--border-mid); color: var(--text-primary); }
+    .source-chip.active { background: var(--accent); border-color: var(--accent); color: white; }
+    .source-chip .dot { width: 7px; height: 7px; border-radius: 50%; }
+
+    /* ── Article List (left column) ── */
+    .article-list { display: flex; flex-direction: column; gap: 0.6rem; }
+    .article-list-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.9rem 1rem;
+      cursor: pointer;
+      transition: all 0.18s;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      box-shadow: var(--shadow);
+    }
+    .article-list-item:hover { box-shadow: var(--shadow-hover); border-color: var(--border-mid); background: var(--bg-card-hover); }
+    .article-list-item.selected { border-color: var(--accent); background: var(--accent-light); }
+    .list-rank {
       font-family: 'Playfair Display', serif;
-      font-size: 1.1rem;
-      font-weight: 600;
-      padding: 1rem 1.25rem;
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--text-tertiary);
+      min-width: 32px;
+      text-align: center;
+    }
+    .article-list-item.selected .list-rank { color: var(--accent); }
+    .list-body { flex: 1; min-width: 0; }
+    .list-title {
+      font-family: 'Playfair Display', 'Noto Serif SC', serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 0.3rem;
+    }
+    .list-meta { display: flex; align-items: center; gap: 0.75rem; font-size: 0.7rem; color: var(--text-tertiary); }
+    .list-bookmark {
+      background: none;
+      border: none;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      padding: 0.2rem;
+      border-radius: 4px;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+    }
+    .list-bookmark:hover { color: var(--accent); }
+    .list-bookmark.active { color: var(--accent); }
+
+    /* ── Sidebar ── */
+    .sidebar { display: flex; flex-direction: column; gap: 1.25rem; }
+    .sidebar-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .sidebar-card-header {
+      padding: 0.85rem 1rem;
       border-bottom: 1px solid var(--border);
+      font-family: 'Playfair Display', serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-primary);
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    .sidebar-content { padding: 0.75rem; }
+    .sidebar-card-body { padding: 0.5rem; }
     .sidebar-item {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      padding: 0.75rem;
-      border-radius: 8px;
+      gap: 0.65rem;
+      padding: 0.6rem 0.75rem;
+      border-radius: 7px;
       cursor: pointer;
       transition: background 0.15s;
+      font-size: 0.8rem;
     }
-    .sidebar-item:hover { background: var(--bg-hover); }
-    .sidebar-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-    .sidebar-item-text { flex: 1; font-size: 0.9rem; }
-    .sidebar-item-count { font-size: 0.8rem; color: var(--text-tertiary); }
+    .sidebar-item:hover { background: var(--bg-page); }
+    .sidebar-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .sidebar-item-name { flex: 1; color: var(--text-secondary); }
+    .sidebar-item-count { font-size: 0.72rem; color: var(--text-tertiary); }
 
-    /* Bookmarks */
+    /* Bookmarks sidebar */
     .bookmark-item {
       display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.75rem;
-      border-radius: 8px;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.65rem 0.75rem;
+      border-radius: 7px;
       cursor: pointer;
       transition: background 0.15s;
     }
-    .bookmark-item:hover { background: var(--bg-hover); }
-    .bookmark-item svg { color: var(--accent); flex-shrink: 0; }
-    .bookmark-item-text { flex: 1; font-size: 0.85rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .bookmark-remove {
-      background: none;
-      border: none;
-      color: var(--text-tertiary);
-      cursor: pointer;
-      padding: 0.25rem;
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
+    .bookmark-item:hover { background: var(--bg-page); }
+    .bookmark-item svg { color: var(--accent); flex-shrink: 0; margin-top: 2px; }
+    .bookmark-item-text { flex: 1; font-size: 0.78rem; color: var(--text-primary); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .bookmark-remove { background: none; border: none; color: var(--text-tertiary); cursor: pointer; padding: 0.15rem; border-radius: 3px; opacity: 0; transition: opacity 0.15s; }
     .bookmark-item:hover .bookmark-remove { opacity: 1; }
-    .bookmark-remove:hover { color: #ff6b6b; }
+    .bookmark-remove:hover { color: #D94F3A; }
 
-    /* Updated Time */
-    .updated-time {
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.8rem;
+    /* ── Keyboard nav hint ── */
+    .keyboard-hint {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1.25rem;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.7rem;
       color: var(--text-tertiary);
+      box-shadow: var(--shadow);
+      z-index: 50;
     }
+    .keyboard-hint span { display: flex; align-items: center; gap: 0.3rem; }
 
-    /* Toast */
+    /* ── Toast ── */
     .toast-container {
       position: fixed;
-      bottom: 2rem;
+      bottom: 4rem;
       left: 50%;
       transform: translateX(-50%);
       z-index: 1001;
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.4rem;
       pointer-events: none;
     }
     .toast {
-      background: var(--bg-tertiary);
-      border: 1px solid var(--border);
-      padding: 0.75rem 1.25rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      box-shadow: var(--shadow);
-      animation: toastIn 0.3s ease;
+      background: var(--text-primary);
+      color: white;
+      padding: 0.6rem 1.1rem;
+      border-radius: 7px;
+      font-size: 0.82rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      animation: toastIn 0.25s ease;
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
-    .toast.success { border-color: var(--accent); }
-    .toast.success svg { color: var(--accent); }
-    @keyframes toastIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    .toast.success { background: #2D7D46; }
+    @keyframes toastIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Skeleton */
-    .skeleton {
-      background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--bg-hover) 50%, var(--bg-tertiary) 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.5s infinite;
-      border-radius: 6px;
-    }
-    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-    .skeleton-featured { height: 420px; border-radius: 16px; margin-bottom: 2rem; }
-    .skeleton-card { height: 100px; border-radius: 12px; margin-bottom: 0.75rem; }
-    .skeleton-sidebar { height: 200px; border-radius: 12px; }
-
-    /* Focus Mode */
-    .layout.focus-mode .sidebar { display: none; }
-    .layout.focus-mode .featured { display: none; }
-    .layout.focus-mode .article-card { background: var(--bg-primary); }
+    /* ── Focus mode indicator ── */
     .focus-indicator {
       display: none;
       position: fixed;
-      top: 80px;
+      top: 76px;
       left: 50%;
       transform: translateX(-50%);
-      background: var(--accent-dim);
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      padding: 0.5rem 1rem;
+      background: var(--accent);
+      color: white;
+      padding: 0.4rem 1rem;
       border-radius: 20px;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       z-index: 99;
     }
-    .focus-indicator.active { display: flex; align-items: center; gap: 0.5rem; }
+    .focus-indicator.active { display: flex; align-items: center; gap: 0.4rem; }
 
-    /* Keyboard hints */
-    .keyboard-nav-hint {
-      position: fixed;
-      bottom: 1rem;
-      right: 1rem;
-      display: flex;
-      gap: 0.5rem;
-      font-size: 0.7rem;
-      color: var(--text-tertiary);
-      z-index: 50;
+    /* ── Focus mode ── */
+    .layout.focus-mode .sidebar { display: none; }
+    .layout.focus-mode .bottom-row { grid-template-columns: 1fr; }
+    .layout.focus-mode .article-grid { display: none; }
+    .layout.focus-mode .section-header { display: none; }
+    .layout.focus-mode .hero { display: none; }
+    .focus-indicator { display: none; }
+
+    /* ── Skeleton ── */
+    .skeleton {
+      background: linear-gradient(90deg, var(--border) 25%, var(--bg-page) 50%, var(--border) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 8px;
     }
-    .keyboard-nav-hint span { display: flex; align-items: center; gap: 0.25rem; }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .skeleton-hero { height: 260px; border-radius: 14px; margin-bottom: 2rem; }
+    .skeleton-card { height: 160px; border-radius: 10px; }
+    .skeleton-row { height: 64px; border-radius: 8px; margin-bottom: 0.6rem; }
 
-    /* Responsive */
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--border-mid); }
+
+    /* ── Responsive ── */
     @media (max-width: 1024px) {
-      .layout { grid-template-columns: 1fr; }
+      .article-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-image { display: none; }
+      .bottom-row { grid-template-columns: 1fr; }
       .sidebar { display: none; }
     }
     @media (max-width: 640px) {
       .header { padding: 0 1rem; }
       .header-stats { display: none; }
+      .header-center { display: none; }
       .main { padding: 1rem; }
-      .featured-title { font-size: 1.35rem; }
-      .featured-image { height: 220px; }
-      .keyboard-nav-hint { display: none; }
+      .article-grid { grid-template-columns: 1fr; }
+      .keyboard-hint { display: none; }
       .btn span { display: none; }
+      .hero-title { font-size: 1.3rem; }
     }
-
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: var(--bg-primary); }
-    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--border-light); }
   </style>
 </head>
 <body>
   <header class="header">
     <div class="header-inner">
       <div class="logo">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/>
-          <circle cx="12" cy="12" r="6"/>
-          <circle cx="12" cy="12" r="2"/>
-        </svg>
+        <div class="logo-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="12" cy="12" r="4"/>
+            <line x1="12" y1="2" x2="12" y2="6"/>
+            <line x1="12" y1="18" x2="12" y2="22"/>
+            <line x1="2" y1="12" x2="6" y2="12"/>
+            <line x1="18" y1="12" x2="22" y2="12"/>
+          </svg>
+        </div>
         Focus
+        <span class="edition">每日文摘</span>
       </div>
+
+      <div class="header-center">
+        <span class="date-stamp" id="dateStamp"></span>
+      </div>
+
       <div class="header-stats">
         <div class="stat">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-          <span>Reading:</span>
-          <span class="stat-value" id="readCount">0</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span id="lastUpdated">加载中…</span>
         </div>
         <div class="stat">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-          <span>Saved:</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
           <span class="stat-value" id="savedCount">0</span>
-        </div>
-        <div class="stat">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          <span id="lastUpdated">Loading...</span>
+          <span>已收藏</span>
         </div>
       </div>
+
       <div class="header-actions">
-        <button class="btn" onclick="openCommandPalette()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <span>Search</span>
-          <kbd>⌘K</kbd>
-        </button>
-        <button class="btn btn-accent" onclick="toggleFocusMode()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
-          <span>Focus</span>
+        <button class="btn btn-primary" onclick="toggleFocusMode()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+          <span>专注</span>
           <kbd>F</kbd>
         </button>
       </div>
@@ -545,376 +628,348 @@
   </header>
 
   <div class="focus-indicator" id="focusIndicator">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
-    Focus Mode
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+    专注模式
   </div>
 
   <main class="main">
-    <div class="layout" id="mainLayout">
-      <div class="content">
-        <div id="skeletonLoader">
-          <div class="skeleton skeleton-featured"></div>
-          <div class="skeleton skeleton-card"></div>
-          <div class="skeleton skeleton-card"></div>
-          <div class="skeleton skeleton-card"></div>
+    <!-- Skeleton -->
+    <div id="skeletonLoader">
+      <div class="skeleton skeleton-hero"></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2rem">
+        <div class="skeleton skeleton-card"></div>
+        <div class="skeleton skeleton-card"></div>
+        <div class="skeleton skeleton-card"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.6rem">
+        <div class="skeleton skeleton-row"></div>
+        <div class="skeleton skeleton-row"></div>
+        <div class="skeleton skeleton-row"></div>
+      </div>
+    </div>
+
+    <!-- Hero -->
+    <div id="featuredArticle"></div>
+
+    <!-- 3-col grid -->
+    <div id="articleGrid" class="article-grid"></div>
+
+    <!-- Bottom: list + sidebar -->
+    <div class="bottom-row" id="bottomRow">
+      <div>
+        <div class="section-header">
+          <span class="section-title">全部内容</span>
+          <span class="section-meta" id="listCount"></span>
         </div>
-        <div id="featuredArticle"></div>
         <div class="article-list" id="articleList"></div>
       </div>
       <aside class="sidebar">
-        <div class="sidebar-section">
-          <div class="sidebar-title">
-            Sources
-            <span id="sourceCount" style="font-size:0.8rem;color:var(--text-tertiary)">0 items</span>
+        <div class="sidebar-card">
+          <div class="sidebar-card-header">
+            来源分布
+            <span id="sourceCountMeta" style="font-size:0.7rem;color:var(--text-tertiary);font-family:'Noto Sans SC',sans-serif;font-weight:400"></span>
           </div>
-          <div class="sidebar-content" id="sourceStats"></div>
+          <div class="sidebar-card-body" id="sourceStats"></div>
         </div>
-        <div class="sidebar-section">
-          <div class="sidebar-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-            Bookmarks
+        <div class="sidebar-card">
+          <div class="sidebar-card-header">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            我的收藏
           </div>
-          <div class="sidebar-content" id="bookmarkList"></div>
+          <div class="sidebar-card-body" id="bookmarkList"></div>
         </div>
       </aside>
     </div>
   </main>
 
-  <div class="keyboard-nav-hint">
-    <span><kbd>J</kbd>/<kbd>K</kbd> Navigate</span>
-    <span><kbd>Enter</kbd> Open</span>
-    <span><kbd>B</kbd> Bookmark</span>
-    <span><kbd>C</kbd> Copy Link</span>
-    <span><kbd>F</kbd> Focus</span>
-    <span><kbd>Esc</kbd> Close</span>
-  </div>
-
-  <div class="cmd-overlay" id="cmdOverlay" onclick="if(event.target===this)closeCommandPalette()">
-    <div class="cmd-palette">
-      <div class="cmd-input-wrap">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="cmd-input" id="cmdInput" placeholder="Search articles, sources, bookmarks..." oninput="filterCommands()">
-      </div>
-      <div class="cmd-results" id="cmdResults"></div>
-      <div class="cmd-footer">
-        <span><kbd>↑↓</kbd> Navigate</span>
-        <span><kbd>Enter</kbd> Select</span>
-        <span><kbd>Esc</kbd> Close</span>
-      </div>
-    </div>
+  <div class="keyboard-hint">
+    <span><kbd>J</kbd><kbd>K</kbd> 导航</span>
+    <span><kbd>Enter</kbd> 打开</span>
+    <span><kbd>B</kbd> 收藏</span>
+    <span><kbd>F</kbd> 专注</span>
+    <span><kbd>/</kbd> 搜索</span>
   </div>
 
   <div class="toast-container" id="toastContainer"></div>
 
   <script>
     const SOURCES = {
-      '36kr': { name: '36Kr', class: 'kr', color: '#ff6b6b' },
-      'v2ex': { name: 'V2EX', class: 'v2ex', color: '#0078d4' },
-      'stackoverflow': { name: 'Stack Overflow', class: 'stackoverflow', color: '#f48024' },
-      'tieba': { name: 'Tieba', class: 'tieba', color: '#ffd700' },
-      'lobsters': { name: 'Lobsters', class: 'lobsters', color: '#ac130d' }
+      '36kr': { name: '36Kr', cls: 'kr', color: '#D94F3A' },
+      'v2ex': { name: 'V2EX', cls: 'v2ex', color: '#1B4F8A' },
+      'stackoverflow': { name: 'Stack Overflow', cls: 'stackoverflow', color: '#D2682C' },
+      'tieba': { name: '贴吧', cls: 'tieba', color: '#C89219' },
+      'lobsters': { name: 'Lobsters', cls: 'lobsters', color: '#8C2E1A' }
     };
 
     let articles = [];
     let filteredArticles = [];
     let selectedIndex = 0;
     let bookmarks = JSON.parse(localStorage.getItem('focusBookmarks') || '[]');
-    let readArticles = JSON.parse(localStorage.getItem('focusRead') || '[]');
     let isFocusMode = false;
-    let cmdSelectedIndex = 0;
-    let cmdItems = [];
+
+    // Set date stamp
+    (function setDate() {
+      const now = new Date();
+      const days = ['周日','周一','周二','周三','周四','周五','周六'];
+      const months = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+      document.getElementById('dateStamp').textContent =
+        `${months[now.getMonth()]}${now.getDate()}日 ${days[now.getDay()]} · ${now.getFullYear()}`;
+    })();
 
     async function loadData() {
-      const files = ['36kr.json', 'v2ex.json', 'stackoverflow.json', 'tieba.json', 'lobsters.json'];
-      const sourceMap = { '36kr.json': '36kr', 'v2ex.json': 'v2ex', 'stackoverflow.json': 'stackoverflow', 'tieba.json': 'tieba', 'lobsters.json': 'lobsters' };
-
+      const files = ['36kr.json','v2ex.json','stackoverflow.json','tieba.json','lobsters.json'];
+      const map = { '36kr.json':'36kr','v2ex.json':'v2ex','stackoverflow.json':'stackoverflow','tieba.json':'tieba','lobsters.json':'lobsters' };
       try {
         const results = await Promise.all(files.map(f => fetch(f).then(r => r.json()).catch(() => [])));
         results.forEach((data, i) => {
-          const source = sourceMap[files[i]];
-          data.forEach(item => articles.push({ ...item, source, id: item.url || `${source}-${item.rank || item.id}` }));
+          const src = map[files[i]];
+          data.forEach(item => articles.push({ ...item, source: src, id: item.url || `${src}-${item.rank||item.id}` }));
         });
-        articles.sort((a, b) => (a.rank || 99) - (b.rank || 99));
+        articles.sort((a, b) => (a.rank||99) - (b.rank||99));
         filteredArticles = [...articles];
-        document.getElementById('lastUpdated').textContent = `Updated: ${new Date().toLocaleTimeString()}`;
-      } catch (e) {
-        showToast('Failed to load data', 'error');
+        document.getElementById('lastUpdated').textContent = `更新于 ${new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'})}`;
+      } catch(e) {
+        showToast('数据加载失败', 'error');
       }
       renderUI();
     }
 
     function renderUI() {
       document.getElementById('skeletonLoader').style.display = 'none';
-      renderFeatured();
-      renderArticleList();
+      renderHero();
+      renderGrid();
+      renderList();
       renderSidebar();
       renderBookmarks();
       updateStats();
     }
 
-    function renderFeatured() {
-      const featured = filteredArticles[0];
-      if (!featured) return;
+    function renderHero() {
+      const f = filteredArticles[0];
+      if (!f) return;
       const el = document.getElementById('featuredArticle');
+      const sc = SOURCES[f.source] || {};
       el.innerHTML = `
-        <div class="featured ${selectedIndex === 0 ? 'selected' : ''}" onclick="openArticle(0)">
-          <div class="featured-image">
-            <div class="featured-badge">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              Featured
+        <div class="hero ${selectedIndex===0?'selected':''}" onclick="openArticle(0)">
+          <div class="hero-inner">
+            <div class="hero-content">
+              <div class="hero-eyebrow">
+                <span class="hero-badge">
+                  <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  今日精选
+                </span>
+                <span class="hero-source ${sc.cls}">${sc.name||f.source}</span>
+              </div>
+              <h1 class="hero-title">${f.title}</h1>
+              <div class="hero-meta">
+                ${f.score!==undefined?`<span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>${f.score}</span>`:''}
+                ${f.answers!==undefined?`<span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${f.answers} 回答</span>`:''}
+                ${f.replies!==undefined?`<span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${f.replies} 回复</span>`:''}
+                ${f.discussions!==undefined?`<span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${f.discussions} 讨论</span>`:''}
+                <span style="margin-left:auto;display:flex;align-items:center;gap:0.3rem">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                  阅读原文
+                </span>
+              </div>
             </div>
-            <div style="font-family:'Playfair Display',serif;font-size:4rem;color:var(--text-tertiary);opacity:0.3">${SOURCES[featured.source]?.name || featured.source}</div>
-          </div>
-          <div class="featured-content">
-            <span class="featured-source ${SOURCES[featured.source]?.class}">${SOURCES[featured.source]?.name || featured.source}</span>
-            <h2 class="featured-title">${featured.title}</h2>
-            <div class="featured-meta">
-              ${featured.score !== undefined ? `<span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>${featured.score}</span>` : ''}
-              ${featured.answers !== undefined ? `<span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${featured.answers}</span>` : ''}
-              ${featured.replies !== undefined ? `<span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${featured.replies}</span>` : ''}
-              ${featured.discussions !== undefined ? `<span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${featured.discussions}</span>` : ''}
-              <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Open article</span>
+            <div class="hero-image">
+              <div class="hero-image-icon">${sc.name||''}</div>
+              <div class="hero-image-label">${(sc.name||f.source).toUpperCase()}</div>
             </div>
           </div>
         </div>
       `;
     }
 
-    function renderArticleList() {
-      const list = document.getElementById('articleList');
-      const items = filteredArticles.slice(1).map((article, i) => {
+    function renderGrid() {
+      const items = filteredArticles.slice(1, 7);
+      const el = document.getElementById('articleGrid');
+      el.innerHTML = items.map((a, i) => {
         const idx = i + 1;
-        const isBookmarked = bookmarks.some(b => b.id === article.id);
+        const sc = SOURCES[a.source]||{};
+        const bk = bookmarks.some(b => b.id === a.id);
         return `
-          <div class="article-card ${selectedIndex === idx ? 'selected' : ''}" data-index="${idx}" onclick="openArticle(${idx})">
-            <div class="article-rank">${article.rank || idx}</div>
-            <div class="article-body">
-              <div class="article-header">
-                <span class="featured-source ${SOURCES[article.source]?.class}">${SOURCES[article.source]?.name || article.source}</span>
+          <div class="article-card ${selectedIndex===idx?'selected':''}" data-index="${idx}" onclick="openArticle(${idx})">
+            <div class="article-card-top">
+              <span class="article-rank">${a.rank||idx}</span>
+              <span class="article-source-tag ${sc.cls}">${sc.name||a.source}</span>
+            </div>
+            <div class="article-title">${a.title}</div>
+            <div class="article-footer">
+              <div class="article-stats">
+                ${a.score!==undefined?`<span class="article-stat score"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>${a.score}</span>`:''}
+                ${a.answers!==undefined?`<span class="article-stat"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${a.answers}</span>`:''}
+                ${a.replies!==undefined?`<span class="article-stat"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${a.replies}</span>`:''}
+                ${a.node?`<span class="article-stat">${a.node}</span>`:''}
               </div>
-              <h3 class="article-title">${article.title}</h3>
-              <div class="article-footer">
-                ${article.score !== undefined ? `<span class="article-stat score"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>${article.score}</span>` : ''}
-                ${article.answers !== undefined ? `<span class="article-stat"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${article.answers} answers</span>` : ''}
-                ${article.replies !== undefined ? `<span class="article-stat"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${article.replies} replies</span>` : ''}
-                ${article.discussions !== undefined ? `<span class="article-stat"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${article.discussions}</span>` : ''}
-                ${article.node ? `<span class="article-stat"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.21 18.71l-7.04-7.04a3 3 0 1 0-4.24 4.24l7.04 7.04a3 3 0 0 0 4.24-4.24z"/><circle cx="16.5" cy="6.5" r="2"/></svg>${article.node}</span>` : ''}
-                <button class="article-bookmark ${isBookmarked ? 'active' : ''}" onclick="event.stopPropagation();toggleBookmark(${idx})">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="${isBookmarked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-                </button>
-              </div>
+              <button class="article-bookmark ${bk?'active':''}" onclick="event.stopPropagation();toggleBookmark(${idx})">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="${bk?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+              </button>
             </div>
           </div>
         `;
       }).join('');
-      list.innerHTML = items;
+    }
+
+    function renderList() {
+      const items = filteredArticles.slice(7);
+      const startIdx = 7;
+      const el = document.getElementById('articleList');
+      document.getElementById('listCount').textContent = `${items.length} 条内容`;
+      el.innerHTML = items.map((a, i) => {
+        const idx = startIdx + i;
+        const sc = SOURCES[a.source]||{};
+        const bk = bookmarks.some(b => b.id === a.id);
+        return `
+          <div class="article-list-item ${selectedIndex===idx?'selected':''}" data-index="${idx}" onclick="openArticle(${idx})">
+            <div class="list-rank">${a.rank||idx}</div>
+            <div class="list-body">
+              <div class="list-title">${a.title}</div>
+              <div class="list-meta">
+                <span class="article-source-tag ${sc.cls}" style="font-size:0.58rem">${sc.name||a.source}</span>
+                ${a.score!==undefined?`<span class="article-stat score"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>${a.score}</span>`:''}
+                ${a.replies!==undefined?`<span class="article-stat"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${a.replies}</span>`:''}
+              </div>
+            </div>
+            <button class="list-bookmark ${bk?'active':''}" onclick="event.stopPropagation();toggleBookmark(${idx})">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="${bk?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            </button>
+          </div>
+        `;
+      }).join('');
     }
 
     function renderSidebar() {
       const counts = {};
-      filteredArticles.forEach(a => counts[a.source] = (counts[a.source] || 0) + 1);
-      const stats = document.getElementById('sourceStats');
-      stats.innerHTML = Object.entries(counts).map(([source, count]) => `
-        <div class="sidebar-item" onclick="filterBySource('${source}')">
-          <span class="sidebar-dot" style="background:${SOURCES[source]?.color}"></span>
-          <span class="sidebar-item-text">${SOURCES[source]?.name || source}</span>
-          <span class="sidebar-item-count">${count}</span>
-        </div>
-      `).join('');
-      document.getElementById('sourceCount').textContent = `${filteredArticles.length} items`;
+      filteredArticles.forEach(a => counts[a.source] = (counts[a.source]||0)+1);
+      const el = document.getElementById('sourceStats');
+      document.getElementById('sourceCountMeta').textContent = `${filteredArticles.length} 条`;
+      el.innerHTML = Object.entries(counts).map(([src, count]) => {
+        const sc = SOURCES[src]||{};
+        return `
+          <div class="sidebar-item" onclick="filterBySource('${src}')">
+            <span class="sidebar-dot" style="background:${sc.color}"></span>
+            <span class="sidebar-item-name">${sc.name||src}</span>
+            <span class="sidebar-item-count">${count}</span>
+          </div>
+        `;
+      }).join('');
     }
 
     function renderBookmarks() {
       const el = document.getElementById('bookmarkList');
-      if (bookmarks.length === 0) {
-        el.innerHTML = '<div style="padding:1rem;text-align:center;color:var(--text-tertiary);font-size:0.85rem">No bookmarks yet. Press B to save.</div>';
+      if (!bookmarks.length) {
+        el.innerHTML = '<div style="padding:1rem;text-align:center;color:var(--text-tertiary);font-size:0.78rem">暂无收藏，<kbd style="background:var(--bg-page);border:1px solid var(--border);padding:0.1rem 0.35rem;border-radius:3px;font-size:0.65rem">B</kbd> 键收藏</div>';
         return;
       }
       el.innerHTML = bookmarks.map(b => `
         <div class="bookmark-item" onclick="openBookmark('${b.id}')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
           <span class="bookmark-item-text">${b.title}</span>
           <button class="bookmark-remove" onclick="event.stopPropagation();removeBookmark('${b.id}')">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
       `).join('');
     }
 
     function updateStats() {
-      document.getElementById('readCount').textContent = readArticles.length;
       document.getElementById('savedCount').textContent = bookmarks.length;
     }
 
     function openArticle(index) {
       selectedIndex = index;
-      const article = filteredArticles[index];
-      if (!article) return;
-      markAsRead(article.id);
-      window.open(article.url, '_blank');
-      renderFeatured();
-      renderArticleList();
+      const a = filteredArticles[index];
+      if (!a) return;
+      markAsRead(a.id);
+      window.open(a.url, '_blank');
+      renderHero();
+      renderGrid();
+      renderList();
     }
 
     function markAsRead(id) {
-      if (!readArticles.includes(id)) {
-        readArticles.push(id);
-        localStorage.setItem('focusRead', JSON.stringify(readArticles));
-        updateStats();
-      }
+      let read = JSON.parse(localStorage.getItem('focusRead')||'[]');
+      if (!read.includes(id)) { read.push(id); localStorage.setItem('focusRead',JSON.stringify(read)); }
     }
 
     function toggleBookmark(index) {
-      const article = filteredArticles[index];
-      if (!article) return;
-      const existing = bookmarks.findIndex(b => b.id === article.id);
-      if (existing >= 0) {
-        bookmarks.splice(existing, 1);
-        showToast('Removed from bookmarks');
-      } else {
-        bookmarks.push({ id: article.id, title: article.title, url: article.url, source: article.source });
-        showToast('Added to bookmarks', 'success');
-      }
-      localStorage.setItem('focusBookmarks', JSON.stringify(bookmarks));
+      const a = filteredArticles[index];
+      if (!a) return;
+      const ex = bookmarks.findIndex(b => b.id === a.id);
+      if (ex >= 0) { bookmarks.splice(ex,1); showToast('已取消收藏'); }
+      else { bookmarks.push({id:a.id,title:a.title,url:a.url,source:a.source}); showToast('已收藏','success'); }
+      localStorage.setItem('focusBookmarks',JSON.stringify(bookmarks));
+      renderGrid();
+      renderList();
       renderBookmarks();
-      renderArticleList();
       updateStats();
     }
 
     function removeBookmark(id) {
       bookmarks = bookmarks.filter(b => b.id !== id);
-      localStorage.setItem('focusBookmarks', JSON.stringify(bookmarks));
+      localStorage.setItem('focusBookmarks',JSON.stringify(bookmarks));
+      renderGrid();
+      renderList();
       renderBookmarks();
-      renderArticleList();
       updateStats();
-      showToast('Removed from bookmarks');
+      showToast('已移除收藏');
     }
 
     function openBookmark(id) {
-      const article = filteredArticles.find(a => a.id === id);
-      if (article) {
-        selectedIndex = filteredArticles.indexOf(article);
-        window.open(article.url, '_blank');
-        markAsRead(id);
-        renderFeatured();
-        renderArticleList();
-      }
+      const a = filteredArticles.find(x => x.id === id);
+      if (a) { selectedIndex = filteredArticles.indexOf(a); window.open(a.url,'_blank'); markAsRead(id); renderHero(); renderGrid(); renderList(); }
     }
 
-    function filterBySource(source) {
-      filteredArticles = source === 'all' ? [...articles] : articles.filter(a => a.source === source);
+    function filterBySource(src) {
+      filteredArticles = src==='all' ? [...articles] : articles.filter(a => a.source===src);
       selectedIndex = 0;
-      renderFeatured();
-      renderArticleList();
+      renderHero();
+      renderGrid();
+      renderList();
       renderSidebar();
     }
 
     function toggleFocusMode() {
       isFocusMode = !isFocusMode;
-      document.getElementById('mainLayout').classList.toggle('focus-mode', isFocusMode);
+      document.getElementById('bottomRow').classList.toggle('focus-mode', isFocusMode);
       document.getElementById('focusIndicator').classList.toggle('active', isFocusMode);
-      showToast(isFocusMode ? 'Focus mode enabled' : 'Focus mode disabled');
+      showToast(isFocusMode?'专注模式':'已退出专注模式');
     }
 
-    function copyShareUrl() {
-      const article = filteredArticles[selectedIndex];
-      if (article) {
-        navigator.clipboard.writeText(article.url);
-        showToast('Link copied to clipboard', 'success');
-      }
+    function showToast(msg, type='') {
+      const c = document.getElementById('toastContainer');
+      const t = document.createElement('div');
+      t.className = `toast ${type}`;
+      t.innerHTML = type==='success' ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>${msg}` : msg;
+      c.appendChild(t);
+      setTimeout(() => t.remove(), 2500);
     }
 
-    function openCommandPalette() {
-      document.getElementById('cmdOverlay').classList.add('active');
-      document.getElementById('cmdInput').focus();
-      buildCommandList();
-    }
-
-    function closeCommandPalette() {
-      document.getElementById('cmdOverlay').classList.remove('active');
-      document.getElementById('cmdInput').value = '';
-    }
-
-    function buildCommandList(filter = '') {
-      const items = [];
-      const lf = filter.toLowerCase();
-      items.push({ type: 'action', title: 'Toggle Focus Mode', subtitle: 'Enable/disable focus mode', action: toggleFocusMode, icon: 'focus' });
-      items.push({ type: 'action', title: 'Copy Share URL', subtitle: 'Copy current article link', action: copyShareUrl, icon: 'share' });
-      items.push({ type: 'action', title: 'Show All Sources', subtitle: 'Clear source filter', action: () => filterBySource('all'), icon: 'all' });
-      filteredArticles.forEach((a, i) => {
-        if (!lf || a.title.toLowerCase().includes(lf) || SOURCES[a.source]?.name.toLowerCase().includes(lf)) {
-          items.push({ type: 'article', title: a.title, subtitle: SOURCES[a.source]?.name || a.source, action: () => openArticle(i), icon: 'article' });
-        }
-      });
-      if (lf && bookmarks.some(b => b.title.toLowerCase().includes(lf))) {
-        bookmarks.filter(b => b.title.toLowerCase().includes(lf)).forEach(b => {
-          items.push({ type: 'bookmark', title: b.title, subtitle: 'Bookmark', action: () => openBookmark(b.id), icon: 'bookmark' });
-        });
-      }
-      cmdItems = items;
-      cmdSelectedIndex = 0;
-      renderCommandList();
-    }
-
-    function filterCommands() {
-      buildCommandList(document.getElementById('cmdInput').value);
-    }
-
-    function renderCommandList() {
-      const results = document.getElementById('cmdResults');
-      const icons = {
-        focus: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>',
-        share: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>',
-        all: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>',
-        article: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
-        bookmark: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>'
-      };
-      results.innerHTML = cmdItems.map((item, i) => `
-        <div class="cmd-item ${i === cmdSelectedIndex ? 'selected' : ''}" onclick="${item.action && `(${item.action})()`}">
-          <div class="cmd-item-icon" style="background:var(--bg-tertiary);color:var(--text-secondary)">${icons[item.icon]}</div>
-          <div class="cmd-item-text">
-            <div class="cmd-item-title">${item.title}</div>
-            <div class="cmd-item-meta">${item.subtitle}</div>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function showToast(message, type = 'default') {
-      const container = document.getElementById('toastContainer');
-      const toast = document.createElement('div');
-      toast.className = `toast ${type}`;
-      toast.innerHTML = type === 'success' ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${message}` : message;
-      container.appendChild(toast);
-      setTimeout(() => toast.remove(), 3000);
-    }
-
-    function navigate(direction) {
+    function navigate(dir) {
       const max = filteredArticles.length - 1;
-      selectedIndex = Math.max(0, Math.min(max, selectedIndex + direction));
-      const el = document.querySelector(`[data-index="${selectedIndex}"]`) || document.querySelector('.featured');
+      selectedIndex = Math.max(0, Math.min(max, selectedIndex + dir));
+      const el = document.querySelector(`[data-index="${selectedIndex}"]`) || document.querySelector('.hero') || document.querySelector('.article-card');
       el?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      renderFeatured();
-      renderArticleList();
+      renderHero();
+      renderGrid();
+      renderList();
+    }
+
+    function copyLink() {
+      const a = filteredArticles[selectedIndex];
+      if (a) { navigator.clipboard.writeText(a.url); showToast('链接已复制','success'); }
     }
 
     document.addEventListener('keydown', e => {
-      if (document.getElementById('cmdOverlay').classList.contains('active')) {
-        if (e.key === 'Escape') closeCommandPalette();
-        else if (e.key === 'ArrowDown') { e.preventDefault(); cmdSelectedIndex = Math.min(cmdItems.length - 1, cmdSelectedIndex + 1); renderCommandList(); }
-        else if (e.key === 'ArrowUp') { e.preventDefault(); cmdSelectedIndex = Math.max(0, cmdSelectedIndex - 1); renderCommandList(); }
-        else if (e.key === 'Enter' && cmdItems[cmdSelectedIndex]) { cmdItems[cmdSelectedIndex].action?.(); closeCommandPalette(); }
-        return;
-      }
-      if (e.key === 'j' || e.key === 'ArrowDown') navigate(1);
-      else if (e.key === 'k' || e.key === 'ArrowUp') navigate(-1);
-      else if (e.key === 'Enter') openArticle(selectedIndex);
-      else if (e.key === 'b' || e.key === 'B') toggleBookmark(selectedIndex);
-      else if (e.key === 'c' || e.key === 'C') copyShareUrl();
-      else if (e.key === 'f' || e.key === 'F') toggleFocusMode();
-      else if (e.key === '/') { e.preventDefault(); openCommandPalette(); }
-      else if (e.key === 'Escape') { closeCommandPalette(); if (isFocusMode) toggleFocusMode(); }
-      else if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openCommandPalette(); }
+      if (e.key==='j'||e.key==='J'||e.key==='ArrowDown') navigate(1);
+      else if (e.key==='k'||e.key==='K'||e.key==='ArrowUp') navigate(-1);
+      else if (e.key==='Enter') openArticle(selectedIndex);
+      else if (e.key==='b'||e.key==='B') toggleBookmark(selectedIndex);
+      else if (e.key==='c'||e.key==='C') copyLink();
+      else if (e.key==='f'||e.key==='F') toggleFocusMode();
+      else if (e.key==='/') { e.preventDefault(); }
+      else if (e.key==='Escape') { if (isFocusMode) toggleFocusMode(); }
     });
 
     loadData();
