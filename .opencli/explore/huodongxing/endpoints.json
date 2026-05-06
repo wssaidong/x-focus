@@ -1,0 +1,97 @@
+[
+  {
+    "pattern": "huodongxing.com/hdxapp-api/activity/recommend_new_org?city={}",
+    "method": "GET",
+    "url": "https://huodongxing.com/hdxapp-api/activity/recommend_new_org?city=%E5%B9%BF%E5%B7%9E",
+    "status": 200,
+    "contentType": "application/json",
+    "queryParams": [
+      "city"
+    ],
+    "itemPath": "data",
+    "itemCount": 4,
+    "detectedFields": {},
+    "authIndicators": [
+      "bearer"
+    ]
+  },
+  {
+    "pattern": "bpoadfkcbjbfhfodiogcnhhhpibjhbnh/default_config.content.json",
+    "method": "GET",
+    "url": "chrome-extension://bpoadfkcbjbfhfodiogcnhhhpibjhbnh/default_config.content.json",
+    "status": 200,
+    "contentType": "application/json",
+    "queryParams": [],
+    "itemPath": null,
+    "itemCount": 0,
+    "detectedFields": {},
+    "authIndicators": []
+  },
+  {
+    "pattern": "api.huodongxing.com/v4/mkt/query?city={}&slot={}",
+    "method": "GET",
+    "url": "https://api.huodongxing.com/v4/mkt/query?city=%E5%B9%BF%E5%B7%9E&slot=2",
+    "status": 200,
+    "contentType": "application/json",
+    "queryParams": [
+      "city",
+      "slot"
+    ],
+    "itemPath": null,
+    "itemCount": 0,
+    "detectedFields": {},
+    "authIndicators": []
+  },
+  {
+    "pattern": "huodongxing.com/account/ajaxislogin",
+    "method": "GET",
+    "url": "https://huodongxing.com/account/ajaxislogin?_=1778025872604",
+    "status": 200,
+    "contentType": "application/json",
+    "queryParams": [],
+    "itemPath": null,
+    "itemCount": 0,
+    "detectedFields": {},
+    "authIndicators": []
+  },
+  {
+    "pattern": "cdn.huodongxing.com/app/hdx/dark.json",
+    "method": "GET",
+    "url": "https://cdn.huodongxing.com/app/hdx/dark.json",
+    "status": 200,
+    "contentType": "application/json",
+    "queryParams": [],
+    "itemPath": null,
+    "itemCount": 0,
+    "detectedFields": {},
+    "authIndicators": []
+  },
+  {
+    "pattern": "huodongxing.com/account/getapitoken",
+    "method": "POST",
+    "url": "https://huodongxing.com/account/getapitoken",
+    "status": 200,
+    "contentType": "application/json",
+    "queryParams": [],
+    "itemPath": null,
+    "itemCount": 0,
+    "detectedFields": {},
+    "authIndicators": []
+  },
+  {
+    "pattern": "huodongxing.com/hdxapp-api/venue/get_hot_list?city={}",
+    "method": "GET",
+    "url": "https://huodongxing.com/hdxapp-api/venue/get_hot_list?city=%E5%B9%BF%E5%B7%9E",
+    "status": 200,
+    "contentType": "application/json",
+    "queryParams": [
+      "city"
+    ],
+    "itemPath": null,
+    "itemCount": 0,
+    "detectedFields": {},
+    "authIndicators": [
+      "bearer"
+    ]
+  }
+]

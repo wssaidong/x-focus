@@ -1,0 +1,135 @@
+[
+  {
+    "name": "recommend_new_org",
+    "description": "huodongxing recommend_new_org",
+    "strategy": "header",
+    "endpoint": "huodongxing.com/hdxapp-api/activity/recommend_new_org?city={}",
+    "itemPath": "data",
+    "recommendedColumns": [
+      "title",
+      "url"
+    ],
+    "recommendedArgs": [
+      {
+        "name": "limit",
+        "type": "int",
+        "required": false,
+        "default": 20
+      }
+    ]
+  },
+  {
+    "name": "default_config_content_json",
+    "description": "huodongxing default_config_content_json",
+    "strategy": "cookie",
+    "endpoint": "bpoadfkcbjbfhfodiogcnhhhpibjhbnh/default_config.content.json",
+    "itemPath": null,
+    "recommendedColumns": [
+      "title",
+      "url"
+    ],
+    "recommendedArgs": [
+      {
+        "name": "limit",
+        "type": "int",
+        "required": false,
+        "default": 20
+      }
+    ]
+  },
+  {
+    "name": "query",
+    "description": "huodongxing query",
+    "strategy": "cookie",
+    "endpoint": "api.huodongxing.com/v4/mkt/query?city={}&slot={}",
+    "itemPath": null,
+    "recommendedColumns": [
+      "title",
+      "url"
+    ],
+    "recommendedArgs": [
+      {
+        "name": "limit",
+        "type": "int",
+        "required": false,
+        "default": 20
+      }
+    ]
+  },
+  {
+    "name": "ajaxislogin",
+    "description": "huodongxing ajaxislogin",
+    "strategy": "cookie",
+    "endpoint": "huodongxing.com/account/ajaxislogin",
+    "itemPath": null,
+    "recommendedColumns": [
+      "title",
+      "url"
+    ],
+    "recommendedArgs": [
+      {
+        "name": "limit",
+        "type": "int",
+        "required": false,
+        "default": 20
+      }
+    ]
+  },
+  {
+    "name": "dark_json",
+    "description": "huodongxing dark_json",
+    "strategy": "cookie",
+    "endpoint": "cdn.huodongxing.com/app/hdx/dark.json",
+    "itemPath": null,
+    "recommendedColumns": [
+      "title",
+      "url"
+    ],
+    "recommendedArgs": [
+      {
+        "name": "limit",
+        "type": "int",
+        "required": false,
+        "default": 20
+      }
+    ]
+  },
+  {
+    "name": "getapitoken",
+    "description": "huodongxing getapitoken",
+    "strategy": "cookie",
+    "endpoint": "huodongxing.com/account/getapitoken",
+    "itemPath": null,
+    "recommendedColumns": [
+      "title",
+      "url"
+    ],
+    "recommendedArgs": [
+      {
+        "name": "limit",
+        "type": "int",
+        "required": false,
+        "default": 20
+      }
+    ]
+  },
+  {
+    "name": "hot",
+    "description": "huodongxing hot",
+    "strategy": "header",
+    "endpoint": "huodongxing.com/hdxapp-api/venue/get_hot_list?city={}",
+    "itemPath": null,
+    "recommendedColumns": [
+      "title",
+      "url"
+    ],
+    "recommendedArgs": [
+      {
+        "name": "limit",
+        "type": "int",
+        "required": false,
+        "default": 20
+      }
+    ]
+  }
+]

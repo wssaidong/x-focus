@@ -1,50 +1,50 @@
 [
   {
-    "title": "How to center CSS",
-    "score": -3,
-    "answers": 0,
-    "url": "https://stackoverflow.com/questions/79936601/how-to-center-css"
-  },
-  {
-    "title": "How to use a variable that could potentially be null in C#?",
-    "score": -1,
-    "answers": 1,
-    "url": "https://stackoverflow.com/questions/79936619/how-to-use-a-variable-that-could-potentially-be-null-in-c"
-  },
-  {
-    "title": "message_reaction update doesn&#39;t arrive on bot-sent messages in 1:1 Telegram DMs",
-    "score": 0,
-    "answers": 1,
-    "url": "https://stackoverflow.com/questions/79936617/message-reaction-update-doesnt-arrive-on-bot-sent-messages-in-11-telegram-dms"
-  },
-  {
-    "title": "Inferring types of optional properties",
+    "title": "C++ Cast base class unique_ptr to derived class unique_ptr",
     "score": 0,
     "answers": 0,
-    "url": "https://stackoverflow.com/questions/79936620/inferring-types-of-optional-properties"
+    "url": "https://stackoverflow.com/questions/79936684/c-cast-base-class-unique-ptr-to-derived-class-unique-ptr"
   },
   {
-    "title": "JSONEncoder.encode causes stack overflow crash (thread_chkstk_darwin) on iOS 26.3.1 only — deeply nested Codable model",
+    "title": "Shared Python Swig Modules",
     "score": -1,
     "answers": 0,
-    "url": "https://stackoverflow.com/questions/79936613/jsonencoder-encode-causes-stack-overflow-crash-thread-chkstk-darwin-on-ios-26"
+    "url": "https://stackoverflow.com/questions/79936690/shared-python-swig-modules"
   },
   {
-    "title": "Protobuff and multiple layers of inheritence",
-    "score": 0,
-    "answers": 0,
-    "url": "https://stackoverflow.com/questions/79936625/protobuff-and-multiple-layers-of-inheritence"
-  },
-  {
-    "title": "syntax error- missing operator or semicolon near 100",
+    "title": "terminate called after throwing an instance of &#39;int&#39; (written in my console)",
     "score": -3,
     "answers": 0,
-    "url": "https://stackoverflow.com/questions/79936597/syntax-error-missing-operator-or-semicolon-near-100"
+    "url": "https://stackoverflow.com/questions/79936695/terminate-called-after-throwing-an-instance-of-int-written-in-my-console"
   },
   {
-    "title": "What Windows API should I use to create a blurred window?",
+    "title": "confusion matrix values and visualization",
+    "score": 0,
+    "answers": 0,
+    "url": "https://stackoverflow.com/questions/79936682/confusion-matrix-values-and-visualization"
+  },
+  {
+    "title": "Adding multiple PHP commands and records on a single HTML5 Bootstrap submit modal",
+    "score": -1,
+    "answers": 0,
+    "url": "https://stackoverflow.com/questions/79936687/adding-multiple-php-commands-and-records-on-a-single-html5-bootstrap-submit-moda"
+  },
+  {
+    "title": "Proper unit testing of a project built using scrapy that is supposed to make many network requests and database operations",
+    "score": 0,
+    "answers": 0,
+    "url": "https://stackoverflow.com/questions/79936685/proper-unit-testing-of-a-project-built-using-scrapy-that-is-supposed-to-make-man"
+  },
+  {
+    "title": "Center a object in CSS",
+    "score": -4,
+    "answers": 0,
+    "url": "https://stackoverflow.com/questions/79936631/center-a-object-in-css"
+  },
+  {
+    "title": "Getting a ConnectionString empty error in a webapi project with .net 10",
     "score": 1,
     "answers": 1,
-    "url": "https://stackoverflow.com/questions/79936602/what-windows-api-should-i-use-to-create-a-blurred-window"
+    "url": "https://stackoverflow.com/questions/79936663/getting-a-connectionstring-empty-error-in-a-webapi-project-with-net-10"
   }
 ]

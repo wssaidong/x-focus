@@ -1,74 +1,74 @@
 [
   {
     "rank": 1,
-    "title": "A bidirectional typechecking puzzle",
-    "score": 30,
-    "author": "Gabriella439",
-    "comments": 5,
-    "tags": "plt",
-    "url": "https://lobste.rs/s/rsj8sx/bidirectional_typechecking_puzzle"
-  },
-  {
-    "rank": 2,
     "title": "Why didn’t IPv6 work in my home network?",
-    "score": 18,
+    "score": 33,
     "author": "gowthamgts",
-    "comments": 7,
+    "comments": 13,
     "tags": "debugging, networking",
     "url": "https://lobste.rs/s/yhk0mq/why_didn_t_ipv6_work_my_home_network"
   },
   {
-    "rank": 3,
+    "rank": 2,
     "title": "RSS Feeds Send Me More Traffic Than Google",
-    "score": 39,
+    "score": 62,
     "author": "repl",
-    "comments": 0,
+    "comments": 12,
     "tags": "web",
     "url": "https://lobste.rs/s/z0nkyf/rss_feeds_send_me_more_traffic_than_google"
   },
   {
+    "rank": 3,
+    "title": "A bidirectional typechecking puzzle",
+    "score": 37,
+    "author": "Gabriella439",
+    "comments": 9,
+    "tags": "plt",
+    "url": "https://lobste.rs/s/rsj8sx/bidirectional_typechecking_puzzle"
+  },
+  {
     "rank": 4,
     "title": "A Caddy Cert Expired Because systemd-resolved Was Selectively Broken",
-    "score": 18,
+    "score": 24,
     "author": "robalex",
-    "comments": 7,
+    "comments": 8,
     "tags": "devops, networking",
     "url": "https://lobste.rs/s/z0ozbb/caddy_cert_expired_because_systemd"
   },
   {
     "rank": 5,
+    "title": "claude code is not making your product better",
+    "score": 19,
+    "author": "carlana",
+    "comments": 5,
+    "tags": "vibecoding",
+    "url": "https://lobste.rs/s/kn0jwm/claude_code_is_not_making_your_product"
+  },
+  {
+    "rank": 6,
     "title": "Bun (the js runtime) is being vibe-ported from zig to rust",
-    "score": 44,
+    "score": 48,
     "author": "pscanf",
-    "comments": 49,
+    "comments": 53,
     "tags": "javascript, vibecoding",
     "url": "https://lobste.rs/s/otxkjw/bun_js_runtime_is_being_vibe_ported_from"
   },
   {
-    "rank": 6,
+    "rank": 7,
     "title": "Podman rootless containers and the Copy Fail exploit",
-    "score": 34,
+    "score": 37,
     "author": "ggpsv",
     "comments": 11,
     "tags": "linux, security",
     "url": "https://lobste.rs/s/pdckk8/podman_rootless_containers_copy_fail"
   },
   {
-    "rank": 7,
+    "rank": 8,
     "title": "Security Advisory: Local privilege escalation in Lix and Nix",
-    "score": 65,
+    "score": 67,
     "author": "raito",
     "comments": 4,
     "tags": "nix, security",
     "url": "https://lobste.rs/s/g0crsm/security_advisory_local_privilege"
-  },
-  {
-    "rank": 8,
-    "title": "Async Rust never left the MVP state",
-    "score": 112,
-    "author": "radim",
-    "comments": 9,
-    "tags": "rust",
-    "url": "https://lobste.rs/s/flowcy/async_rust_never_left_mvp_state"
   }
 ]

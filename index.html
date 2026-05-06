@@ -3,995 +3,395 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Focus — 每日文摘</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..800;1,6..72,300..800&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
+  <title>Focus — Brutalist</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap');
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg-page: #F2EFE9;
-      --bg-card: #FDFCF9;
-      --bg-header: rgba(242,239,233,0.94);
-      --ink: #1C1917;
-      --ink-mid: #44403C;
-      --ink-light: #78716C;
-      --ink-faint: #A8A29E;
-      --accent: #C8392B;
-      --accent-dim: rgba(200,57,43,0.09);
-      --accent-mid: rgba(200,57,43,0.18);
-      --rule: #D6D3CD;
-      --rule-light: #E7E5E4;
-      --shadow-sm: 0 1px 3px rgba(28,25,23,0.06);
-      --shadow-md: 0 4px 16px rgba(28,25,23,0.08), 0 1px 4px rgba(28,25,23,0.05);
-      --shadow-lg: 0 12px 40px rgba(28,25,23,0.12), 0 2px 8px rgba(28,25,23,0.06);
-      --src-36kr: #C8392B;
-      --src-v2ex: #1D3B6E;
-      --src-so: #C2682A;
-      --src-tieba: #A88C1A;
-      --src-lobsters: #8C2E1A;
+      --bg: #f5f5f0;
+      --ink: #0a0a0a;
+      --accent: #ff3300;
+      --accent2: #0000ff;
+      --card: #ffffff;
+      --border: #0a0a0a;
+      --shadow: 4px 4px 0 var(--ink);
     }
 
     html { font-size: 16px; scroll-behavior: smooth; }
 
     body {
-      font-family: 'DM Sans', -apple-system, sans-serif;
-      background: var(--bg-page);
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
       color: var(--ink);
-      line-height: 1.6;
+      line-height: 1.5;
       min-height: 100vh;
-      overflow-x: hidden;
-      /* layered depth background */
-      background-image:
-        radial-gradient(ellipse at 15% 0%, rgba(200,57,43,0.05) 0%, transparent 50%),
-        radial-gradient(ellipse at 85% 100%, rgba(29,59,110,0.05) 0%, transparent 50%);
     }
 
-    /* ── Header ── */
-    .header {
+    ::selection { background: var(--accent); color: #fff; }
+
+    /* Header */
+    header {
+      background: var(--ink);
+      color: #fff;
+      padding: 0 24px;
+      border-bottom: 4px solid var(--accent);
       position: sticky;
       top: 0;
       z-index: 100;
-      background: var(--bg-header);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--rule);
     }
+
     .header-inner {
-      max-width: 1320px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 0 2rem;
-      height: 60px;
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: 2rem;
-    }
-    .masthead {
       display: flex;
-      align-items: baseline;
-      gap: 0.6rem;
+      align-items: center;
+      gap: 24px;
+      height: 64px;
     }
-    .masthead-title {
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 1.35rem;
-      font-weight: 600;
-      font-optical-sizing: auto;
-      color: var(--ink);
-      letter-spacing: -0.03em;
-    }
-    .masthead-rule {
-      width: 1px;
-      height: 14px;
-      background: var(--rule);
-    }
-    .masthead-sub {
-      font-size: 0.7rem;
-      font-weight: 400;
-      color: var(--ink-faint);
-      letter-spacing: 0.08em;
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -1px;
       text-transform: uppercase;
-    }
-    .header-meta {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      font-size: 0.72rem;
-      color: var(--ink-faint);
-    }
-    .header-meta-item { display: flex; align-items: center; gap: 0.3rem; }
-    .header-actions { display: flex; align-items: center; gap: 0.5rem; }
-    .btn {
-      background: transparent;
-      border: 1px solid var(--rule);
-      color: var(--ink-mid);
-      padding: 0.35rem 0.85rem;
-      border-radius: 6px;
-      font-size: 0.72rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      transition: all 0.18s;
-      font-family: inherit;
-    }
-    .btn:hover { border-color: var(--ink); color: var(--ink); background: var(--bg-card); }
-    .btn-accent { background: var(--accent); border-color: var(--accent); color: white; }
-    .btn-accent:hover { background: #B03024; border-color: #B03024; color: white; }
-    .kbd {
-      background: var(--bg-page);
-      border: 1px solid var(--rule);
-      padding: 0.08rem 0.35rem;
-      border-radius: 3px;
-      font-size: 0.62rem;
-      font-family: monospace;
-      color: var(--ink-faint);
-    }
-
-    /* ── Issue Banner ── */
-    .issue-banner {
-      max-width: 1320px;
-      margin: 0 auto;
-      padding: 1.25rem 2rem 0;
-      display: flex;
-      align-items: baseline;
-      gap: 1rem;
-      opacity: 0;
-      animation: fadeUp 0.5s ease 0.1s forwards;
-    }
-    .issue-date {
-      font-family: 'Newsreader', serif;
-      font-size: 0.8rem;
-      color: var(--ink-faint);
-      font-style: italic;
-    }
-    .issue-line {
-      flex: 1;
-      height: 1px;
-      background: var(--rule);
-    }
-    .issue-count {
-      font-size: 0.68rem;
-      color: var(--ink-faint);
-      letter-spacing: 0.05em;
-    }
-
-    /* ── Main ── */
-    .main {
-      max-width: 1320px;
-      margin: 0 auto;
-      padding: 1.5rem 2rem 5rem;
-    }
-
-    /* ── Bento Grid ── */
-    .bento {
-      display: grid;
-      gap: 1rem;
-      grid-template-columns: repeat(12, 1fr);
-      grid-template-rows: auto;
-    }
-
-    /* Hero card — spans 7 cols */
-    .card-hero {
-      grid-column: 1 / 8;
-      background: var(--bg-card);
-      border: 1px solid var(--rule);
-      border-radius: 12px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: all 0.25s;
-      box-shadow: var(--shadow-sm);
-      opacity: 0;
-      animation: fadeUp 0.6s ease 0.15s forwards;
-    }
-    .card-hero:hover { box-shadow: var(--shadow-lg); border-color: var(--rule-light); }
-    .card-hero.selected { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-mid), var(--shadow-md); }
-    .card-hero-inner {
-      display: grid;
-      grid-template-columns: 1fr 280px;
-      min-height: 260px;
-    }
-    .hero-content { padding: 2rem 2rem 2rem 2.25rem; display: flex; flex-direction: column; justify-content: space-between; }
-    .hero-eyebrow { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem; }
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      background: var(--accent);
-      color: white;
-      padding: 0.22rem 0.65rem;
-      border-radius: 3px;
-      font-size: 0.6rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-    .src-tag {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.18rem 0.55rem;
-      border-radius: 3px;
-      font-size: 0.6rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-    }
-    .src-tag.v2ex { background: rgba(29,59,110,0.08); color: var(--src-v2ex); }
-    .src-tag.kr { background: rgba(200,57,43,0.08); color: var(--src-36kr); }
-    .src-tag.so { background: rgba(194,104,42,0.08); color: var(--src-so); }
-    .src-tag.tieba { background: rgba(168,140,26,0.08); color: var(--src-tieba); }
-    .src-tag.lobsters { background: rgba(140,46,26,0.08); color: var(--src-lobsters); }
-    .hero-title {
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 1.7rem;
-      font-weight: 500;
-      font-optical-sizing: auto;
-      line-height: 1.28;
-      letter-spacing: -0.02em;
-      color: var(--ink);
-      margin-bottom: 1rem;
-    }
-    .hero-title em { font-style: italic; color: var(--accent); }
-    .hero-footer { display: flex; align-items: center; justify-content: space-between; }
-    .hero-stats { display: flex; align-items: center; gap: 1rem; font-size: 0.72rem; color: var(--ink-faint); }
-    .hero-stats span { display: flex; align-items: center; gap: 0.28rem; }
-    .hero-cta { font-size: 0.72rem; color: var(--accent); display: flex; align-items: center; gap: 0.3rem; font-weight: 500; }
-    .hero-image {
-      background: linear-gradient(160deg, #E8E4DC 0%, #DEDAD2 100%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-image::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        repeating-linear-gradient(
-          0deg,
-          transparent,
-          transparent 23px,
-          rgba(28,25,23,0.03) 23px,
-          rgba(28,25,23,0.03) 24px
-        );
-    }
-    .hero-image-icon {
-      font-family: 'Newsreader', serif;
-      font-size: 2.8rem;
-      font-style: italic;
-      color: var(--ink-faint);
-      opacity: 0.5;
-      position: relative;
-      z-index: 1;
-    }
-    .hero-image-label {
-      font-size: 0.62rem;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--ink-faint);
-      position: relative;
-      z-index: 1;
-    }
-
-    /* Top-right stacked cards — 5 cols */
-    .stack-right {
-      grid-column: 8 / 13;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    .card-mini {
-      background: var(--bg-card);
-      border: 1px solid var(--rule);
-      border-radius: 10px;
-      padding: 1.1rem 1.25rem;
-      cursor: pointer;
-      transition: all 0.22s;
-      box-shadow: var(--shadow-sm);
-      opacity: 0;
-      animation: fadeUp 0.6s ease forwards;
-      position: relative;
-    }
-    .card-mini:nth-child(1) { animation-delay: 0.2s; }
-    .card-mini:nth-child(2) { animation-delay: 0.3s; }
-    .card-mini:nth-child(3) { animation-delay: 0.4s; }
-    .card-mini:hover { box-shadow: var(--shadow-md); border-color: var(--rule-light); background: var(--bg-card); }
-    .card-mini.selected { border-color: var(--accent); background: var(--accent-dim); }
-    .card-mini-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; }
-    .card-mini-rank {
-      font-family: 'Newsreader', serif;
-      font-size: 1.5rem;
-      font-weight: 300;
-      color: var(--ink-faint);
+      border: 3px solid #fff;
+      padding: 2px 10px;
       line-height: 1;
     }
-    .card-mini.selected .card-mini-rank { color: var(--accent); }
-    .card-mini-title {
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 0.92rem;
-      font-weight: 450;
-      font-optical-sizing: auto;
-      line-height: 1.4;
-      color: var(--ink);
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      margin-bottom: 0.65rem;
-    }
-    .card-mini-footer { display: flex; align-items: center; justify-content: space-between; }
-    .card-mini-stat { font-size: 0.65rem; color: var(--ink-faint); display: flex; align-items: center; gap: 0.25rem; }
-    .card-mini-stat.score { color: var(--accent); }
 
-    /* Source filter strip */
-    .source-strip {
-      grid-column: 1 / -1;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.6rem 0;
-      opacity: 0;
-      animation: fadeUp 0.5s ease 0.45s forwards;
-    }
-    .source-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.32rem 0.85rem;
-      border-radius: 20px;
-      border: 1px solid var(--rule);
-      background: var(--bg-card);
-      font-size: 0.72rem;
-      cursor: pointer;
-      transition: all 0.15s;
-      color: var(--ink-mid);
-      box-shadow: var(--shadow-sm);
-    }
-    .source-chip:hover { border-color: var(--ink-faint); color: var(--ink); }
-    .source-chip.active { background: var(--ink); border-color: var(--ink); color: white; }
-    .source-chip .dot { width: 7px; height: 7px; border-radius: 50%; }
+    .logo span { color: var(--accent); }
 
-    /* Article list — spans 8 cols */
-    .article-col {
-      grid-column: 1 / 9;
-      opacity: 0;
-      animation: fadeUp 0.6s ease 0.5s forwards;
-    }
-    .col-header {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      padding-bottom: 0.75rem;
-      margin-bottom: 0.75rem;
-      border-bottom: 2px solid var(--ink);
-    }
-    .col-title {
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 1rem;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-    }
-    .col-meta { font-size: 0.68rem; color: var(--ink-faint); }
-    .article-row {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 0.85rem 0;
-      border-bottom: 1px solid var(--rule-light);
-      cursor: pointer;
-      transition: all 0.18s;
-      border-radius: 6px;
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
-    }
-    .article-row:hover { background: var(--bg-card); padding-left: 0.75rem; padding-right: 0.75rem; }
-    .article-row.selected { background: var(--accent-dim); padding-left: 0.75rem; padding-right: 0.75rem; }
-    .row-rank {
-      font-family: 'Newsreader', serif;
-      font-size: 1.3rem;
-      font-weight: 300;
-      color: var(--ink-faint);
-      min-width: 32px;
-      text-align: right;
-      flex-shrink: 0;
-    }
-    .article-row.selected .row-rank { color: var(--accent); }
-    .row-body { flex: 1; min-width: 0; }
-    .row-title {
-      font-family: 'Newsreader', Georgia, serif;
+    .search-wrap { flex: 1; max-width: 320px; }
+
+    #search {
+      width: 100%;
+      background: #222;
+      border: 2px solid #fff;
+      color: #fff;
+      font-family: inherit;
       font-size: 0.9rem;
-      font-weight: 450;
-      font-optical-sizing: auto;
-      line-height: 1.4;
-      color: var(--ink);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-bottom: 0.25rem;
+      padding: 8px 12px;
+      outline: none;
     }
-    .row-meta { display: flex; align-items: center; gap: 0.75rem; font-size: 0.65rem; color: var(--ink-faint); }
-    .row-bookmark {
+
+    #search::placeholder { color: #888; }
+
+    .header-count {
+      margin-left: auto;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Filter */
+    .filter-bar {
+      background: var(--ink);
+      border-bottom: 3px solid var(--ink);
+    }
+
+    .filter-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+    }
+
+    .filter-btn {
       background: none;
       border: none;
-      color: var(--ink-faint);
-      cursor: pointer;
-      padding: 0.3rem;
-      border-radius: 5px;
-      transition: all 0.15s;
-      display: flex;
-      align-items: center;
-      flex-shrink: 0;
-    }
-    .row-bookmark:hover { color: var(--accent); background: var(--accent-dim); }
-    .row-bookmark.active { color: var(--accent); }
-
-    /* Sidebar — spans 4 cols */
-    .sidebar-col {
-      grid-column: 9 / 13;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      opacity: 0;
-      animation: fadeUp 0.6s ease 0.55s forwards;
-    }
-    .sidebar-card {
-      background: var(--bg-card);
-      border: 1px solid var(--rule);
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-    }
-    .sidebar-card-header {
-      padding: 0.85rem 1.1rem;
-      border-bottom: 1px solid var(--rule-light);
-      font-family: 'Newsreader', Georgia, serif;
-      font-size: 0.88rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .sidebar-card-header-meta { font-family: 'DM Sans', sans-serif; font-size: 0.65rem; font-weight: 400; color: var(--ink-faint); }
-    .sidebar-body { padding: 0.5rem; }
-    .sidebar-item {
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-      padding: 0.6rem 0.75rem;
-      border-radius: 7px;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-    .sidebar-item:hover { background: var(--bg-page); }
-    .sidebar-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .sidebar-name { flex: 1; font-size: 0.78rem; color: var(--ink-mid); }
-    .sidebar-count { font-size: 0.7rem; color: var(--ink-faint); }
-    .bookmark-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.6rem;
-      padding: 0.65rem 0.75rem;
-      border-radius: 7px;
-      cursor: pointer;
-      transition: background 0.15s;
-    }
-    .bookmark-item:hover { background: var(--bg-page); }
-    .bookmark-item svg { color: var(--accent); flex-shrink: 0; margin-top: 2px; }
-    .bookmark-text { flex: 1; font-size: 0.75rem; color: var(--ink); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .bookmark-remove { background: none; border: none; color: var(--ink-faint); cursor: pointer; padding: 0.15rem; border-radius: 3px; opacity: 0; transition: opacity 0.15s; }
-    .bookmark-item:hover .bookmark-remove { opacity: 1; }
-    .bookmark-remove:hover { color: var(--accent); }
-
-    /* ── Focus Mode ── */
-    .layout.focus-mode .sidebar-col,
-    .layout.focus-mode .stack-right,
-    .layout.focus-mode .source-strip { display: none; }
-    .layout.focus-mode .card-hero { grid-column: 1 / -1; }
-    .layout.focus-mode .article-col { grid-column: 1 / -1; }
-    .focus-indicator {
-      display: none;
-      position: fixed;
-      top: 76px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--ink);
-      color: white;
-      padding: 0.4rem 1rem;
-      border-radius: 20px;
-      font-size: 0.72rem;
-      z-index: 99;
-    }
-    .focus-indicator.active { display: flex; align-items: center; gap: 0.4rem; }
-
-    /* ── Toast ── */
-    .toast-container {
-      position: fixed;
-      bottom: 3.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1001;
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-      pointer-events: none;
-    }
-    .toast {
-      background: var(--ink);
-      color: white;
-      padding: 0.55rem 1.1rem;
-      border-radius: 7px;
+      border-right: 2px solid #333;
+      color: #888;
+      font-family: inherit;
       font-size: 0.8rem;
-      box-shadow: var(--shadow-md);
-      animation: fadeUp 0.25s ease;
-    }
-    .toast.success { background: #2D6E45; }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(14px); }
-      to { opacity: 1; transform: translateY(0); }
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 14px 20px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: color 0.1s, background 0.1s;
     }
 
-    /* ── Keyboard Hint ── */
-    .kbd-hint {
-      position: fixed;
-      bottom: 1.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--bg-card);
-      border: 1px solid var(--rule);
-      padding: 0.45rem 1.25rem;
-      border-radius: 24px;
+    .filter-btn:hover { color: #fff; background: #222; }
+    .filter-btn.active { color: var(--accent); background: #111; }
+
+    /* Main */
+    main { max-width: 1200px; margin: 0 auto; padding: 32px 24px 80px; }
+
+    /* Grid */
+    .feed {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 3px;
+    }
+
+    .item {
+      background: var(--card);
+      border: 3px solid var(--ink);
+      padding: 24px;
+      grid-column: span 4;
+      cursor: pointer;
+      transition: box-shadow 0.1s, transform 0.1s;
+      position: relative;
+    }
+
+    .item:hover {
+      box-shadow: var(--shadow);
+      transform: translate(-2px, -2px);
+    }
+
+    .item.featured { grid-column: span 8; border-color: var(--accent); }
+    .item.secondary { grid-column: span 6; }
+
+    /* Index number */
+    .item-index {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: #eee;
+      line-height: 1;
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      letter-spacing: -4px;
+    }
+
+    .item:hover .item-index { color: var(--accent); }
+
+    /* Source */
+    .item-src {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+      display: inline-block;
+      background: var(--ink);
+      color: #fff;
+      padding: 3px 8px;
+    }
+
+    .src-36kr { background: #e63900; }
+    .src-v2ex { background: #1d3b6e; }
+    .src-stackoverflow { background: #c2682a; }
+    .src-tieba { background: #7a6600; color: #fff; }
+    .src-lobsters { background: #8c2e1a; }
+
+    /* Title */
+    .item-title {
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.35;
+      margin-bottom: 14px;
+      color: var(--ink);
+    }
+
+    .item.featured .item-title { font-size: 1.3rem; }
+    .item a { color: inherit; text-decoration: none; }
+    .item a:hover { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 3px; }
+
+    /* Meta */
+    .item-meta {
       display: flex;
-      align-items: center;
-      gap: 1rem;
-      font-size: 0.68rem;
-      color: var(--ink-faint);
-      box-shadow: var(--shadow-sm);
-      z-index: 50;
+      gap: 16px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
-    .kbd-hint span { display: flex; align-items: center; gap: 0.3rem; }
 
-    /* ── Skeleton ── */
-    .skeleton {
-      background: linear-gradient(90deg, var(--rule) 25%, var(--rule-light) 50%, var(--rule) 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.5s infinite;
-      border-radius: 8px;
-    }
-    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-    .sk-hero { height: 280px; border-radius: 12px; margin-bottom: 1rem; }
-    .sk-card { height: 120px; border-radius: 10px; }
-    .sk-row { height: 64px; border-radius: 6px; margin-bottom: 1px; }
+    .vote { color: var(--accent); }
+    .item:hover .vote { color: var(--ink); }
 
-    /* ── Scrollbar ── */
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--ink-faint); }
+    /* Tags */
+    .item-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 12px; }
 
-    /* ── Responsive ── */
-    @media (max-width: 1100px) {
-      .card-hero { grid-column: 1 / -1; }
-      .card-hero-inner { grid-template-columns: 1fr; }
-      .hero-image { display: none; }
-      .stack-right { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; }
-      .card-mini { flex: 1 1 240px; }
-      .article-col { grid-column: 1 / -1; }
-      .sidebar-col { grid-column: 1 / -1; }
+    .tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 2px 6px;
+      border: 2px solid var(--ink);
     }
-    @media (max-width: 640px) {
-      .header { padding: 0 1rem; }
-      .header-meta { display: none; }
-      .issue-banner { padding: 1rem 1rem 0; }
-      .main { padding: 1rem; }
-      .kbd-hint { display: none; }
-      .btn span { display: none; }
-      .bento { gap: 0.75rem; }
+
+    .item:hover .tag { background: var(--ink); color: #fff; }
+
+    /* Empty */
+    .empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 80px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #ccc;
     }
+
+    /* Footer bar */
+    .footer-bar {
+      background: var(--ink);
+      color: #888;
+      padding: 16px 24px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+    }
+
+    .footer-bar span { white-space: nowrap; }
+    .footer-bar span::before { content: '// '; color: var(--accent); }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .item { grid-column: span 6; }
+      .item.featured { grid-column: span 12; }
+    }
+    @media (max-width: 600px) {
+      .item { grid-column: span 12; }
+      .item.featured { grid-column: span 12; }
+      main { padding: 16px 12px 60px; }
+    }
+
+    /* Entrance */
+    .item {
+      opacity: 0;
+      transform: translateY(16px);
+      animation: up 0.3s ease forwards;
+    }
+    @keyframes up { to { opacity: 1; transform: translateY(0); } }
+    .item:nth-child(1){animation-delay:0.05s}
+    .item:nth-child(2){animation-delay:0.1s}
+    .item:nth-child(3){animation-delay:0.15s}
+    .item:nth-child(4){animation-delay:0.2s}
+    .item:nth-child(5){animation-delay:0.25s}
+    .item:nth-child(6){animation-delay:0.3s}
+    .item:nth-child(7){animation-delay:0.35s}
+    .item:nth-child(8){animation-delay:0.4s}
   </style>
 </head>
 <body>
-  <header class="header">
-    <div class="header-inner">
-      <div class="masthead">
-        <span class="masthead-title">Focus</span>
-        <span class="masthead-rule"></span>
-        <span class="masthead-sub">每日文摘</span>
-      </div>
-      <div class="header-meta">
-        <div class="header-meta-item">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          <span id="lastUpdated">加载中…</span>
-        </div>
-        <div class="header-meta-item">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-          <span id="savedCount">0</span>
-          <span>已收藏</span>
-        </div>
-      </div>
-      <div class="header-actions">
-        <button class="btn btn-accent" onclick="toggleFocusMode()">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
-          <span>专注</span>
-          <kbd>F</kbd>
-        </button>
-      </div>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">FOCUS<span>.</span></div>
+    <div class="search-wrap">
+      <input type="text" id="search" placeholder="SEARCH..." autocomplete="off" spellcheck="false">
     </div>
-  </header>
-
-  <div class="focus-indicator" id="focusIndicator">
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
-    专注模式
+    <div class="header-count"><span id="item-count">0</span> ITEMS</div>
   </div>
+</header>
 
-  <div class="issue-banner">
-    <span class="issue-date" id="issueDate"></span>
-    <div class="issue-line"></div>
-    <span class="issue-count" id="totalCount"></span>
-  </div>
+<div class="filter-bar">
+  <div class="filter-inner" id="filter-bar"></div>
+</div>
 
-  <main class="main">
-    <div class="layout bento">
-      <!-- Skeleton -->
-      <div id="skeletonLoader" style="grid-column:1/-1">
-        <div class="skeleton sk-hero"></div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
-          <div class="skeleton sk-card"></div>
-          <div class="skeleton sk-card"></div>
-          <div class="skeleton sk-card"></div>
-        </div>
-      </div>
+<main>
+  <div class="feed" id="feed"></div>
+</main>
 
-      <!-- Hero -->
-      <div id="featuredArticle"></div>
+<div class="footer-bar">
+  <span>Focus v3.0 — Neo-Brutalist</span>
+  <span>AGENTS.ML</span>
+  <span>OPEN SOURCE</span>
+</div>
 
-      <!-- Right stack -->
-      <div class="stack-right" id="stackRight"></div>
+<script>
+const SOURCES = [
+  { id: '36kr',     label: '36Kr',         color: '#e63900', url: '36kr.json' },
+  { id: 'v2ex',     label: 'V2EX',         color: '#1d3b6e', url: 'v2ex.json' },
+  { id: 'stackoverflow', label: 'StackOverflow', color: '#c2682a', url: 'stackoverflow.json' },
+  { id: 'tieba',    label: '贴吧',          color: '#7a6600', url: 'tieba.json' },
+  { id: 'lobsters', label: 'Lobsters',      color: '#8c2e1a', url: 'lobsters.json' },
+];
 
-      <!-- Source filter -->
-      <div class="source-strip" id="sourceStrip"></div>
+const state = { items: [], activeSource: 'all', search: '' };
 
-      <!-- Article list -->
-      <div class="article-col" id="articleCol">
-        <div class="col-header">
-          <span class="col-title">全部内容</span>
-          <span class="col-meta" id="listMeta"></span>
-        </div>
-        <div id="articleList"></div>
-      </div>
+async function load() {
+  const all = await Promise.all(SOURCES.map(s => fetch(s.url).then(r => r.json()).catch(() => [])));
+  state.items = all.flat();
+  state.items.sort((a, b) => new Date(b.time) - new Date(a.time));
+  render();
+}
 
-      <!-- Sidebar -->
-      <aside class="sidebar-col">
-        <div class="sidebar-card">
-          <div class="sidebar-card-header">
-            来源分布
-            <span class="sidebar-card-header-meta" id="sourceTotal"></span>
-          </div>
-          <div class="sidebar-body" id="sourceStats"></div>
-        </div>
-        <div class="sidebar-card">
-          <div class="sidebar-card-header">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-            我的收藏
-          </div>
-          <div class="sidebar-body" id="bookmarkList"></div>
-        </div>
-      </aside>
-    </div>
-  </main>
-
-  <div class="kbd-hint">
-    <span><kbd>J</kbd><kbd>K</kbd> 导航</span>
-    <span><kbd>Enter</kbd> 打开</span>
-    <span><kbd>B</kbd> 收藏</span>
-    <span><kbd>F</kbd> 专注</span>
-  </div>
-
-  <div class="toast-container" id="toastContainer"></div>
-
-  <script>
-    const SOURCES = {
-      '36kr': { name: '36Kr', cls: 'kr', color: '#C8392B' },
-      'v2ex': { name: 'V2EX', cls: 'v2ex', color: '#1D3B6E' },
-      'stackoverflow': { name: 'Stack Overflow', cls: 'so', color: '#C2682A' },
-      'tieba': { name: '贴吧', cls: 'tieba', color: '#A88C1A' },
-      'lobsters': { name: 'Lobsters', cls: 'lobsters', color: '#8C2E1A' }
+function renderFilters() {
+  const counts = {};
+  state.items.forEach(i => counts[i.source] = (counts[i.source] || 0) + 1);
+  const bar = document.getElementById('filter-bar');
+  bar.innerHTML = [
+    { id: 'all', label: 'All', count: state.items.length },
+    ...SOURCES.map(s => ({ id: s.id, label: s.label, count: counts[s.id] || 0 }))
+  ].map(f => `<button class="filter-btn${f.id==='all'?' active':''}" data-src="${f.id}">${f.label} (${f.count})</button>`).join('');
+  bar.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.activeSource = btn.dataset.src;
+      render();
     };
+  });
+}
 
-    let articles = [];
-    let filteredArticles = [];
-    let selectedIndex = 0;
-    let bookmarks = JSON.parse(localStorage.getItem('focusBookmarks') || '[]');
-    let isFocusMode = false;
+function render() {
+  document.getElementById('item-count').textContent = filtered().length;
+  renderFilters();
+  const feed = document.getElementById('feed');
+  const list = filtered().slice(0, 40);
+  if (!list.length) { feed.innerHTML = '<div class="empty">NO RESULTS</div>'; return; }
+  feed.innerHTML = list.map((item, i) => {
+    const src = SOURCES.find(s => s.id === item.source) || SOURCES[0];
+    const n = String(i + 1).padStart(2, '0');
+    const tags = (item.tags || []).slice(0, 3).map(t => `<span class="tag">${t}</span>`).join('');
+    const cls = i === 0 ? 'featured' : i === 1 ? 'secondary' : '';
+    return `<div class="item ${cls}" onclick="window.open('${item.url}','_blank')">
+      <div class="item-index">${n}</div>
+      <div class="item-src src-${item.source}">${src.label}</div>
+      <div class="item-title"><a href="${item.url}" target="_blank" rel="noopener">${item.title}</a></div>
+      <div class="item-meta">
+        ${item.votes ? `<span class="vote">▲ ${item.votes}</span>` : ''}
+        ${item.comments ? `<span>💬 ${item.comments}</span>` : ''}
+        ${item.author ? `<span>@${item.author}</span>` : ''}
+        ${item.time ? `<span>${timeAgo(item.time)}</span>` : ''}
+      </div>
+      ${tags ? `<div class="item-tags">${tags}</div>` : ''}
+    </div>`;
+  }).join('');
+}
 
-    // Set date in banner
-    (function() {
-      const now = new Date();
-      const days = ['周日','周一','周二','周三','周四','周五','周六'];
-      const months = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
-      document.getElementById('issueDate').textContent =
-        `${months[now.getMonth()]}${now.getDate()}日 ${days[now.getDay()]}`;
-    })();
+function filtered() {
+  return state.items.filter(item => {
+    const matchSrc = state.activeSource === 'all' || item.source === state.activeSource;
+    const q = state.search.toLowerCase();
+    const matchSearch = !q || [item.title, item.author, ...(item.tags||[])].some(f => (f||'').toLowerCase().includes(q));
+    return matchSrc && matchSearch;
+  });
+}
 
-    async function loadData() {
-      const files = ['36kr.json','v2ex.json','stackoverflow.json','tieba.json','lobsters.json'];
-      const map = { '36kr.json':'36kr','v2ex.json':'v2ex','stackoverflow.json':'stackoverflow','tieba.json':'tieba','lobsters.json':'lobsters' };
-      try {
-        const results = await Promise.all(files.map(f => fetch(f).then(r => r.json()).catch(() => [])));
-        results.forEach((data, i) => {
-          const src = map[files[i]];
-          data.forEach(item => articles.push({ ...item, source: src, id: item.url || `${src}-${item.rank||item.id}` }));
-        });
-        articles.sort((a, b) => (a.rank||99) - (b.rank||99));
-        filteredArticles = [...articles];
-        document.getElementById('lastUpdated').textContent = `更新于 ${new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'})}`;
-        document.getElementById('totalCount').textContent = `${articles.length} 条内容`;
-      } catch(e) {
-        showToast('数据加载失败');
-      }
-      renderUI();
-    }
+function timeAgo(ts) {
+  const d = new Date(ts), now = new Date(), diff = Math.floor((now-d)/1000);
+  if (diff < 60) return diff+'s';
+  if (diff < 3600) return Math.floor(diff/60)+'m';
+  if (diff < 86400) return Math.floor(diff/3600)+'h';
+  if (diff < 604800) return Math.floor(diff/86400)+'d';
+  return d.toLocaleDateString('zh-CN', {month:'short',day:'numeric'});
+}
 
-    function renderUI() {
-      document.getElementById('skeletonLoader').style.display = 'none';
-      renderHero();
-      renderStack();
-      renderSourceStrip();
-      renderList();
-      renderSidebar();
-      renderBookmarks();
-      updateStats();
-    }
+let t;
+document.getElementById('search').addEventListener('input', e => {
+  clearTimeout(t);
+  t = setTimeout(() => { state.search = e.target.value; render(); }, 200);
+});
 
-    function renderHero() {
-      const f = filteredArticles[0];
-      if (!f) return;
-      const sc = SOURCES[f.source]||{};
-      document.getElementById('featuredArticle').innerHTML = `
-        <div class="card-hero ${selectedIndex===0?'selected':''}" onclick="openArticle(0)">
-          <div class="card-hero-inner">
-            <div class="hero-content">
-              <div class="hero-eyebrow">
-                <span class="hero-badge">
-                  <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                  今日精选
-                </span>
-                <span class="src-tag ${sc.cls}">${sc.name||f.source}</span>
-              </div>
-              <h1 class="hero-title">${f.title}</h1>
-              <div class="hero-footer">
-                <div class="hero-stats">
-                  ${f.score!==undefined?`<span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>${f.score}</span>`:''}
-                  ${f.answers!==undefined?`<span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${f.answers}</span>`:''}
-                  ${f.replies!==undefined?`<span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${f.replies}</span>`:''}
-                  ${f.discussions!==undefined?`<span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${f.discussions}</span>`:''}
-                </div>
-                <span class="hero-cta">
-                  阅读原文
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </span>
-              </div>
-            </div>
-            <div class="hero-image">
-              <div class="hero-image-icon">${sc.name||''}</div>
-              <div class="hero-image-label">${(sc.name||f.source).toUpperCase()}</div>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderStack() {
-      const items = filteredArticles.slice(1, 4);
-      const startIdx = 1;
-      document.getElementById('stackRight').innerHTML = items.map((a, i) => {
-        const idx = startIdx + i;
-        const sc = SOURCES[a.source]||{};
-        const bk = bookmarks.some(b => b.id === a.id);
-        return `
-          <div class="card-mini ${selectedIndex===idx?'selected':''}" data-index="${idx}" onclick="openArticle(${idx})">
-            <div class="card-mini-top">
-              <span class="card-mini-rank">${a.rank||idx}</span>
-              <span class="src-tag ${sc.cls}">${sc.name||a.source}</span>
-            </div>
-            <div class="card-mini-title">${a.title}</div>
-            <div class="card-mini-footer">
-              <span class="card-mini-stat ${a.score!==undefined?'score':''}">
-                ${a.score!==undefined?`<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>${a.score}`:''}
-                ${a.answers!==undefined?`<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${a.answers}`:''}
-                ${a.replies!==undefined?`<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>${a.replies}`:''}
-              </span>
-              <button class="row-bookmark ${bk?'active':''}" onclick="event.stopPropagation();toggleBookmark(${idx})">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="${bk?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-              </button>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function renderSourceStrip() {
-      const counts = {};
-      filteredArticles.forEach(a => counts[a.source] = (counts[a.source]||0)+1);
-      const allCount = filteredArticles.length;
-      let html = `<div class="source-chip ${filteredArticles.length===articles.length?'active':''}" onclick="filterBySource('all')">全部</div>`;
-      html += Object.entries(counts).map(([src,count]) => {
-        const sc = SOURCES[src]||{};
-        return `<div class="source-chip" onclick="filterBySource('${src}')">
-          <span class="dot" style="background:${sc.color}"></span>
-          ${sc.name||src} <span style="color:var(--ink-faint)">${count}</span>
-        </div>`;
-      }).join('');
-      document.getElementById('sourceStrip').innerHTML = html;
-    }
-
-    function renderList() {
-      const items = filteredArticles.slice(4);
-      const startIdx = 4;
-      document.getElementById('listMeta').textContent = `${items.length} 条`;
-      document.getElementById('articleList').innerHTML = items.map((a, i) => {
-        const idx = startIdx + i;
-        const sc = SOURCES[a.source]||{};
-        const bk = bookmarks.some(b => b.id === a.id);
-        return `
-          <div class="article-row ${selectedIndex===idx?'selected':''}" data-index="${idx}" onclick="openArticle(${idx})">
-            <div class="row-rank">${a.rank||idx}</div>
-            <div class="row-body">
-              <div class="row-title">${a.title}</div>
-              <div class="row-meta">
-                <span class="src-tag ${sc.cls}" style="font-size:0.58rem">${sc.name||a.source}</span>
-                ${a.score!==undefined?`<span style="display:flex;align-items:center;gap:0.2rem"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>${a.score}</span>`:''}
-                ${a.replies!==undefined?`<span>${a.replies} 回复</span>`:''}
-                ${a.node?`<span>${a.node}</span>`:''}
-              </div>
-            </div>
-            <button class="row-bookmark ${bk?'active':''}" onclick="event.stopPropagation();toggleBookmark(${idx})">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="${bk?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-            </button>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function renderSidebar() {
-      const counts = {};
-      filteredArticles.forEach(a => counts[a.source] = (counts[a.source]||0)+1);
-      document.getElementById('sourceTotal').textContent = `${filteredArticles.length} 条`;
-      document.getElementById('sourceStats').innerHTML = Object.entries(counts).map(([src,count]) => {
-        const sc = SOURCES[src]||{};
-        return `
-          <div class="sidebar-item" onclick="filterBySource('${src}')">
-            <span class="sidebar-dot" style="background:${sc.color}"></span>
-            <span class="sidebar-name">${sc.name||src}</span>
-            <span class="sidebar-count">${count}</span>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function renderBookmarks() {
-      const el = document.getElementById('bookmarkList');
-      if (!bookmarks.length) {
-        el.innerHTML = '<div style="padding:1rem;text-align:center;color:var(--ink-faint);font-size:0.75rem">按 <strong>B</strong> 收藏文章</div>';
-        return;
-      }
-      el.innerHTML = bookmarks.map(b => `
-        <div class="bookmark-item" onclick="openBookmark('${b.id}')">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-          <span class="bookmark-text">${b.title}</span>
-          <button class="bookmark-remove" onclick="event.stopPropagation();removeBookmark('${b.id}')">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          </button>
-        </div>
-      `).join('');
-    }
-
-    function updateStats() {
-      document.getElementById('savedCount').textContent = bookmarks.length;
-    }
-
-    function openArticle(index) {
-      selectedIndex = index;
-      const a = filteredArticles[index];
-      if (!a) return;
-      markAsRead(a.id);
-      window.open(a.url, '_blank');
-      renderHero();
-      renderStack();
-      renderList();
-    }
-
-    function markAsRead(id) {
-      let read = JSON.parse(localStorage.getItem('focusRead')||'[]');
-      if (!read.includes(id)) { read.push(id); localStorage.setItem('focusRead',JSON.stringify(read)); }
-    }
-
-    function toggleBookmark(index) {
-      const a = filteredArticles[index];
-      if (!a) return;
-      const ex = bookmarks.findIndex(b => b.id === a.id);
-      if (ex >= 0) { bookmarks.splice(ex,1); showToast('已取消收藏'); }
-      else { bookmarks.push({id:a.id,title:a.title,url:a.url,source:a.source}); showToast('已收藏','success'); }
-      localStorage.setItem('focusBookmarks',JSON.stringify(bookmarks));
-      renderStack();
-      renderList();
-      renderBookmarks();
-      updateStats();
-    }
-
-    function removeBookmark(id) {
-      bookmarks = bookmarks.filter(b => b.id !== id);
-      localStorage.setItem('focusBookmarks',JSON.stringify(bookmarks));
-      renderStack();
-      renderList();
-      renderBookmarks();
-      updateStats();
-      showToast('已移除收藏');
-    }
-
-    function openBookmark(id) {
-      const a = filteredArticles.find(x => x.id === id);
-      if (a) { selectedIndex = filteredArticles.indexOf(a); window.open(a.url,'_blank'); markAsRead(id); renderHero(); renderStack(); renderList(); }
-    }
-
-    function filterBySource(src) {
-      filteredArticles = src==='all' ? [...articles] : articles.filter(a => a.source===src);
-      selectedIndex = 0;
-      renderHero();
-      renderStack();
-      renderSourceStrip();
-      renderList();
-      renderSidebar();
-    }
-
-    function toggleFocusMode() {
-      isFocusMode = !isFocusMode;
-      document.querySelector('.bento').classList.toggle('layout', !isFocusMode);
-      if (isFocusMode) document.querySelector('.bento').classList.add('layout', 'focus-mode');
-      else document.querySelector('.bento').classList.remove('focus-mode');
-      document.getElementById('focusIndicator').classList.toggle('active', isFocusMode);
-      showToast(isFocusMode?'专注模式':'已退出专注模式');
-    }
-
-    function showToast(msg, type='') {
-      const c = document.getElementById('toastContainer');
-      const t = document.createElement('div');
-      t.className = `toast ${type}`;
-      t.textContent = msg;
-      c.appendChild(t);
-      setTimeout(() => t.remove(), 2500);
-    }
-
-    function navigate(dir) {
-      const max = filteredArticles.length - 1;
-      selectedIndex = Math.max(0, Math.min(max, selectedIndex + dir));
-      const el = document.querySelector(`[data-index="${selectedIndex}"]`) || document.querySelector('.card-hero') || document.querySelector('.card-mini');
-      el?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      renderHero();
-      renderStack();
-      renderList();
-    }
-
-    function copyLink() {
-      const a = filteredArticles[selectedIndex];
-      if (a) { navigator.clipboard.writeText(a.url); showToast('链接已复制','success'); }
-    }
-
-    document.addEventListener('keydown', e => {
-      if (e.key==='j'||e.key==='J'||e.key==='ArrowDown') navigate(1);
-      else if (e.key==='k'||e.key==='K'||e.key==='ArrowUp') navigate(-1);
-      else if (e.key==='Enter') openArticle(selectedIndex);
-      else if (e.key==='b'||e.key==='B') toggleBookmark(selectedIndex);
-      else if (e.key==='c'||e.key==='C') copyLink();
-      else if (e.key==='f'||e.key==='F') toggleFocusMode();
-      else if (e.key==='Escape') { if (isFocusMode) toggleFocusMode(); }
-    });
-
-    loadData();
-  </script>
+load();
+</script>
 </body>
 </html>
