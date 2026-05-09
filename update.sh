@@ -6,7 +6,7 @@ CDIR="$(dirname "$0")"
 cd "$CDIR"
 
 SOURCES=(
-  "36kr:36kr hot --type renqi --limit 8 -f json"
+  "36kr:36kr news --limit 8 -f json"
   "v2ex:v2ex hot --limit 8 -f json"
   "stackoverflow:stackoverflow hot --limit 8 -f json"
   "tieba:tieba hot --limit 8 -f json"

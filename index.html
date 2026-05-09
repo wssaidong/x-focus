@@ -3,394 +3,835 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Focus — Brutalist</title>
+  <title>Focus — 热点精选</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap');
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #f5f5f0;
-      --ink: #0a0a0a;
-      --accent: #ff3300;
-      --accent2: #0000ff;
-      --card: #ffffff;
-      --border: #0a0a0a;
-      --shadow: 4px 4px 0 var(--ink);
+      --bg: #FAF8F5;
+      --surface: #ffffff;
+      --ink: #1a1613;
+      --ink-muted: #6b6259;
+      --ink-faint: #c4b8ad;
+      --accent: #c8973f;
+      --accent-light: #f5ead8;
+      --border: #e8e0d8;
+      --shadow: 0 2px 8px rgba(26,22,19,0.06);
+      --shadow-hover: 0 8px 32px rgba(26,22,19,0.12);
+      --font-display: 'Playfair Display', 'Noto Serif SC', Georgia, serif;
+      --font-body: 'DM Sans', 'Noto Serif SC', system-ui, sans-serif;
+      --sidebar-w: 260px;
     }
 
     html { font-size: 16px; scroll-behavior: smooth; }
 
     body {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: var(--font-body);
       background: var(--bg);
       color: var(--ink);
-      line-height: 1.5;
+      line-height: 1.6;
       min-height: 100vh;
     }
 
     ::selection { background: var(--accent); color: #fff; }
 
-    /* Header */
-    header {
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--ink-faint); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--ink-muted); }
+
+    /* ── Layout ─────────────────────────────────── */
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ─────────────────────────────────── */
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
       background: var(--ink);
       color: #fff;
-      padding: 0 24px;
-      border-bottom: 4px solid var(--accent);
       position: sticky;
       top: 0;
-      z-index: 100;
+      height: 100vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
     }
 
-    .header-inner {
-      max-width: 1200px;
-      margin: 0 auto;
+    .sidebar-logo {
+      padding: 36px 28px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .sidebar-logo .wordmark {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #fff;
+    }
+
+    .sidebar-logo .wordmark span {
+      color: var(--accent);
+    }
+
+    .sidebar-logo .tagline {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: 4px;
+    }
+
+    .sidebar-section {
+      padding: 24px 28px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .sidebar-section-title {
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 16px;
+    }
+
+    /* Source list in sidebar */
+    .source-list { list-style: none; }
+
+    .source-item {
       display: flex;
       align-items: center;
-      gap: 24px;
-      height: 64px;
+      justify-content: space-between;
+      padding: 9px 0;
+      cursor: pointer;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: opacity 0.15s;
     }
 
-    .logo {
-      font-size: 1.4rem;
+    .source-item:last-child { border-bottom: none; }
+
+    .source-item:hover { opacity: 0.7; }
+
+    .source-item.active { opacity: 1; }
+
+    .source-item-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .source-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .source-name {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.85);
+    }
+
+    .source-item.active .source-name { color: #fff; }
+
+    .source-count {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.06);
+      padding: 2px 7px;
+      border-radius: 20px;
+    }
+
+    .source-item.active .source-count {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* Stats */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .stat-card {
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
       font-weight: 700;
-      letter-spacing: -1px;
-      text-transform: uppercase;
-      border: 3px solid #fff;
-      padding: 2px 10px;
+      color: var(--accent);
       line-height: 1;
     }
 
-    .logo span { color: var(--accent); }
-
-    .search-wrap { flex: 1; max-width: 320px; }
-
-    #search {
-      width: 100%;
-      background: #222;
-      border: 2px solid #fff;
-      color: #fff;
-      font-family: inherit;
-      font-size: 0.9rem;
-      padding: 8px 12px;
-      outline: none;
-    }
-
-    #search::placeholder { color: #888; }
-
-    .header-count {
-      margin-left: auto;
-      font-size: 0.85rem;
-      font-weight: 700;
+    .stat-label {
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.3);
       text-transform: uppercase;
       letter-spacing: 1px;
+      margin-top: 4px;
     }
 
-    /* Filter */
-    .filter-bar {
-      background: var(--ink);
-      border-bottom: 3px solid var(--ink);
+    /* Sidebar footer */
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 24px 28px;
+      border-top: 1px solid rgba(255,255,255,0.06);
     }
 
-    .filter-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px;
+    .sidebar-footer p {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.2);
+      line-height: 1.5;
+    }
+
+    .sidebar-footer a { color: var(--accent); text-decoration: none; }
+
+    /* ── Main ───────────────────────────────────── */
+    .main {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ── Top bar ─────────────────────────────────── */
+    .topbar {
+      background: rgba(250,248,245,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      height: 64px;
       display: flex;
-      gap: 0;
-      overflow-x: auto;
+      align-items: center;
+      gap: 20px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
     }
 
-    .filter-btn {
-      background: none;
-      border: none;
-      border-right: 2px solid #333;
-      color: #888;
-      font-family: inherit;
-      font-size: 0.8rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      padding: 14px 20px;
-      cursor: pointer;
+    .topbar-date {
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+      font-weight: 500;
       white-space: nowrap;
-      transition: color 0.1s, background 0.1s;
     }
 
-    .filter-btn:hover { color: #fff; background: #222; }
-    .filter-btn.active { color: var(--accent); background: #111; }
-
-    /* Main */
-    main { max-width: 1200px; margin: 0 auto; padding: 32px 24px 80px; }
-
-    /* Grid */
-    .feed {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 3px;
+    .topbar-divider {
+      width: 1px;
+      height: 20px;
+      background: var(--border);
     }
 
-    .item {
-      background: var(--card);
-      border: 3px solid var(--ink);
-      padding: 24px;
-      grid-column: span 4;
+    .search-wrap {
+      flex: 1;
+      max-width: 400px;
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 16px 8px 40px;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23c4b8ad' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: 14px center;
+    }
+
+    .search-input::placeholder { color: var(--ink-faint); }
+    .search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
+
+    .topbar-hint {
+      margin-left: auto;
+      font-size: 0.7rem;
+      color: var(--ink-faint);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .kbd {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 0.65rem;
+      font-family: monospace;
+      color: var(--ink-muted);
+    }
+
+    /* ── Content ─────────────────────────────────── */
+    .content {
+      padding: 40px;
+      max-width: 860px;
+    }
+
+    /* ── Hero ────────────────────────────────────── */
+    .hero {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(16px);
+      animation: slideUp 0.4s ease forwards;
+      animation-delay: 0.05s;
       cursor: pointer;
-      transition: box-shadow 0.1s, transform 0.1s;
+      transition: box-shadow 0.2s, transform 0.2s;
       position: relative;
     }
 
-    .item:hover {
-      box-shadow: var(--shadow);
-      transform: translate(-2px, -2px);
+    .hero:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px);
     }
 
-    .item.featured { grid-column: span 8; border-color: var(--accent); }
-    .item.secondary { grid-column: span 6; }
-
-    /* Index number */
-    .item-index {
-      font-size: 3.5rem;
-      font-weight: 700;
-      color: #eee;
-      line-height: 1;
-      position: absolute;
-      top: 16px;
-      right: 20px;
-      letter-spacing: -4px;
-    }
-
-    .item:hover .item-index { color: var(--accent); }
-
-    /* Source */
-    .item-src {
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 12px;
-      display: inline-block;
-      background: var(--ink);
-      color: #fff;
-      padding: 3px 8px;
-    }
-
-    .src-36kr { background: #e63900; }
-    .src-v2ex { background: #1d3b6e; }
-    .src-stackoverflow { background: #c2682a; }
-    .src-tieba { background: #7a6600; color: #fff; }
-    .src-lobsters { background: #8c2e1a; }
-
-    /* Title */
-    .item-title {
-      font-size: 1rem;
-      font-weight: 600;
-      line-height: 1.35;
-      margin-bottom: 14px;
-      color: var(--ink);
-    }
-
-    .item.featured .item-title { font-size: 1.3rem; }
-    .item a { color: inherit; text-decoration: none; }
-    .item a:hover { text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 3px; }
-
-    /* Meta */
-    .item-meta {
+    .hero-inner {
       display: flex;
-      gap: 16px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: #666;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      gap: 0;
     }
 
-    .vote { color: var(--accent); }
-    .item:hover .vote { color: var(--ink); }
+    .hero-accent {
+      width: 4px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
 
-    /* Tags */
-    .item-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 12px; }
+    .hero-body { padding: 32px 36px; flex: 1; }
 
-    .tag {
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .hero-badge {
       font-size: 0.65rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      padding: 2px 6px;
-      border: 2px solid var(--ink);
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 4px 10px;
+      border-radius: 20px;
     }
 
-    .item:hover .tag { background: var(--ink); color: #fff; }
-
-    /* Empty */
-    .empty {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 80px;
-      font-size: 1.5rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: #ccc;
-    }
-
-    /* Footer bar */
-    .footer-bar {
-      background: var(--ink);
-      color: #888;
-      padding: 16px 24px;
+    .hero-source {
       font-size: 0.75rem;
+      color: var(--ink-muted);
+      font-weight: 500;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--ink);
+      margin-bottom: 14px;
+      letter-spacing: -0.3px;
+    }
+
+    .hero-title a { color: inherit; text-decoration: none; }
+    .hero-title a:hover { color: var(--accent); }
+
+    .hero-desc {
+      font-size: 0.9rem;
+      color: var(--ink-muted);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .hero-meta-item {
+      font-size: 0.75rem;
+      color: var(--ink-faint);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .hero-meta-item strong { color: var(--ink-muted); font-weight: 600; }
+
+    /* ── Feed ────────────────────────────────────── */
+    .feed-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .feed-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .feed-count {
+      font-size: 0.75rem;
+      color: var(--ink-faint);
+      font-weight: 500;
+    }
+
+    .article-list { list-style: none; }
+
+    .article-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+      opacity: 0;
+      transform: translateY(12px);
+      animation: slideUp 0.35s ease forwards;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .article-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .article-card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px);
+      border-color: var(--ink-faint);
+    }
+
+    .article-card:hover::before { opacity: 1; }
+
+    .article-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+
+    .article-index {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--border);
+      line-height: 1;
+      min-width: 36px;
+      user-select: none;
+      transition: color 0.2s;
+    }
+
+    .article-card:hover .article-index { color: var(--accent); }
+
+    .article-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.45;
+      flex: 1;
+      text-decoration: none;
+    }
+
+    .article-title:hover { color: var(--accent); }
+
+    .article-excerpt {
+      font-size: 0.83rem;
+      color: var(--ink-muted);
+      line-height: 1.6;
+      margin-bottom: 12px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .article-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .article-meta {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .article-meta-item {
+      font-size: 0.72rem;
+      color: var(--ink-faint);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .article-meta-item strong { color: var(--ink-muted); font-weight: 600; }
+
+    .article-source-chip {
+      font-size: 0.65rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      display: flex;
-      gap: 24px;
-      overflow-x: auto;
+      letter-spacing: 0.8px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      color: #fff;
     }
 
-    .footer-bar span { white-space: nowrap; }
-    .footer-bar span::before { content: '// '; color: var(--accent); }
+    /* ── Empty ───────────────────────────────────── */
+    .empty-state {
+      text-align: center;
+      padding: 80px 40px;
+    }
 
-    /* Responsive */
+    .empty-icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      opacity: 0.3;
+    }
+
+    .empty-title {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .empty-desc {
+      font-size: 0.88rem;
+      color: var(--ink-muted);
+    }
+
+    /* ── Animations ──────────────────────────────── */
+    @keyframes slideUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* stagger each article card */
+    .article-card:nth-child(1) { animation-delay: 0.1s; }
+    .article-card:nth-child(2) { animation-delay: 0.15s; }
+    .article-card:nth-child(3) { animation-delay: 0.2s; }
+    .article-card:nth-child(4) { animation-delay: 0.25s; }
+    .article-card:nth-child(5) { animation-delay: 0.3s; }
+    .article-card:nth-child(6) { animation-delay: 0.35s; }
+    .article-card:nth-child(7) { animation-delay: 0.4s; }
+    .article-card:nth-child(8) { animation-delay: 0.45s; }
+    .article-card:nth-child(9) { animation-delay: 0.5s; }
+    .article-card:nth-child(10) { animation-delay: 0.55s; }
+
+    /* ── Responsive ──────────────────────────────── */
     @media (max-width: 900px) {
-      .item { grid-column: span 6; }
-      .item.featured { grid-column: span 12; }
-    }
-    @media (max-width: 600px) {
-      .item { grid-column: span 12; }
-      .item.featured { grid-column: span 12; }
-      main { padding: 16px 12px 60px; }
+      .sidebar { display: none; }
+      .content { padding: 24px 20px; }
+      .topbar { padding: 0 20px; }
     }
 
-    /* Entrance */
-    .item {
-      opacity: 0;
-      transform: translateY(16px);
-      animation: up 0.3s ease forwards;
+    @media (max-width: 600px) {
+      .hero-inner { flex-direction: column; }
+      .hero-body { padding: 24px 20px; }
+      .hero-title { font-size: 1.3rem; }
+      .topbar-hint { display: none; }
     }
-    @keyframes up { to { opacity: 1; transform: translateY(0); } }
-    .item:nth-child(1){animation-delay:0.05s}
-    .item:nth-child(2){animation-delay:0.1s}
-    .item:nth-child(3){animation-delay:0.15s}
-    .item:nth-child(4){animation-delay:0.2s}
-    .item:nth-child(5){animation-delay:0.25s}
-    .item:nth-child(6){animation-delay:0.3s}
-    .item:nth-child(7){animation-delay:0.35s}
-    .item:nth-child(8){animation-delay:0.4s}
   </style>
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <div class="logo">FOCUS<span>.</span></div>
-    <div class="search-wrap">
-      <input type="text" id="search" placeholder="SEARCH..." autocomplete="off" spellcheck="false">
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="wordmark">Focus<span>.</span></div>
+      <div class="tagline">热点精选</div>
     </div>
-    <div class="header-count"><span id="item-count">0</span> ITEMS</div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">来源</div>
+      <ul class="source-list" id="source-list"></ul>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">统计</div>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-number" id="stat-total">—</div>
+          <div class="stat-label">全部</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="stat-sources">—</div>
+          <div class="stat-label">来源</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <p>数据每30分钟自动更新<br>
+      由 <a href="#">opencli</a> 驱动</p>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-date" id="topbar-date"></div>
+      <div class="topbar-divider"></div>
+      <div class="search-wrap">
+        <input type="text" class="search-input" id="search" placeholder="搜索热点..." autocomplete="off" spellcheck="false">
+      </div>
+      <div class="topbar-hint">
+        <span class="kbd">/</span> 搜索
+      </div>
+    </div>
+
+    <div class="content">
+      <div id="hero-container"></div>
+      <div class="feed-header">
+        <div class="feed-title">热门文章</div>
+        <div class="feed-count" id="feed-count"></div>
+      </div>
+      <div id="article-list"></div>
+    </div>
   </div>
-</header>
-
-<div class="filter-bar">
-  <div class="filter-inner" id="filter-bar"></div>
-</div>
-
-<main>
-  <div class="feed" id="feed"></div>
-</main>
-
-<div class="footer-bar">
-  <span>Focus v3.0 — Neo-Brutalist</span>
-  <span>AGENTS.ML</span>
-  <span>OPEN SOURCE</span>
 </div>
 
 <script>
 const SOURCES = [
-  { id: '36kr',     label: '36Kr',         color: '#e63900', url: '36kr.json' },
-  { id: 'v2ex',     label: 'V2EX',         color: '#1d3b6e', url: 'v2ex.json' },
-  { id: 'stackoverflow', label: 'StackOverflow', color: '#c2682a', url: 'stackoverflow.json' },
-  { id: 'tieba',    label: '贴吧',          color: '#7a6600', url: 'tieba.json' },
-  { id: 'lobsters', label: 'Lobsters',      color: '#8c2e1a', url: 'lobsters.json' },
+  { id: '36kr',        label: '36氪',       color: '#e63900', excerpt: '今日最热科技与商业资讯', url: '36kr.json' },
+  { id: 'v2ex',        label: 'V2EX',       color: '#1d3b6e', excerpt: '程序员社区热门讨论', url: 'v2ex.json' },
+  { id: 'stackoverflow', label: 'Stack Overflow', color: '#c2682a', excerpt: '技术问答精选', url: 'stackoverflow.json' },
+  { id: 'tieba',       label: '百度贴吧',   color: '#7a6600', excerpt: '网友热议话题', url: 'tieba.json' },
+  { id: 'lobsters',    label: 'Lobsters',  color: '#8c2e1a', excerpt: '编程社区精华', url: 'lobsters.json' },
+  { id: 'hackernews',  label: 'Hacker News', color: '#ff6600', excerpt: '全球技术前沿', url: 'hackernews.json' },
 ];
 
 const state = { items: [], activeSource: 'all', search: '' };
 
+function normalizeItem(raw, sourceId) {
+  const src = SOURCES.find(s => s.id === sourceId);
+  return {
+    source: sourceId,
+    sourceLabel: src ? src.label : sourceId,
+    sourceColor: src ? src.color : '#888',
+    title: raw.title || '',
+    url: raw.url || '#',
+    votes: raw.votes || raw.score || raw.discussions || null,
+    comments: raw.comments || raw.replies || raw.answers || null,
+    author: raw.author || raw.node || null,
+    time: raw.time || null,
+    excerpt: raw.description || raw.excerpt || null,
+    tags: raw.tags ? (Array.isArray(raw.tags) ? raw.tags : raw.tags.split(',').map(t => t.trim())) : [],
+  };
+}
+
 async function load() {
-  const all = await Promise.all(SOURCES.map(s => fetch(s.url).then(r => r.json()).catch(() => [])));
-  state.items = all.flat();
-  state.items.sort((a, b) => new Date(b.time) - new Date(a.time));
+  const all = await Promise.all(SOURCES.map(s =>
+    fetch(s.url).then(r => r.json()).catch(() => [])
+  ));
+
+  state.items = all
+    .map((items, i) => items.map(raw => normalizeItem(raw, SOURCES[i].id)))
+    .flat()
+    .sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0));
+
   render();
 }
 
-function renderFilters() {
+function renderSidebar() {
   const counts = {};
-  state.items.forEach(i => counts[i.source] = (counts[i.source] || 0) + 1);
-  const bar = document.getElementById('filter-bar');
-  bar.innerHTML = [
-    { id: 'all', label: 'All', count: state.items.length },
-    ...SOURCES.map(s => ({ id: s.id, label: s.label, count: counts[s.id] || 0 }))
-  ].map(f => `<button class="filter-btn${f.id==='all'?' active':''}" data-src="${f.id}">${f.label} (${f.count})</button>`).join('');
-  bar.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.onclick = () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      state.activeSource = btn.dataset.src;
-      render();
-    };
-  });
-}
+  SOURCES.forEach(s => counts[s.id] = 0);
+  state.items.forEach(i => { if (counts[i.source] !== undefined) counts[i.source]++; });
 
-function render() {
-  document.getElementById('item-count').textContent = filtered().length;
-  renderFilters();
-  const feed = document.getElementById('feed');
-  const list = filtered().slice(0, 40);
-  if (!list.length) { feed.innerHTML = '<div class="empty">NO RESULTS</div>'; return; }
-  feed.innerHTML = list.map((item, i) => {
-    const src = SOURCES.find(s => s.id === item.source) || SOURCES[0];
-    const n = String(i + 1).padStart(2, '0');
-    const tags = (item.tags || []).slice(0, 3).map(t => `<span class="tag">${t}</span>`).join('');
-    const cls = i === 0 ? 'featured' : i === 1 ? 'secondary' : '';
-    return `<div class="item ${cls}" onclick="window.open('${item.url}','_blank')">
-      <div class="item-index">${n}</div>
-      <div class="item-src src-${item.source}">${src.label}</div>
-      <div class="item-title"><a href="${item.url}" target="_blank" rel="noopener">${item.title}</a></div>
-      <div class="item-meta">
-        ${item.votes ? `<span class="vote">▲ ${item.votes}</span>` : ''}
-        ${item.comments ? `<span>💬 ${item.comments}</span>` : ''}
-        ${item.author ? `<span>@${item.author}</span>` : ''}
-        ${item.time ? `<span>${timeAgo(item.time)}</span>` : ''}
+  const total = state.items.length;
+  const activeCount = state.activeSource === 'all' ? total : (counts[state.activeSource] || 0);
+
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-sources').textContent = SOURCES.length;
+
+  const html = [
+    { id: 'all', label: '全部', color: '#c8973f' },
+    ...SOURCES
+  ].map(s => {
+    const count = s.id === 'all' ? total : (counts[s.id] || 0);
+    const active = state.activeSource === s.id ? ' active' : '';
+    return `<li class="source-item${active}" data-src="${s.id}">
+      <div class="source-item-left">
+        <div class="source-dot" style="background:${s.color}"></div>
+        <span class="source-name">${s.label}</span>
       </div>
-      ${tags ? `<div class="item-tags">${tags}</div>` : ''}
-    </div>`;
+      <span class="source-count">${count}</span>
+    </li>`;
   }).join('');
+
+  const list = document.getElementById('source-list');
+  list.innerHTML = html;
+  list.querySelectorAll('.source-item').forEach(el => {
+    el.addEventListener('click', () => {
+      state.activeSource = el.dataset.src;
+      render();
+    });
+  });
 }
 
 function filtered() {
   return state.items.filter(item => {
     const matchSrc = state.activeSource === 'all' || item.source === state.activeSource;
     const q = state.search.toLowerCase();
-    const matchSearch = !q || [item.title, item.author, ...(item.tags||[])].some(f => (f||'').toLowerCase().includes(q));
+    const matchSearch = !q || [item.title, item.author, item.sourceLabel, ...item.tags].some(f => (f||'').toLowerCase().includes(q));
     return matchSrc && matchSearch;
   });
 }
 
 function timeAgo(ts) {
-  const d = new Date(ts), now = new Date(), diff = Math.floor((now-d)/1000);
-  if (diff < 60) return diff+'s';
-  if (diff < 3600) return Math.floor(diff/60)+'m';
-  if (diff < 86400) return Math.floor(diff/3600)+'h';
-  if (diff < 604800) return Math.floor(diff/86400)+'d';
-  return d.toLocaleDateString('zh-CN', {month:'short',day:'numeric'});
+  if (!ts) return '';
+  const d = new Date(ts), now = new Date(), diff = Math.floor((now - d) / 1000);
+  if (diff < 60) return diff + '秒前';
+  if (diff < 3600) return Math.floor(diff / 60) + '分钟前';
+  if (diff < 86400) return Math.floor(diff / 3600) + '小时前';
+  if (diff < 604800) return Math.floor(diff / 86400) + '天前';
+  return d.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
 }
 
-let t;
+function icon(type) {
+  const icons = { votes: '▲', comments: '💬', author: '@', time: '⏱' };
+  return icons[type] || '';
+}
+
+function render() {
+  const list = filtered();
+  document.getElementById('feed-count').textContent = `${list.length} 篇文章`;
+  renderSidebar();
+
+  if (!list.length) {
+    document.getElementById('hero-container').innerHTML = '';
+    document.getElementById('article-list').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🔍</div>
+        <div class="empty-title">暂无结果</div>
+        <div class="empty-desc">换个关键词试试</div>
+      </div>`;
+    return;
+  }
+
+  const [hero, ...rest] = list.slice(0, 11);
+
+  // Hero
+  document.getElementById('hero-container').innerHTML = `
+    <div class="hero" onclick="window.open('${hero.url}', '_blank')">
+      <div class="hero-inner">
+        <div class="hero-accent"></div>
+        <div class="hero-body">
+          <div class="hero-eyebrow">
+            <span class="hero-badge">置顶</span>
+            <span class="hero-source">${hero.sourceLabel}</span>
+          </div>
+          <h2 class="hero-title"><a href="${hero.url}" target="_blank" rel="noopener">${hero.title}</a></h2>
+          ${hero.excerpt ? `<p class="hero-desc">${hero.excerpt}</p>` : ''}
+          <div class="hero-meta">
+            ${hero.votes !== null ? `<div class="hero-meta-item">${icon('votes')} <strong>${typeof hero.votes === 'string' ? hero.votes : hero.votes}</strong></div>` : ''}
+            ${hero.comments !== null ? `<div class="hero-meta-item">${icon('comments')} <strong>${hero.comments}</strong></div>` : ''}
+            ${hero.author ? `<div class="hero-meta-item">${icon('author')} <strong>${hero.author}</strong></div>` : ''}
+            ${hero.time ? `<div class="hero-meta-item">${icon('time')} <strong>${timeAgo(hero.time)}</strong></div>` : ''}
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  // Article list
+  const articlesHtml = rest.map((item, i) => {
+    const tags = item.tags.slice(0, 2).map(t => `<span class="tag">${t}</span>`).join('');
+    return `<li class="article-card" onclick="window.open('${item.url}', '_blank')">
+      <div class="article-top">
+        <div class="article-index">${String(i + 2).padStart(2, '0')}</div>
+        <div>
+          <div class="article-title"><a href="${item.url}" target="_blank" rel="noopener">${item.title}</a></div>
+          ${item.excerpt ? `<p class="article-excerpt">${item.excerpt}</p>` : ''}
+          <div class="article-footer">
+            <div class="article-meta">
+              ${item.votes !== null ? `<div class="article-meta-item">${icon('votes')} <strong>${typeof item.votes === 'string' ? item.votes : item.votes}</strong></div>` : ''}
+              ${item.comments !== null ? `<div class="article-meta-item">${icon('comments')} <strong>${item.comments}</strong></div>` : ''}
+              ${item.author ? `<div class="article-meta-item">${icon('author')} <strong>${item.author}</strong></div>` : ''}
+              ${item.time ? `<div class="article-meta-item">${icon('time')} ${timeAgo(item.time)}</div>` : ''}
+            </div>
+            <span class="article-source-chip" style="background:${item.sourceColor}">${item.sourceLabel}</span>
+          </div>
+        </div>
+      </div>
+    </li>`;
+  }).join('');
+
+  document.getElementById('article-list').innerHTML = `<ul class="article-list">${articlesHtml}</ul>`;
+}
+
+// Date
+function updateDate() {
+  const now = new Date();
+  const s = now.toLocaleDateString('zh-CN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  document.getElementById('topbar-date').textContent = s;
+}
+
+// Search
+let searchTimer;
 document.getElementById('search').addEventListener('input', e => {
-  clearTimeout(t);
-  t = setTimeout(() => { state.search = e.target.value; render(); }, 200);
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    state.search = e.target.value;
+    render();
+  }, 150);
 });
 
+// Keyboard shortcut: / to focus search
+document.addEventListener('keydown', e => {
+  if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+    e.preventDefault();
+    document.getElementById('search').focus();
+  }
+  if (e.key === 'Escape') {
+    document.getElementById('search').blur();
+    document.getElementById('search').value = '';
+    state.search = '';
+    render();
+  }
+});
+
+updateDate();
 load();
 </script>
 </body>

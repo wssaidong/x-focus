@@ -1,50 +1,50 @@
 [
   {
-    "title": "C++ Cast base class unique_ptr to derived class unique_ptr",
+    "title": "I&#39;m having a trouble with my system because when i enter a data it will not reload its self its need to be refersh to see the save data",
     "score": 0,
-    "answers": 0,
-    "url": "https://stackoverflow.com/questions/79936684/c-cast-base-class-unique-ptr-to-derived-class-unique-ptr"
+    "answers": 3,
+    "url": "https://stackoverflow.com/questions/79938467/im-having-a-trouble-with-my-system-because-when-i-enter-a-data-it-will-not-relo"
   },
   {
-    "title": "Shared Python Swig Modules",
-    "score": -1,
-    "answers": 0,
-    "url": "https://stackoverflow.com/questions/79936690/shared-python-swig-modules"
-  },
-  {
-    "title": "terminate called after throwing an instance of &#39;int&#39; (written in my console)",
-    "score": -3,
-    "answers": 0,
-    "url": "https://stackoverflow.com/questions/79936695/terminate-called-after-throwing-an-instance-of-int-written-in-my-console"
-  },
-  {
-    "title": "confusion matrix values and visualization",
-    "score": 0,
-    "answers": 0,
-    "url": "https://stackoverflow.com/questions/79936682/confusion-matrix-values-and-visualization"
-  },
-  {
-    "title": "Adding multiple PHP commands and records on a single HTML5 Bootstrap submit modal",
-    "score": -1,
-    "answers": 0,
-    "url": "https://stackoverflow.com/questions/79936687/adding-multiple-php-commands-and-records-on-a-single-html5-bootstrap-submit-moda"
-  },
-  {
-    "title": "Proper unit testing of a project built using scrapy that is supposed to make many network requests and database operations",
-    "score": 0,
-    "answers": 0,
-    "url": "https://stackoverflow.com/questions/79936685/proper-unit-testing-of-a-project-built-using-scrapy-that-is-supposed-to-make-man"
-  },
-  {
-    "title": "Center a object in CSS",
-    "score": -4,
-    "answers": 0,
-    "url": "https://stackoverflow.com/questions/79936631/center-a-object-in-css"
-  },
-  {
-    "title": "Getting a ConnectionString empty error in a webapi project with .net 10",
+    "title": "What is the best online training for Machine Learning course?",
     "score": 1,
+    "answers": 0,
+    "url": "https://stackoverflow.com/questions/79938468/what-is-the-best-online-training-for-machine-learning-course"
+  },
+  {
+    "title": "Do I still use the walrus operator in Go for repeated error handling?",
+    "score": -1,
     "answers": 1,
-    "url": "https://stackoverflow.com/questions/79936663/getting-a-connectionstring-empty-error-in-a-webapi-project-with-net-10"
+    "url": "https://stackoverflow.com/questions/79938470/do-i-still-use-the-walrus-operator-in-go-for-repeated-error-handling"
+  },
+  {
+    "title": "Where are JS primitives and reference types actually stored? Stack vs. Heap vs. Execution Context (AO/GO)",
+    "score": -2,
+    "answers": 0,
+    "url": "https://stackoverflow.com/questions/79938476/where-are-js-primitives-and-reference-types-actually-stored-stack-vs-heap-vs"
+  },
+  {
+    "title": "&quot;How can I start building a backend from scratch and learn best practices as a beginner?&quot;",
+    "score": 1,
+    "answers": 0,
+    "url": "https://stackoverflow.com/questions/79938462/how-can-i-start-building-a-backend-from-scratch-and-learn-best-practices-as-a-b"
+  },
+  {
+    "title": "Sanitize inputs and ensure you have a specific type",
+    "score": 0,
+    "answers": 0,
+    "url": "https://stackoverflow.com/questions/79938464/sanitize-inputs-and-ensure-you-have-a-specific-type"
+  },
+  {
+    "title": "MongoDB Partial Index still flagged as performance bottleneck for non-matching documents",
+    "score": 1,
+    "answers": 0,
+    "url": "https://stackoverflow.com/questions/79938473/mongodb-partial-index-still-flagged-as-performance-bottleneck-for-non-matching-d"
+  },
+  {
+    "title": "Tracking Pymc progress in streamlit",
+    "score": 0,
+    "answers": 0,
+    "url": "https://stackoverflow.com/questions/79938463/tracking-pymc-progress-in-streamlit"
   }
 ]

@@ -1,74 +1,74 @@
 [
   {
     "rank": 1,
-    "title": "Why didn’t IPv6 work in my home network?",
-    "score": 33,
-    "author": "gowthamgts",
-    "comments": 13,
-    "tags": "debugging, networking",
-    "url": "https://lobste.rs/s/yhk0mq/why_didn_t_ipv6_work_my_home_network"
+    "title": "Just Fucking Use Go",
+    "score": 134,
+    "author": "zarldev",
+    "comments": 183,
+    "tags": "go",
+    "url": "https://lobste.rs/s/znlkib/just_fucking_use_go"
   },
   {
     "rank": 2,
-    "title": "RSS Feeds Send Me More Traffic Than Google",
-    "score": 62,
-    "author": "repl",
-    "comments": 12,
-    "tags": "web",
-    "url": "https://lobste.rs/s/z0nkyf/rss_feeds_send_me_more_traffic_than_google"
+    "title": "Steering Zig Fmt",
+    "score": 12,
+    "author": "vi_mi",
+    "comments": 3,
+    "tags": "zig",
+    "url": "https://lobste.rs/s/auxtwd/steering_zig_fmt"
   },
   {
     "rank": 3,
-    "title": "A bidirectional typechecking puzzle",
-    "score": 37,
-    "author": "Gabriella439",
-    "comments": 9,
-    "tags": "plt",
-    "url": "https://lobste.rs/s/rsj8sx/bidirectional_typechecking_puzzle"
+    "title": "NixOS and Secrets",
+    "score": 22,
+    "author": "polywolf",
+    "comments": 8,
+    "tags": "nix",
+    "url": "https://lobste.rs/s/w2nz01/nixos_secrets"
   },
   {
     "rank": 4,
-    "title": "A Caddy Cert Expired Because systemd-resolved Was Selectively Broken",
-    "score": 24,
-    "author": "robalex",
-    "comments": 8,
-    "tags": "devops, networking",
-    "url": "https://lobste.rs/s/z0ozbb/caddy_cert_expired_because_systemd"
+    "title": "Stop MITM on the first SSH connection, on any VPS or cloud provider",
+    "score": 32,
+    "author": "JoachimSchipper",
+    "comments": 14,
+    "tags": "cryptography, devops, security",
+    "url": "https://lobste.rs/s/q5bds7/stop_mitm_on_first_ssh_connection_on_any"
   },
   {
     "rank": 5,
-    "title": "claude code is not making your product better",
-    "score": 19,
-    "author": "carlana",
-    "comments": 5,
-    "tags": "vibecoding",
-    "url": "https://lobste.rs/s/kn0jwm/claude_code_is_not_making_your_product"
+    "title": "Serving a Website on a Raspberry Pi Zero Running Entirely in RAM",
+    "score": 28,
+    "author": "bt",
+    "comments": 4,
+    "tags": "networking, web",
+    "url": "https://lobste.rs/s/fsueos/serving_website_on_raspberry_pi_zero"
   },
   {
     "rank": 6,
-    "title": "Bun (the js runtime) is being vibe-ported from zig to rust",
-    "score": 48,
-    "author": "pscanf",
-    "comments": 53,
-    "tags": "javascript, vibecoding",
-    "url": "https://lobste.rs/s/otxkjw/bun_js_runtime_is_being_vibe_ported_from"
+    "title": "I learned something about GPUs today",
+    "score": 21,
+    "author": "two",
+    "comments": 2,
+    "tags": "debugging, graphics",
+    "url": "https://lobste.rs/s/rrelxd/i_learned_something_about_gpus_today"
   },
   {
     "rank": 7,
-    "title": "Podman rootless containers and the Copy Fail exploit",
-    "score": 37,
-    "author": "ggpsv",
-    "comments": 11,
-    "tags": "linux, security",
-    "url": "https://lobste.rs/s/pdckk8/podman_rootless_containers_copy_fail"
+    "title": "What We Lost the Last Time Code Got Cheap",
+    "score": 26,
+    "author": "rwdf",
+    "comments": 1,
+    "tags": "practices, vibecoding",
+    "url": "https://lobste.rs/s/eabrz3/what_we_lost_last_time_code_got_cheap"
   },
   {
     "rank": 8,
-    "title": "Security Advisory: Local privilege escalation in Lix and Nix",
-    "score": 67,
-    "author": "raito",
-    "comments": 4,
-    "tags": "nix, security",
-    "url": "https://lobste.rs/s/g0crsm/security_advisory_local_privilege"
+    "title": "Dirty Frag: Universal Linux LPE",
+    "score": 119,
+    "author": "lattera",
+    "comments": 31,
+    "tags": "linux, security",
+    "url": "https://lobste.rs/s/lu4efg/dirty_frag_universal_linux_lpe"
   }
 ]
